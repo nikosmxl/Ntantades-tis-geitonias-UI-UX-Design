@@ -1,0 +1,11 @@
+.home_page{
+    width: 100%;
+}
+
+.background_pic{
+    width: 100%;
+    height: 700px;
+    background-image: url(../../Pictures/ntantades_welcome_page_background_cropped.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}

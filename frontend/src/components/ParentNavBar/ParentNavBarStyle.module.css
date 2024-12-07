@@ -1,0 +1,25 @@
+.nav_bar{
+    height: 100px;
+}
+
+.upper_navbar{
+    padding: 0 25px;
+    height: 90px;
+    background-color: #003475;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img{
+    object-fit: cover;
+    height: 100%;
+    width: 241px;
+    margin-left: 53px;
+    cursor: pointer;
+}
+
+.bottom_navbar{
+    height: 10px;
+    background-color: #2F72EF;
+}
