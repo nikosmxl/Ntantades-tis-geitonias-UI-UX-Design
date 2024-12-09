@@ -1,0 +1,33 @@
+.user_profile_button{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    background: none;
+    border: 2px solid #90B2EF;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.user_circle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: #D9D9D9;
+    border: 1px solid #2F72EF;
+    border-radius: 50%;
+}
+
+.user_icon{
+    font-size: 22px;
+    color: #003475;
+}
+
+.dropdown_arrow{
+    font-size: 16px;
+    color: #90B2EF;
+}
+
