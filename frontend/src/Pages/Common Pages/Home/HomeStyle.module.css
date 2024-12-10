@@ -1,5 +1,8 @@
 .home_page{
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }
 
 .background_pic{
@@ -8,4 +11,174 @@
     background-image: url(../../../Pictures/ntantades_welcome_page_background_cropped.jpg);
     background-repeat: no-repeat;
     background-size: contain;
+}
+
+.search_text_row{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-top: 45px;
+    padding: 0 50px;
+}
+
+.search_column{
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+}
+
+.location_search{
+    background-color: #90B2EF;
+    padding: 10px 16px 15px;
+    border-radius: 9px;
+    width: 580px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.location_search p{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.search_area{
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 30px;
+    margin-top: 10px;
+    height: 31px;
+}
+
+.location_icon{
+    font-size: 20px;
+    margin: 4px 10px;
+    color: #5C5C5C;
+}
+
+.search_icon{
+    font-size: 20px;
+    color: white;
+}
+
+.location_search_button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 8px;
+    padding-left: 4px;
+    height: 100%;
+    background-color: #2F72EF;
+    border-radius: 0 30px 30px 0;
+    cursor: pointer;
+}
+
+.search_area input{
+    width: 100%;
+    height: 80%;
+    border: 0;
+    outline: 0;
+}
+
+.famous_searches{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+    padding: 12px 25px;
+    background-color: #90B2EF;
+    border-radius: 9px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.famous_searches p{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.checkbox_label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    padding-left: 26px; /* Αφήνει χώρο για το custom checkmark */
+}
+
+.checkbox_label input {
+    position: absolute;
+    opacity: 0; /* Κρύβει το default checkbox */
+    cursor: pointer;
+}
+
+.checkbox_label .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 17px;
+    width: 17px;
+    background-color: white;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    border: 1px solid black;
+}
+
+.checkbox_label input:checked ~ .checkmark {
+    background-color: #5C5C5C; /* Χρώμα για όταν είναι επιλεγμένο */
+}
+
+.checkbox_label .checkmark::after {
+    content: "";
+    position: absolute;
+    display: none; /* Κρύβει το checkmark όταν δεν είναι επιλεγμένο */
+    left: 5px;
+    top: 1px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox_label input:checked ~ .checkmark::after {
+    display: block; /* Εμφανίζει το checkmark όταν είναι επιλεγμένο */
+}
+
+.famous_searches_search_button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 170px;
+    height: 35px;
+    margin-bottom: 10px;
+    background-color: #2F72EF;
+    color: white;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.famous_searches_search_button p{
+    margin: 0;
+    font-size: 16px;
+}
+
+.search_text_row h1{
+    margin: 0 110px;
+    text-align: left;
+    width: 400px;
+    font-size: 32px;
+    color: black;
+    text-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    line-height: 1.15;
+}
+
+.search_text_row span{
+    font-size: 40px;
+    color: #2F72EF;
+}
+
+.search_text_row .exclamation{
+    color: black;
 }
