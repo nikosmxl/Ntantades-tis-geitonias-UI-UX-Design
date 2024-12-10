@@ -1,0 +1,127 @@
+
+.chat_container {
+    position: fixed;
+    bottom: 45px;
+    right: 45px;
+    z-index: 10;
+}
+
+.chat_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #003475;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    font-size: 36px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.chat_button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.popup_chat{
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+}
+
+.popup_chat.open {
+    height: 400px;
+}
+
+.chat_box {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    padding: 10px;
+    width: 300px;
+    height: 380px;
+    background-color: #003475;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.chat_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.chat_header h4{
+    margin: 0;
+}
+
+.chat_header .minimize_button{
+    background-color: #ffffff;
+    padding: 2px 4px 2px;
+    color: #5C5C5C;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.chat_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    gap: 10px;
+    padding: 16px;
+    font-size: 14px;
+    border-radius: 5px 5px 0 0;
+    background-color: white;
+    color: #333;
+    overflow-y: auto;
+    height: 100%;
+}
+
+.helpdesk_message, .user_message{
+    width: 180px;
+    padding: 10px;
+}
+
+.helpdesk_message{
+    background-color: #003475;
+    border-radius: 15px 15px 15px 0px;
+    color: white;
+}
+
+.user_message{
+    background-color: #D9D9D9;
+    border-radius: 15px 15px 0px 15px;
+    align-self: flex-end;
+    color: black;
+}
+
+.helpdesk_message p, .user_message p{
+    margin: 0;
+}
+
+.message_area{
+    display: flex;
+    justify-content: center;
+    background: white;
+    padding: 0;
+    border-radius: 0 0 5px 5px;
+}
+
+.text_area{
+    width: 100%;
+    margin: 5px 10px;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #5C5C5C;
+    outline: 0;
+}

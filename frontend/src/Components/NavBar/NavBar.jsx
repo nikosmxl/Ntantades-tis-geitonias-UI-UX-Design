@@ -9,7 +9,7 @@ function NavBar(){
             <div className={s.upper_navbar}>
                 <div className={s.logo_categories_row}>
                     <div className={s.logo}>
-                        <img src={logo} alt="logo"/>
+                        <img src={logo} alt="logo" title="Home"/>
                     </div>
                     <div className={s.categories}>
                         
