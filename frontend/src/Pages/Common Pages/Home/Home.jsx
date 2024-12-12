@@ -2,6 +2,8 @@ import s from "./HomeStyle.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faSearch } from "@fortawesome/free-solid-svg-icons";
 import FamousSearches from "./FamousSearches/FamousSearches";
+import BabysitterList from "../../../Components/BabysitterList/BabysitterList";
+import Instructions from "../Instructions/Instructions";
 
 function Home(){
     return (
@@ -29,7 +31,10 @@ function Home(){
                         </span>
                     </h1>
                 </div>
+                <div className={s.gradient_white}></div>
             </div>
+            <BabysitterList /> 
+            <Instructions />
         </div>
     )
 }

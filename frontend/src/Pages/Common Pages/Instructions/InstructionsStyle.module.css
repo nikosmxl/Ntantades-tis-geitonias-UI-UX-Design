@@ -1,0 +1,16 @@
+.instructions_container{
+    margin-top: 35px;
+}
+
+.instructions_container h2{
+    font-size: 26px;
+}
+
+.instructions_column{
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    margin-left: 20px;
+    width: 1185px;
+}
+

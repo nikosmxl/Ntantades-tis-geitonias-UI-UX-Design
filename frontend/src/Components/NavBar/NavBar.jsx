@@ -1,5 +1,5 @@
 import s from "./NavBarStyle.module.css"
-import logo from "../../Pictures/govgrlogo.png"
+import logo from "../../Assets/Pictures/govgrlogo.png"
 import UserProfileDropdown from "../User Profile Dropdown/UserProfileDropdown";
 import NavBarCategory from "./NavBarCategory/NavBarCategory";
 

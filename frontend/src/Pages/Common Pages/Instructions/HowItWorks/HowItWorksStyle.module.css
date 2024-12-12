@@ -1,0 +1,111 @@
+.instruction_item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1185px;
+    padding: 15px 10px;
+    background-color: white;
+    border-radius: 7px;
+    border: 2px solid #9CBAF1;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    transition: border-radius 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.instruction_item.open{
+    border-radius: 7px 7px 0 0;
+}
+
+.instruction_item p{
+    font-size: 20px;
+    margin: 0;
+}
+
+.instruction_item .angle_icon{
+    font-size: 26px;
+    margin: 0;
+}
+
+.instruction_dropdown{
+    height: 0;
+    transition: height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.instruction_dropdown.open{
+    height: 600px;
+}
+
+.instruction_content{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 1183px;
+    background-color: rgba(217, 217, 217, 0.5);
+    padding: 45px 50px;
+    border-radius: 0 0 7px 7px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    margin-left: 2px;
+}
+
+.instruction_row1{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.instruction_row2{
+    align-self: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin: 20px auto;
+}
+
+.step{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.white_circle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    background-color: white;
+    margin-bottom: -44px;
+    z-index: 1;
+}
+
+.white_circle img{
+    width: 70px;
+    height: 70px;
+}
+
+.white_rect{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 330px;
+    height: 133px;
+    background-color: white;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+}
+
+.white_rect p{
+    margin: 30px 5px 0;
+    padding: 0;
+    font-size: 16px;
+    text-align: center;
+}
+
+.white_rect p span{
+    font-weight: 600;
+}

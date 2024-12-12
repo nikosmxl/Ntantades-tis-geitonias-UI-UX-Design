@@ -1,0 +1,16 @@
+.stars_container {
+    display: flex;
+}
+  
+.star {
+    color: #E1E900;
+    font-size: 16px;
+}
+
+.rating{
+    margin: 0;
+    margin-left: 10px;
+    font-size: 16px;
+    font-family: 'Crimson Text';
+}
+  

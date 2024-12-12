@@ -1,5 +1,5 @@
 import s from "./WelcomeNavBarStyle.module.css"
-import logo from "../../Pictures/govgrlogo.png"
+import logo from "../../Assets/Pictures/govgrlogo.png"
 
 function WelcomeNavBar(){
     return (

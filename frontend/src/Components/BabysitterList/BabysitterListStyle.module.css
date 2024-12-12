@@ -1,0 +1,41 @@
+.babysitters_show{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: -150px;
+}
+
+.babysitters_show b{
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+.babysitters_list_area{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 40px;
+}
+
+.left_angle, .right_angle{
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.babysitters_list{
+    display: flex;
+    width: 975px;
+    overflow-x: auto;
+    gap: 100px;
+    scroll-behavior: smooth;
+}
+
+.babysitters_list::-webkit-scrollbar {
+    display: none;
+}
+
+.show_more_babysitters{
+    align-self: center;
+    color: #2F61CE;
+    cursor: pointer;
+}
