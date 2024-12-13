@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import s from "./InstructionsStyle.module.css";
 import HowItWorks from "./HowItWorks/HowItWorks";
+import ForParents from "./ForParents/ForParents";
 
 
 function Instructions() {
@@ -10,69 +11,17 @@ function Instructions() {
         setOpenSection(openSection === section ? null : section);
     };
 
+    const isHowItWorksOpen = openSection === "howItWorks";
+    const isForParentsOpen = openSection === "forParents";
+
     return (
         <div className={s.instructions_container}>
             <h2>Οδηγίες</h2>
             <div className={s.instructions_column}>
-                <HowItWorks openSection={openSection} toggleSection={toggleSection}/>
+                <HowItWorks isOpen={isHowItWorksOpen} toggleSection={toggleSection} />
 
-                
+                <ForParents isOpen={isForParentsOpen} toggleSection={toggleSection} />
 
-                {/* <div className="accordion-item">
-                    <button
-                        className="accordion-header"
-                        onClick={() => toggleSection("forParents")}
-                    >
-                        Για Κηδεμόνες
-                    </button>
-                    {openSection === "forParents" && (
-                        <div className="accordion-content">
-                            Περιεχόμενο για Κηδεμόνες
-                        </div>
-                    )}
-                </div>
-
-                <div className="accordion-item">
-                    <button
-                        className="accordion-header"
-                        onClick={() => toggleSection("forBabysitters")}
-                    >
-                        Για Νταντάδες
-                    </button>
-                    {openSection === "forBabysitters" && (
-                        <div className="accordion-content">
-                            Περιεχόμενο για Νταντάδες
-                        </div>
-                    )}
-                </div>
-
-                <div className="accordion-item">
-                    <button
-                        className="accordion-header"
-                        onClick={() => toggleSection("help")}
-                    >
-                        Χρειάζομαι παραπάνω βοήθεια
-                    </button>
-                    {openSection === "help" && (
-                        <div className="accordion-content">
-                            Περιεχόμενο για βοήθεια
-                        </div>
-                    )}
-                </div>
-
-                <div className="accordion-item">
-                    <button
-                        className="accordion-header"
-                        onClick={() => toggleSection("municipalities")}
-                    >
-                        Δήμοι που συμμετέχουν στην εφαρμογή
-                    </button>
-                    {openSection === "municipalities" && (
-                        <div className="accordion-content">
-                            Περιεχόμενο για Δήμους
-                        </div>
-                    )}
-                </div> */}
             </div>
         </div>
     );

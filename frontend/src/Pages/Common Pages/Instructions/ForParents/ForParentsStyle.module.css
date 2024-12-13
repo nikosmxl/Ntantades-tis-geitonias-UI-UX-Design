@@ -1,0 +1,38 @@
+.instruction_item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1185px;
+    padding: 15px 10px;
+    background-color: white;
+    border-radius: 7px;
+    border: 2px solid #9CBAF1;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    transition: border-radius 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.instruction_item p{
+    font-size: 20px;
+    margin: 0;
+}
+
+.instruction_item .angle_icon{
+    font-size: 26px;
+    margin: 0;
+}
+
+.instruction_dropdown{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    margin-left: 75px;
+    height: 0;
+    transition: height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.instruction_dropdown.open{
+    height: 800px;
+}

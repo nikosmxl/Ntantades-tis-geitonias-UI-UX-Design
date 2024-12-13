@@ -7,21 +7,21 @@ import calendar_icon from "../../../../Assets/Icons/calendar_icon.png"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 
-function HowItWorks({openSection, toggleSection}){
+function HowItWorks({isOpen, toggleSection}){
     return (
         <div className={s.how_it_works}>
             <button
-                className={`${s.instruction_item} ${openSection === "howItWorks" ? s.open : ''}`}
+                className={`${s.instruction_item} ${isOpen ? s.open : ''}`}
                 onClick={() => toggleSection("howItWorks")}
             >
                 <p>Πώς λειτουργεί</p>
-                {openSection === "howItWorks" ? 
+                {isOpen ? 
                 <FontAwesomeIcon icon={faAngleUp} className={s.angle_icon}/>
                 : 
                 <FontAwesomeIcon icon={faAngleDown} className={s.angle_icon}/>
                 }
             </button>
-            <div className={`${s.instruction_dropdown} ${openSection === "howItWorks" ? s.open : ''}`}>
+            <div className={`${s.instruction_dropdown} ${isOpen ? s.open : ''}`}>
                 <div className={s.instruction_content}>
                     <div className={s.instruction_row1}>
                         <div className={s.step}>
