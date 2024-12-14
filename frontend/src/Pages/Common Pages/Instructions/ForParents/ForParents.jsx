@@ -34,8 +34,10 @@ function ForParents({isOpen, toggleSection}) {
                 }
             </button>
             <div className={`${s.instruction_dropdown} ${isOpen ? s.open : ''}`}>
+              <div>
                 <WhoIsAllowedTheVoucher isOpen={isWhoIsAllowedTheVoucherOpen} toggleInnerSections={toggleInnerSections} />
                 <HowToChooseBabysitter isOpen={isHowToFindBabysitterOpen} toggleInnerSections={toggleInnerSections} />
+              </div>
             </div>
         </div>
     );
