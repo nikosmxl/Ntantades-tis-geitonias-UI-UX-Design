@@ -23,16 +23,21 @@
 }
 
 .instruction_dropdown{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
     margin-top: 10px;
     margin-left: 75px;
-    height: 0;
-    transition: height 0.5s ease-in-out;
+    display: grid; 
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s ease-in-out;
     overflow: hidden;
 }
 
 .instruction_dropdown.open{
-    height: 800px;
+    grid-template-rows: 1fr;
+}
+
+.instruction_dropdown > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
 }
