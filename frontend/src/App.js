@@ -47,7 +47,7 @@ function App() {
             >
               <Route index element={<Home />} /> {/* Default sub-route */}
               { getRoutes('parent') }
-              <Route path='*' element={<Navigate to='/' replace />} /> {/* Return to home page if invalid route */}
+              <Route path='*' element={<Navigate to='/parent' replace />} /> {/* Return to home page if invalid route */}
             </Route>
             <Route
               path='/babysitter'
@@ -60,7 +60,7 @@ function App() {
             >
               <Route index element={<Home />} /> {/* Default sub-route */}
               { getRoutes('babysitter') }
-              <Route path='*' element={<Navigate to='/' replace />} /> {/* Return to home page if invalid route */}
+              <Route path='*' element={<Navigate to='/babysitter' replace />} /> {/* Return to home page if invalid route */}
             </Route>
           </Routes>
         </div>
