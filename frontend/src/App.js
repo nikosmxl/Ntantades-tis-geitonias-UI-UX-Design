@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LoggedOutLayout from "./Layouts/LoggedOutLayout";
 import ParentLayout from './Layouts/ParentLayout';
 import BabysitterLayout from './Layouts/BabysitterLayout';
-import LiveChat from './components/Live Chat/LiveChat';
+import LiveChat from './Components/Live Chat/LiveChat';
+import Footer from './Components/Footer/Footer';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           </Routes>
         </div>
         <LiveChat />
+        <Footer />
       </BrowserRouter>
     </div>
   );
