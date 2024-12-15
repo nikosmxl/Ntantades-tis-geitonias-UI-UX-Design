@@ -3,6 +3,7 @@ import LiveChat from './Components/Live Chat/LiveChat';
 import WelcomeNavBar from './Components/WelcomeNavBar/WelcomeNavBar';
 import NavBar from './Components/NavBar/NavBar';
 import Home from './Pages/Common Pages/Home/Home';
+import Footer from './Components/Footer/Footer';
 import routes from './routes';
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           </Routes>
         </div>
         <LiveChat />
+        <Footer />
       </BrowserRouter>
     </div>
   );
