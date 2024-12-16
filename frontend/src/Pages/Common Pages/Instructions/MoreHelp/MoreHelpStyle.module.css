@@ -1,0 +1,64 @@
+.instruction_item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1185px;
+    padding: 15px 10px;
+    background-color: white;
+    border-radius: 7px;
+    border: 2px solid #9CBAF1;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    transition: border-radius 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.instruction_item.open{
+    border-radius: 7px 7px 0 0;
+}
+
+.instruction_item p{
+    font-size: 20px;
+    margin: 0;
+}
+
+.instruction_item .angle_icon{
+    font-size: 26px;
+    margin: 0;
+}
+
+.instruction_dropdown{
+    height: 0;
+    transition: height 0.5s ease-in-out;
+    overflow: hidden;
+}
+
+.instruction_dropdown.open{
+    height: 147px;
+}
+
+.instruction_content{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 1183px;
+    background-color: rgba(217, 217, 217, 0.5);
+    padding: 45px 50px;
+    border-radius: 0 0 7px 7px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    margin-left: 2px;
+}
+
+.row{
+    display: flex;
+}
+
+.live_chat_logo{
+    justify-content: center;
+    align-items: center;
+    padding: 6px;
+    font-size: 16px;
+    background-color: #003475;
+    border-radius: 50%;
+    color: white;
+    margin: 0 8px;
+}

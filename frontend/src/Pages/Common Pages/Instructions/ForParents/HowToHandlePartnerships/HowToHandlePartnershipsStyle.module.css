@@ -33,7 +33,7 @@
 }
 
 .inner_instruction_dropdown.open{
-    height: 665px;
+    height: 356px;
 }
 
 .inner_instruction_content{
@@ -67,8 +67,14 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 800px;
+    width: 760px;
     margin-left: 10px;
+}
+
+.step_text ul{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 .step_text p{
@@ -80,28 +86,6 @@
     font-weight: 600;
 }
 
-.step_text .inner{
-    margin-left: 18px;
-}
-
-.rest_info{
-    margin-left: 8px;
-}
-
-.rest_info p{
-    font-size: 16px;
-}
-
-.rest_info p span{
-    font-weight: 600;
-}
-
-.rest_info .inner{
-    margin-left: 18px;
-}
-
-.attention{
-    margin: 15px 8px 0;
-    font-size: 13px;
-    color: #BC0000;
+.yellow_text{
+    color: #A2AC17;
 }
