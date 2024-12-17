@@ -8,7 +8,7 @@ import babysitter_icon2 from "../../../../../Assets/Icons/babysitter_icon2.png"
 function HowToChooseBabysitter({isOpen, toggleInnerSections}) {
 
     return (
-        <div className={s.who_is_allowed_the_voucher}>
+        <div className={s.how_to_choose_babysitter}>
             <button
                 className={`${s.inner_instruction} ${isOpen ? s.open : ''}`}
                 onClick={() => toggleInnerSections("howToChooseBabysitter")}

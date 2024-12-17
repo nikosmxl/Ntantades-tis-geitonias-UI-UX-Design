@@ -1,4 +1,5 @@
 import Home from "./Pages/Common Pages/Home/Home";
+import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentApplications";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -11,6 +12,11 @@ const routes = [
     context: 'loggedOut',
     path: 'test',
     page: <Home />,
+  },
+  {
+    context: 'parent',
+    path: 'applications',
+    page: <ParentApplications />,
   },
 ];
 

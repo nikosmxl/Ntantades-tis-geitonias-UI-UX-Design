@@ -1,0 +1,209 @@
+.application_with_buttons{
+    display: flex;
+    align-items: center;
+    gap: 55px;
+}
+
+.application{
+    width: 988px;
+    padding: 15px 22px 15px 30px;
+    background-color: #90B2EF;
+    border-radius: 26px;
+    border: solid #2F72EF;
+    border-width: 2px 2px 6px 2px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.application.accepted{
+    height: 335px;
+    border: solid #429602;
+    border-width: 2px 2px 6px 2px;
+}
+
+.application.pending{
+    height: 293px;
+    border: solid #A2AC17;
+    border-width: 2px 2px 6px 2px;
+}
+
+.application.declined{
+    height: 293px;
+    border: solid #870000;
+    border-width: 2px 2px 6px 2px;
+}
+
+.first_row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.first_row_left_side{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.first_row_left_side img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.first_row_right_side{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    gap: 15px;
+    font-size: 14px;
+}
+
+.app_dates{
+    display: flex;
+    gap: 40px;
+    font-size: 13px;
+    margin-right: 10px;
+}
+
+.app_dates p span{
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.second_row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.second_row_left_side{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row{
+    display: flex;
+    gap: 110px;
+}
+
+.row p{
+    font-size: 13px;
+}
+
+.row p span{
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.few_words{
+    width: 635px;
+    height: 170px;
+    padding: 5px 10px;
+    background-color: #D9D9D9;
+    border-radius: 7px;
+    border: 1px solid black;
+}
+
+.few_words p{
+    font-size: 13px;
+}
+
+.second_row_right_side{
+    align-self: end;
+    margin-right: 10px;
+}
+
+.third_row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.third_row p{
+    font-size: 13px;
+}
+
+.third_row button{
+    padding: 12px 30px;
+    margin-right: 150px;
+    background-color: #2F72EF;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.buttons{
+    display: flex;
+    gap: 38px;
+}
+
+.buttons button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 61px;
+    height: 46px;
+    background-color: #D9D9D9;
+    border-radius: 14px;
+    border: solid rgba(0, 0, 0, 0.6);
+    border-width: 2px 2px 6px 2px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.buttons .not_expanded{
+    font-size: 24px;
+    color: black;
+}
+
+.buttons .expanded{
+    font-size: 24px;
+    color: #2761CE;
+}
+
+.smooth_transition{
+    width: 0;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.smooth_transition.open{
+    width: 160px;
+}
+
+.options_buttons{
+    display: flex;
+    align-items: center;
+    gap: 38px;
+    padding-bottom: 6px;
+}
+
+.delete_button{
+    font-size: 24px;
+    color: #870000;
+}
+
+.decline_button{
+    font-size: 26px;
+    color: #870000;
+}
+
+.edit_button{
+    font-size: 24px;
+    color: #E9BA00;
+}
+
+.accept_button{
+    font-size: 24px;
+    color: #4EA60A;
+}
