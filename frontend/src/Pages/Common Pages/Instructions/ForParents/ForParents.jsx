@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import WhoIsAllowedTheVoucher from "./WhoIsAllowedTheVoucher/WhoIsAllowedTheVoucher";
 import HowToChooseBabysitter from "./HowToChooseBabysitter/HowToChooseBabysitter";
+import HowToHandlePartnerships from "./HowToHandlePartnerships/HowToHandlePartnerships";
 
 
 function ForParents({isOpen, toggleSection}) {
@@ -18,7 +19,8 @@ function ForParents({isOpen, toggleSection}) {
     };
 
     const isWhoIsAllowedTheVoucherOpen = openInnerSections.includes("whoIsAllowedTheVoucher");
-    const isHowToFindBabysitterOpen = openInnerSections.includes("howToChooseBabysitter")
+    const isHowToFindBabysitterOpen = openInnerSections.includes("howToChooseBabysitter");
+    const isHowToHandlePartnershipsOpen = openInnerSections.includes("howToHandlePartnerships");
 
     return (
         <div className={s.for_parents}>
@@ -37,6 +39,7 @@ function ForParents({isOpen, toggleSection}) {
               <div>
                 <WhoIsAllowedTheVoucher isOpen={isWhoIsAllowedTheVoucherOpen} toggleInnerSections={toggleInnerSections} />
                 <HowToChooseBabysitter isOpen={isHowToFindBabysitterOpen} toggleInnerSections={toggleInnerSections} />
+                <HowToHandlePartnerships isOpen={isHowToHandlePartnershipsOpen} toggleInnerSections={toggleInnerSections} />
               </div>
             </div>
         </div>

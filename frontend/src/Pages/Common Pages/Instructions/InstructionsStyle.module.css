@@ -4,6 +4,7 @@
 
 .instructions_container h2{
     font-size: 26px;
+    margin-bottom: 20px;
 }
 
 .instructions_column{
@@ -14,3 +15,6 @@
     width: 1185px;
 }
 
+.dropdown_with_dropdowns{
+    margin-bottom: -10px;
+}
