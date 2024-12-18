@@ -19,7 +19,7 @@ function ParentApplications(){
                     Ιστορικό αιτήσεων
                 </button>
             </div>
-            <Application isParent={true} application_state={0} isHistory={false} isEditable={true} />
+            <Application isParent={true} application_state={1} isHistory={false} isEditable={true} />
         </div>
     )
 }

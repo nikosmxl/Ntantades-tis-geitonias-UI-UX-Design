@@ -13,12 +13,12 @@ function DropdownMenu({ isOpen }) {
         </div>
         <div className={s.options_menu}>
             <div className={`${s.menu_item} ${s.first}`}>
-            <FontAwesomeIcon icon={faUser} className={s.options_icon} />
-            <p>Προφίλ</p>
+              <FontAwesomeIcon icon={faUser} className={s.options_icon} />
+              <p>Προφίλ</p>
             </div>
             <div className={`${s.menu_item} ${s.last}`}>
-            <FontAwesomeIcon icon={faRightFromBracket} className={s.options_icon} />
-            <p>Έξοδος</p>
+              <FontAwesomeIcon icon={faRightFromBracket} className={s.options_icon} />
+              <p>Έξοδος</p>
             </div>
         </div>
     </div>

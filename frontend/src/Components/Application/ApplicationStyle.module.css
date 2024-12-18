@@ -156,12 +156,6 @@
     margin-right: 10px;
 }
 
-/* .third_row{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-} */
-
 .third_row p{
     position: absolute;
     left: 30px;
@@ -180,7 +174,6 @@
     bottom: 15px;
     right: 150px;
     padding: 12px 30px;
-    /* margin-right: 150px; */
     background-color: #2F72EF;
     border-radius: 10px;
     border: none;
