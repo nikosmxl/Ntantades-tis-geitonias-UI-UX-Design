@@ -36,8 +36,8 @@ function Application({isParent = true, application_state = 2, isHistory = false,
                         }
                     </div>
                     <div className={s.first_row_right_side}>
-                        <p>22/12/2024</p>
-                        <div className={s.app_dates}>
+                        <p className={`${s.application_date} ${!isExpanded ? s.not_expanded : ''}`}>22/12/2024</p>
+                        <div className={`${s.from_to} ${!isExpanded ? s.not_expanded : ''}`}>
                             <p><span>Από:</span> 25/12/2024</p>
                             <p><span>Εώς:</span> 25/06/2025</p>
                         </div>
@@ -57,9 +57,9 @@ function Application({isParent = true, application_state = 2, isHistory = false,
                         <Timetable width="270px" height="200px" isEnabled={false} />
                     </div>
                 </div>
-                {application_state === 1 && !isHistory &&
+                {isParent && application_state === 1 && !isHistory &&
                     <div className={s.third_row}>
-                        <p>Η νταντά άλλαξε τα στοιχεία του ραντεβού</p>
+                        <p className={`${!isExpanded ? s.not_expanded : ''}`}>Η νταντά άλλαξε τα στοιχεία του ραντεβού</p>
                         <button>{exeiKleiseiRantebou ? "Προβολή Ραντεβού" : "Αίτημα Ραντεβού"}</button>
                     </div>
                 }

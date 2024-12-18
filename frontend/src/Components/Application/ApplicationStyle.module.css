@@ -5,32 +5,51 @@
 }
 
 .application{
+    position: relative;
     width: 988px;
     padding: 15px 22px 15px 30px;
     background-color: #90B2EF;
     border-radius: 26px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    height: 50px;
+    transition: height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.application.babysitter{
     border: solid #2F72EF;
     border-width: 2px 2px 6px 2px;
-    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
+}
+
+.application.open.babysitter{
+    height: 293px;
 }
 
 .application.accepted{
-    height: 335px;
     border: solid #429602;
     border-width: 2px 2px 6px 2px;
 }
 
+.application.open.accepted{
+    height: 335px;
+}
+
 .application.pending{
-    height: 293px;
     border: solid #A2AC17;
     border-width: 2px 2px 6px 2px;
 }
 
-.application.declined{
+.application.open.pending{
     height: 293px;
+}
+
+.application.declined{
     border: solid #870000;
     border-width: 2px 2px 6px 2px;
+}
+
+.application.open.declined{
+    height: 293px;
 }
 
 .first_row{
@@ -57,20 +76,36 @@
 .first_row_right_side{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: end;
-    gap: 15px;
     font-size: 14px;
 }
 
-.app_dates{
+.application_date{
+    justify-self: start;
+}
+
+.application_date.not_expanded{
+    justify-self: center;
+}
+
+.from_to{
+    justify-self: end;
     display: flex;
     gap: 40px;
     font-size: 13px;
+    margin-top: 15px;
     margin-right: 10px;
+    visibility: visible;
+    transition: visibility 0.2s ease-in-out, margin-top 0.2s ease-in-out;
 }
 
-.app_dates p span{
+.from_to.not_expanded{
+    visibility: hidden;
+    height: 0;
+    margin-top: 0;
+}
+
+.from_to p span{
     font-weight: 600;
     font-size: 14px;
     margin-right: 10px;
@@ -121,25 +156,32 @@
     margin-right: 10px;
 }
 
-.third_row{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.third_row p{
+    position: absolute;
+    left: 30px;
+    bottom: 15px;
+    font-size: 13px;
+    visibility: visible;
+    transition: visibility 0.2s ease-in-out;
 }
 
-.third_row p{
-    font-size: 13px;
+.third_row p.not_expanded{
+    visibility: hidden;
 }
 
 .third_row button{
+    position: absolute;
+    bottom: 15px;
+    right: 150px;
     padding: 12px 30px;
-    margin-right: 150px;
     background-color: #2F72EF;
     border-radius: 10px;
     border: none;
     color: white;
     font-size: 16px;
     font-weight: 600;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
 .buttons{
