@@ -25,7 +25,7 @@ const BabysitterListingCard = ({ babysitterCard = {} }) => {
             <h4>Ονοματεπώνυμο</h4>
 
             <div className={s.babysitter_listing_card_bio_rating}>
-              <Stars rating={4.1} showRating={true}/>
+              <Stars rating={4.1} showRating={true} color={'#E9BA00'}/>
               <p>•</p>
               <p>18 αξιολογήσεις</p>
             </div>
@@ -67,7 +67,7 @@ const BabysitterListingCard = ({ babysitterCard = {} }) => {
           <div>
             <p>Γιώργος</p>
             <p>•</p>
-            <Stars rating={4.1} showRating={false}/>
+            <Stars rating={4.1} showRating={false} color={'#E9BA00'}/>
           </div>
           <p>23/10/2024</p>
         </div>
