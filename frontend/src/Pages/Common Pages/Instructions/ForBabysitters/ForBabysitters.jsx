@@ -6,6 +6,10 @@ import WhatDoesABabysitterDo from "./WhatDoesABabysitterDo/WhatDoesABabysitterDo
 import DocumentsCertificates from "./DocumentsCertificates/DocumentsCertificates";
 import HowToFindWork from "./HowToFindWork/HowToFindWork";
 import HowToGetPaid from "./HowToGetPaid/HowToGetPaid";
+import HowToHandleListings from "./HowToHandleListings/HowToHandleListings";
+import HowToHandlePartnerships from "./HowToHandlePartnerships/HowToHandlePartnerships";
+import HowToHandleApplications from "./HowToHandleApplications/HowToHandleApplications";
+import HowToHandleDates from "./HowToHandleDates/HowToHandleDates";
 
 
 function ForBabysitters({isOpen, toggleSection}) {
@@ -23,6 +27,11 @@ function ForBabysitters({isOpen, toggleSection}) {
     const isDocumentsCertificatesOpen = openInnerSections.includes("documentsCertificates");
     const isHowToFindWorkOpen = openInnerSections.includes("howToFindWork");
     const isHowToGetPaidOpen = openInnerSections.includes("howToGetPaid");
+    const isHowToHandleListingsOpen = openInnerSections.includes("howToHandleListings");
+    const isHowToHandlePartnershipsOpen = openInnerSections.includes("howToHandlePartnerships");
+    const isHowToHandleApplicationsOpen = openInnerSections.includes("howToHandleApplications");
+    const isHowToHandleDatesOpen = openInnerSections.includes("howToHandleDates");
+
 
     return (
         <div className={s.for_babysitters}>
@@ -43,6 +52,10 @@ function ForBabysitters({isOpen, toggleSection}) {
                     <DocumentsCertificates isOpen={isDocumentsCertificatesOpen} toggleInnerSections={toggleInnerSections} />
                     <HowToFindWork isOpen={isHowToFindWorkOpen} toggleInnerSections={toggleInnerSections} />
                     <HowToGetPaid isOpen={isHowToGetPaidOpen} toggleInnerSections={toggleInnerSections} />
+                    <HowToHandleListings isOpen={isHowToHandleListingsOpen} toggleInnerSections={toggleInnerSections}/>
+                    <HowToHandlePartnerships isOpen={isHowToHandlePartnershipsOpen} toggleInnerSections={toggleInnerSections} />   
+                    <HowToHandleApplications isOpen={isHowToHandleApplicationsOpen} toggleInnerSections={toggleInnerSections} />
+                    <HowToHandleDates isOpen={isHowToHandleDatesOpen} toggleInnerSections={toggleInnerSections} />
                 </div>
             </div>
         </div>
