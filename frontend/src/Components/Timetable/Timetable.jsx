@@ -1,7 +1,7 @@
 import React from "react";
 import s from "./TimetableStyle.module.css";
 
-function Timetable({ width = "400px", height = "200px", isEnabled = true }) {
+function Timetable({ width = "400px", height = "200px", isEnabled = true, checkedSlots = [], onChange }) {
   const days = ["Δ", "T", "T", "Π", "Π", "Σ", "Κ"];
   const times = [
     "6-9 πμ",
@@ -16,6 +16,13 @@ function Timetable({ width = "400px", height = "200px", isEnabled = true }) {
   const tableStyle = {
     width: width,
     height: height,
+  };
+
+  const isChecked = (dayIndex, timeIndex) => {
+    return checkedSlots.some(
+      ([checkedDay, checkedTime]) =>
+        checkedDay === dayIndex && checkedTime === timeIndex
+    );
   };
 
   return (
@@ -38,6 +45,9 @@ function Timetable({ width = "400px", height = "200px", isEnabled = true }) {
                   <input
                     disabled={!isEnabled}
                     type="checkbox"
+                    checked={isChecked(colIndex, rowIndex)}
+                    readOnly={!isEnabled}
+                    onChange={onChange}
                     className={s.checkbox}
                     style={{
                       width: `calc(${width} / 15)`,

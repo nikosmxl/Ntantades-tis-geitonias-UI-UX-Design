@@ -1,3 +1,7 @@
+
+import BabysitterApplications from "./Pages/Babysitter Pages/BabysitterApplications/BabysitterApplications";
+import MyListings from "./Pages/Babysitter Pages/MyListings/MyListings";
+import Home from "./Pages/Common Pages/Home/Home";
 import BabysitterSearch from "./Pages/Common Pages/BabysitterSearch/BabysitterSearch";
 import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentApplications";
 
@@ -17,6 +21,16 @@ const routes = [
     context: 'parent',
     path: 'babysitter-search',
     page: <BabysitterSearch />,
+  },
+  {
+    context: 'babysitter',
+    path: 'applications',
+    page: <BabysitterApplications />,
+  },
+  {
+    context: 'babysitter',
+    path: 'listings',
+    page: <MyListings />,
   },
 ];
 
