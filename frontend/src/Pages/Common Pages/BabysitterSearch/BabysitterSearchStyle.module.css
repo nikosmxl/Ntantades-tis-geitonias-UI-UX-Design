@@ -1,0 +1,49 @@
+.breadcrumbs_container {
+
+}
+
+.babysitter_search_main_content {
+  width: 1110px;
+  margin: auto;
+  margin-top: 27px;
+}
+
+.babysitter_search_table_with_filters {
+  display: flex;
+  justify-content: space-between;
+}
+
+.babysitter_search_table_info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+  margin-bottom: 7px;
+}
+
+.babysitter_search_pagination_info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.babysitter_search_pagination_info > p {
+  font-size: 15px;
+}
+
+.babysitter_search_sorting_info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.babysitter_search_sorting_info > p {
+  font-size: 15px;
+}
+
+.babysitter_search_table {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}

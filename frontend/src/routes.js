@@ -1,4 +1,4 @@
-import Home from "./Pages/Common Pages/Home/Home";
+import BabysitterSearch from "./Pages/Common Pages/BabysitterSearch/BabysitterSearch";
 import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentApplications";
 
 /*
@@ -10,13 +10,13 @@ import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentA
 const routes = [
   {
     context: 'loggedOut',
-    path: 'test',
-    page: <Home />,
+    path: 'babysitter-search',
+    page: <BabysitterSearch />,
   },
   {
     context: 'parent',
-    path: 'applications',
-    page: <ParentApplications />,
+    path: 'babysitter-search',
+    page: <BabysitterSearch />,
   },
 ];
 
