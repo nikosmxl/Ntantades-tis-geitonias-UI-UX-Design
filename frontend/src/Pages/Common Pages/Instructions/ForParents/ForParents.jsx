@@ -5,6 +5,9 @@ import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import WhoIsAllowedTheVoucher from "./WhoIsAllowedTheVoucher/WhoIsAllowedTheVoucher";
 import HowToChooseBabysitter from "./HowToChooseBabysitter/HowToChooseBabysitter";
 import HowToHandlePartnerships from "./HowToHandlePartnerships/HowToHandlePartnerships";
+import HowToHandleApplications from "./HowToHandleApplications/HowToHandleApplications";
+import HowToHandleDates from "./HowToHandleDates/HowToHandleDates";
+import HowToPayBabysitter from "./HowToPayBabysitter/HowToPayBabysitter";
 
 
 function ForParents({isOpen, toggleSection}) {
@@ -21,6 +24,9 @@ function ForParents({isOpen, toggleSection}) {
     const isWhoIsAllowedTheVoucherOpen = openInnerSections.includes("whoIsAllowedTheVoucher");
     const isHowToFindBabysitterOpen = openInnerSections.includes("howToChooseBabysitter");
     const isHowToHandlePartnershipsOpen = openInnerSections.includes("howToHandlePartnerships");
+    const isHowToHandleApplicationsOpen = openInnerSections.includes("howToHandleApplications");
+    const isHowToHandleDatesOpen = openInnerSections.includes("howToHandleDates");
+    const isHowToPayBabysitterOpen = openInnerSections.includes("howToPayBabysitter")
 
     return (
         <div className={s.for_parents}>
@@ -40,6 +46,9 @@ function ForParents({isOpen, toggleSection}) {
                 <WhoIsAllowedTheVoucher isOpen={isWhoIsAllowedTheVoucherOpen} toggleInnerSections={toggleInnerSections} />
                 <HowToChooseBabysitter isOpen={isHowToFindBabysitterOpen} toggleInnerSections={toggleInnerSections} />
                 <HowToHandlePartnerships isOpen={isHowToHandlePartnershipsOpen} toggleInnerSections={toggleInnerSections} />
+                <HowToHandleApplications isOpen={isHowToHandleApplicationsOpen} toggleInnerSections={toggleInnerSections} />
+                <HowToHandleDates isOpen={isHowToHandleDatesOpen} toggleInnerSections={toggleInnerSections} />
+                <HowToPayBabysitter isOpen={isHowToPayBabysitterOpen} toggleInnerSections={toggleInnerSections}/>
               </div>
             </div>
         </div>
