@@ -26,13 +26,14 @@
     margin-top: 10px;
     margin-left: 75px;
     display: grid; 
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.5s ease-in-out;
+    grid-template-rows: auto;
+    max-height: 100px;
+    transition: max-height 0.2s ease-in-out;
     overflow: hidden;
 }
 
 .instruction_dropdown.open{
-    grid-template-rows: 1fr;
+    max-height: 1000px;
 }
 
 .instruction_dropdown > div {
