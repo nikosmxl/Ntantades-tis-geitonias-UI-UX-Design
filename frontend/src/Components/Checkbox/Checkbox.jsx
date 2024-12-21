@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './CheckboxStyle.module.css'
 
-const Checkbox = ({ name, label, isChecked, onChange }) => {
+const Checkbox = ({ name, label, isChecked, onChange, isEnabled=true }) => {
   return (
     <label className={s.checkbox_label}>
       <input
@@ -9,6 +9,7 @@ const Checkbox = ({ name, label, isChecked, onChange }) => {
         name={name}
         checked={isChecked}
         onChange={onChange}
+        disabled={!isEnabled}
       />
       {/* <span className={s.checkmark}></span> */}
       {label}
