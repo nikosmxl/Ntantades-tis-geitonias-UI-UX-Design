@@ -56,7 +56,7 @@ const BabysitterSearch = () => {
           <Filters
             filters={filters}
             availabilityFilter={availabilityFilter}
-            onChange={setFilters}
+            onFilterChange={setFilters}
             onAvailabilityFilterChange={setAvailabilityFilter}
             triggerFetch={fetchBabysitterListings}
           />

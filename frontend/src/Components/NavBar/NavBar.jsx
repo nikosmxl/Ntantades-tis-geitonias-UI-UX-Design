@@ -13,7 +13,7 @@ function NavBar(){
                     </div>
                     <div className={s.categories}>
                         
-                        <NavBarCategory header="Βρείτε Νταντά" toRoute="Babysitter_Search" /> 
+                        <NavBarCategory header="Βρείτε Νταντά" toRoute="babysitter-search" /> 
                         {/* Εδω θα λεμε ΑΝ type === Babysitter τοτε Αγγελιες ΑΛΛΙΩΣ Βρείτε Νταντά κάτι τέτοιο ειχα στο μυαλό μου */}
                     
                         <NavBarCategory header="Συνεργασία" toRoute="Babysitter_Search" />
