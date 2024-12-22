@@ -6,7 +6,7 @@ import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
 import { useState } from "react";
 
-function Application({isParent = true, application_state = 2, isHistory = false, isEditable = false}){
+function Application({isParent = true, application_state = null, isHistory = false, isEditable = false}){
     const [isExpanded, setIsExpanded] = useState(false);
     const exeiKleiseiRantebou = true; // Θα διαγραφεί αυτή η μεταβλητή στο μέλλον. Είναι προσωρινή.
 
@@ -16,7 +16,7 @@ function Application({isParent = true, application_state = 2, isHistory = false,
 
     return (
         <div className={s.application_with_buttons}>
-            <div className={`${s.application} ${isExpanded ? s.open : ''} ${isParent ? (application_state === 0 ? s.declined : application_state === 1 ? s.accepted : s.pending) : s.babysitter}`}>
+            <div className={`${s.application} ${isExpanded ? s.open : ''} ${!isParent ? s.babysitter : ''} ${(isParent || (!isParent && isHistory)) && ( !isEditable && (application_state === 0 ? s.declined : application_state === 1 ? s.accepted : s.pending))} ${isHistory ? s.history : ''}`}>
                 <div className={s.first_row}>
                     <div className={s.first_row_left_side}>
                         <img src={troll_prof} alt="Profile" />
@@ -85,18 +85,18 @@ function Application({isParent = true, application_state = 2, isHistory = false,
                                 <FontAwesomeIcon icon={faXmark} />
                             </button>
                         }
-                        {isParent && isEditable
+                        {isParent
                         ?
-                            <button className={s.edit_button}>
-                                <FontAwesomeIcon icon={faPencil} />
-                            </button>
-                        :(
-                            !isParent && (
-                                <button className={s.accept_button}>
-                                    <FontAwesomeIcon icon={faCheck} />
+                            isEditable && (
+                                <button className={s.edit_button}>
+                                    <FontAwesomeIcon icon={faPencil} />
                                 </button>
                             )
-                        )}
+                        :
+                            <button className={s.accept_button}>
+                                <FontAwesomeIcon icon={faCheck} />
+                            </button>
+                        }
                     </div>
                 </div>
                 

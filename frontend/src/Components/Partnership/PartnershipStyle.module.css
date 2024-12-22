@@ -1,0 +1,309 @@
+.partnership_with_buttons{
+    display: flex;
+    align-items: center;
+    gap: 45px;
+}
+
+.partnership{
+    position: relative;
+    display: grid;
+    grid-template-rows: auto;
+    max-height: 75px;
+    width: 1200px;
+    padding: 15px 15px 15px 30px;
+    border-radius: 17px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    border: 3px solid #2F72EF;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.partnership.open{
+    max-height: 1000px;
+}
+
+.partnership.pending{
+    border: 3px solid #E9BA00;
+}
+
+.partnership.declined{
+    border: 3px solid #870000;
+}
+
+.partnership_dot{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #008897;
+    animation: pulse 1.5s infinite;
+}
+
+.partnership_dot.disabled{
+    display: none;
+}
+
+.partnership_row{
+    display: flex;
+}
+
+.partnership_row img{
+    width: 73px;
+    height: 73px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.second_column{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.partnership_row p span{
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.underline{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.timetable_to_hide{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 235px;
+    transition: height 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.timetable_to_hide.hidden{
+    height: 0;
+    margin-top: -15px;
+}
+
+.third_column{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 378px;
+    margin-left: 70px;
+}
+
+.section_to_hide{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 157px;
+    transition: height 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.section_to_hide.hidden{
+    height: 0;
+    margin-bottom: -15px;
+}
+
+.dropdown{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 10px;
+}
+
+.dropdown .inner_dropdown{
+    margin-left: 10px;
+}
+
+.dropdown_row{
+    display: flex;
+}
+
+.dropdown_to_hide{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100px;
+    transition: height 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.dropdown_to_hide.hidden{
+    height: 0;
+    margin-top: -15px;
+}
+
+.status{    
+    margin-left: auto;
+    margin-top: 0;
+    font-size: 14px;
+    transition: font-size 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+}
+
+.status.yellow{
+    color: #E9BA00;
+}
+
+.status.red{
+    color: #870000;
+}
+
+.status.collapsed{
+    font-size: 16px;
+    margin-top: 24px;
+}
+
+.partnership_date{
+    margin-left: auto;
+    margin-top: 0;
+    font-size: 14px;
+    transition: font-size 0.3s ease-in-out, margin-top 0.3s ease-in-out;
+}
+
+.partnership_date.collapsed{
+    font-size: 16px;
+    margin-top: 24px;
+}
+
+.partnership_buttons_row{
+    display: flex;
+    margin: 0 45px 0 20px;
+    height: 60px;
+    transition: height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.partnership_buttons_row.collapsed{
+    height: 0;
+}
+
+.view_agreement_button{
+    width: 340px;
+    height: 60px;
+    margin-right: auto;
+    border-radius: 21px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.75);
+    border: 3px solid rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+}
+
+.end_partnership_button{
+    width: 240px;
+    height: 60px;
+    border-radius: 21px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.75);
+    border: 3px solid rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+}
+
+.end_partnership_button.disabled{
+    color: rgba(0, 0, 0, 0.2);
+    border: 3px solid rgba(0, 0, 0, 0.2);
+    cursor: default;
+}
+
+.complete_month_button{
+    position: relative;
+    width: 240px;
+    height: 60px;
+    margin-left: 50px;
+    border-radius: 21px;
+    font-weight: 600;
+    color: #008897;
+    border: 3px solid #008897;
+    cursor: pointer;
+}
+
+.complete_month_button.disabled{
+    color: rgba(0, 136, 151, 0.2);
+    border: 3px solid rgba(0, 136, 151, 0.2);
+    cursor: default;
+}
+
+.complete_month_button .dot{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: #008897;
+    animation: pulse 1.5s infinite;
+}
+
+.complete_month_button.disabled .dot{
+    display: none;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1); /* Κανονικό μέγεθος */
+        box-shadow: 0 0 5px rgba(0, 136, 151, 0.6); /* Ελαφρύς φωτισμός */
+    }
+    50% {
+        transform: scale(1.3); /* Μεγαλώνει ελαφρώς */
+        box-shadow: 0 0 15px rgba(0, 136, 151, 0.9); /* Πιο έντονος φωτισμός */
+    }
+}
+
+.buttons{
+    display: flex;
+    gap: 38px;
+}
+
+.buttons button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 61px;
+    height: 46px;
+    background-color: #D9D9D9;
+    border-radius: 14px;
+    border: solid rgba(0, 0, 0, 0.6);
+    border-width: 2px 2px 6px 2px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.buttons .not_expanded{
+    font-size: 24px;
+    color: black;
+}
+
+.buttons .expanded{
+    font-size: 24px;
+    color: #2761CE;
+}
+
+.smooth_transition{
+    width: 0;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.smooth_transition.open{
+    width: 160px;
+}
+
+.options_buttons{
+    display: flex;
+    align-items: center;
+    gap: 38px;
+    padding-bottom: 6px;
+}
+
+.delete_button{
+    font-size: 24px;
+    color: #870000;
+}
+
+.edit_button{
+    font-size: 24px;
+    color: #E9BA00;
+}

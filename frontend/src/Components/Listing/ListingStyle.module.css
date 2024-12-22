@@ -70,19 +70,10 @@
 .second_column.collapsed p, .second_column.collapsed p span, .second_column.collapsed ul,
 .third_column.collapsed p, .third_column.collapsed p span, .third_column.collapsed .timetable{
     display: none;
-    /* visibility: hidden;
-    transition: visibility 0.8s ease-in-out; */
 }
-
-/* .third_column.collapsed .timetable{
-    visibility: hidden;
-    height: 0;
-    transition: height 0.3s ease-in-out;
-} */
 
 .second_column.collapsed .always_show{
     align-self: flex-start;
-    /* visibility: visible; */
     display: block;
 }
 
