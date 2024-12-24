@@ -18,3 +18,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page-container {
+  height: calc(100vh - 100px);
+  overflow-y: scroll;
+}

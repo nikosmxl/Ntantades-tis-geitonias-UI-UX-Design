@@ -28,7 +28,10 @@ function App() {
               element={
                 <>
                   <WelcomeNavBar />
-                  <Outlet />
+                  <div className='page-container'>
+                    <Outlet />
+                    <Footer />
+                  </div>
                 </>
               }
             >
@@ -41,7 +44,10 @@ function App() {
               element={
                 <>
                   <NavBar />
-                  <Outlet />
+                  <div className='page-container'>
+                    <Outlet />
+                    <Footer />
+                  </div>
                 </>
               }
               exact
@@ -55,7 +61,10 @@ function App() {
               element={
                 <>
                   <NavBar />
-                  <Outlet />
+                  <div className='page-container'>
+                    <Outlet />
+                    <Footer />
+                  </div>
                 </>
               }
             >
@@ -66,7 +75,6 @@ function App() {
           </Routes>
         </div>
         <LiveChat />
-        <Footer />
       </BrowserRouter>
     </div>
   );
