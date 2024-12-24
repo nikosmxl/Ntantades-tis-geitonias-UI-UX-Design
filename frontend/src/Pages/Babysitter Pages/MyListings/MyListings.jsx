@@ -1,9 +1,9 @@
-import s from "./ParentApplicationsStyle.module.css"
+import s from "./MyListingsStyle.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Application from "../../../Components/Application/Application";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
+import Listing from "../../../Components/Listing/Listing";
 
-function ParentApplications(){
+function MyListings(){
     
     return (
         <div className={s.applications_page}>
@@ -13,15 +13,15 @@ function ParentApplications(){
                 <p>Αιτήσεις</p>
             </div>
             <div className={s.title_history_row}>
-                <h3>Οι αιτήσεις μου</h3>
+                <h3>Οι αγγελίες μου</h3>
                 <button className={s.history_button}>
                     <FontAwesomeIcon icon={faClockRotateLeft} />
-                    Ιστορικό αιτήσεων
+                    Ιστορικό αγγελιών
                 </button>
             </div>
-            <Application isParent={true} application_state={0} isHistory={false} isEditable={false} />
+            <Listing isHistory={false} isEditable={true} />
         </div>
     )
 }
 
-export default ParentApplications;
+export default MyListings;

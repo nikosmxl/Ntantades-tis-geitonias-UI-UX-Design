@@ -1,8 +1,8 @@
-.applications_page{
+.partnership_page{
     display: flex;
     flex-direction: column;
     justify-content: start;
-    padding: 9px 145px 0;
+    padding: 9px 70px 0 145px;
 }
 
 .breadcrumbs{

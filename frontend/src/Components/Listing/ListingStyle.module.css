@@ -1,0 +1,110 @@
+.listing_with_buttons{
+    display: flex;
+    align-items: center;
+    gap: 45px;
+}
+
+.listing{
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto auto auto auto;
+    max-height: 75px;
+    width: 1100px;
+    padding: 15px 15px 15px 30px;
+    background-color: #90B2EF;
+    border-radius: 26px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    border: solid #2F72EF;
+    border-width: 2px 2px 6px 2px;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.listing.open{
+    max-height: 1000px;
+}
+
+.listing img{
+    width: 73px;
+    height: 73px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.second_column, .third_column{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.third_column{
+    width: 470px;
+    justify-content: center;
+}
+
+.third_column.collapsed{
+    width: 457px;
+}
+
+.second_column{
+    width: 390px;
+    margin-right: 75px;
+}
+
+.second_column p span, .third_column p span{
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.second_column > ul{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+    padding: 0;
+    margin-left: 35px;
+    margin-top: -5px;
+}
+
+.second_column.collapsed p, .second_column.collapsed p span, .second_column.collapsed ul,
+.third_column.collapsed p, .third_column.collapsed p span, .third_column.collapsed .timetable{
+    display: none;
+}
+
+.second_column.collapsed .always_show{
+    align-self: flex-start;
+    display: block;
+}
+
+.third_column.collapsed .always_show{
+    align-self: flex-start;
+    display: flex;
+}
+
+.region_areas_list{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.areas_list{
+    display: flex;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.few_words{
+    width: 465px;
+    margin-left: 15px;
+}
+
+.listing_date{
+    margin-left: auto;
+    font-size: 14px;
+}
+
+.listing_date.collapsed{
+    font-size: 16px;
+    align-self: center;
+}

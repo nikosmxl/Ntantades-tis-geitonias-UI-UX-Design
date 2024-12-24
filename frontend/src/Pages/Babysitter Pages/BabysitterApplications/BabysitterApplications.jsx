@@ -1,9 +1,9 @@
-import s from "./ParentApplicationsStyle.module.css"
+import s from "./BabysitterApplicationsStyle.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Application from "../../../Components/Application/Application";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 
-function ParentApplications(){
+function BabysitterApplications(){
     
     return (
         <div className={s.applications_page}>
@@ -19,9 +19,9 @@ function ParentApplications(){
                     Ιστορικό αιτήσεων
                 </button>
             </div>
-            <Application isParent={true} application_state={0} isHistory={false} isEditable={false} />
+            <Application isParent={false} application_state={1} isHistory={false} isEditable={true} />
         </div>
     )
 }
 
-export default ParentApplications;
+export default BabysitterApplications;

@@ -1,7 +1,11 @@
+
+import BabysitterApplications from "./Pages/Babysitter Pages/BabysitterApplications/BabysitterApplications";
+import MyListings from "./Pages/Babysitter Pages/MyListings/MyListings";
 import BabysitterSearch from "./Pages/Common Pages/BabysitterSearch/BabysitterSearch";
 import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentApplications";
 import BabysitterDetails from './Pages/Parent Pages/BabysitterDetails/BabysitterDetails';
 import FamilyProfile from "./Pages/Parent Pages/FamilyProfile/FamilyProfile";
+import ParentPartnership from "./Pages/Parent Pages/Parent Partnership/ParentPartnership";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -29,6 +33,26 @@ const routes = [
     context: 'parent',
     path: 'family-profile/:id',
     page: <FamilyProfile />,
+  },
+  {
+    context: 'parent',
+    path: 'applications',
+    page: <ParentApplications />,
+  },
+  {
+    context: 'parent',
+    path: 'partnership',
+    page: <ParentPartnership />,
+  },
+  {
+    context: 'babysitter',
+    path: 'applications',
+    page: <BabysitterApplications />,
+  },
+  {
+    context: 'babysitter',
+    path: 'listings',
+    page: <MyListings />,
   },
 ];
 
