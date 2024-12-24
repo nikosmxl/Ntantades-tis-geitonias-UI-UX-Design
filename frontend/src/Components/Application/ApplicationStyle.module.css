@@ -11,9 +11,15 @@
     background-color: #90B2EF;
     border-radius: 26px;
     box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
+    border: solid #2F72EF;
+    border-width: 2px 2px 6px 2px;
     height: 50px;
     transition: height 0.3s ease-in-out;
     overflow: hidden;
+}
+
+.application.open{
+    height: 293px;
 }
 
 .application.babysitter{
@@ -21,11 +27,7 @@
     border-width: 2px 2px 6px 2px;
 }
 
-.application.open.babysitter{
-    height: 293px;
-}
-
-.application.accepted{
+.application.accepted, .application.babysitter.accepted{
     border: solid #429602;
     border-width: 2px 2px 6px 2px;
 }
@@ -34,21 +36,17 @@
     height: 335px;
 }
 
-.application.pending{
+.application.pending, .application.babysitter.pending{
     border: solid #A2AC17;
     border-width: 2px 2px 6px 2px;
 }
 
-.application.open.pending{
-    height: 293px;
-}
-
-.application.declined{
+.application.declined, .application.babysitter.declined{
     border: solid #870000;
     border-width: 2px 2px 6px 2px;
 }
 
-.application.open.declined{
+.application.open.history{
     height: 293px;
 }
 
@@ -82,10 +80,13 @@
 
 .application_date{
     justify-self: start;
+    font-size: 14px;
+    transition: font-size 0.3s ease-in-out;
 }
 
 .application_date.not_expanded{
     justify-self: center;
+    font-size: 16px;
 }
 
 .from_to{
@@ -182,70 +183,4 @@
     font-weight: 600;
     box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-}
-
-.buttons{
-    display: flex;
-    gap: 38px;
-}
-
-.buttons button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 61px;
-    height: 46px;
-    background-color: #D9D9D9;
-    border-radius: 14px;
-    border: solid rgba(0, 0, 0, 0.6);
-    border-width: 2px 2px 6px 2px;
-    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-
-.buttons .not_expanded{
-    font-size: 24px;
-    color: black;
-}
-
-.buttons .expanded{
-    font-size: 24px;
-    color: #2761CE;
-}
-
-.smooth_transition{
-    width: 0;
-    transition: width 0.3s ease-in-out;
-    overflow: hidden;
-}
-
-.smooth_transition.open{
-    width: 160px;
-}
-
-.options_buttons{
-    display: flex;
-    align-items: center;
-    gap: 38px;
-    padding-bottom: 6px;
-}
-
-.delete_button{
-    font-size: 24px;
-    color: #870000;
-}
-
-.decline_button{
-    font-size: 26px;
-    color: #870000;
-}
-
-.edit_button{
-    font-size: 24px;
-    color: #E9BA00;
-}
-
-.accept_button{
-    font-size: 24px;
-    color: #4EA60A;
 }
