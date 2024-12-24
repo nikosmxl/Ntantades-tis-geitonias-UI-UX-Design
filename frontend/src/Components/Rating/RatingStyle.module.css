@@ -1,0 +1,78 @@
+.rating_container {
+  display: flex;
+  background-color: #90B1EF;
+  border-radius: 10px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  width: 900px;
+  padding: 20px 0;
+}
+
+.family_avatar_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width: 173px;
+  border-right: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.family_avatar_container img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.family_avatar_container img:hover {
+  cursor: pointer;
+}
+
+.rating_info_container {
+  width: 622px;
+  padding: 0 0 0 24px;
+  align-self: center;
+}
+
+.rating_info_container > textarea {
+  width: 498px;
+  min-height: 100px;
+  align-self: center;
+  resize: none;
+  border-radius: 7px;
+  background-color: #D9D9D9;
+  font-family: Inter;
+  color: black;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.rating_info {
+  display: flex;
+  gap: 95px;
+}
+
+.rating_info p {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.rating_stars_container {
+  display: flex;
+  gap: 14px;
+}
+
+.rating_stars_container p {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.rating_date_container {
+  width: 81px;
+  align-self: top;
+}
+
+.rating_date_container p {
+  font-size: 13px;
+  font-weight: 300;
+}

@@ -2,17 +2,18 @@ import React from 'react';
 import s from './BabysitterListingCardStyle.module.css';
 import trollProf from '../../Assets/Pictures/troll_prof.jpg';
 import Stars from '../Stars/Stars';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSuitcase, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 
 const BabysitterListingCard = ({ babysitterCard = {} }) => {
 
-
+  let navigate = useNavigate();
 
   return (
     <div
       className={s.babysitter_listing_card_container}
-      onClick={() => console.log('will navigate to babysitter profile')}
+      onClick={() => navigate('../babysitter-details/1', {path: '..'})}
     >
       <div className={s.babysitter_listing_card}>
 

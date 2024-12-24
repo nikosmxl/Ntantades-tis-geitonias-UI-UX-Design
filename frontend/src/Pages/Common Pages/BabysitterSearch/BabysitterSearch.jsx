@@ -4,6 +4,7 @@ import BabysitterListingCard from '../../../Components/BabysitterListingCard/Bab
 import Pagination from '../../../Components/Pagination/Pagination';
 import Dropdown from '../../../Components/Dropdown/Dropdown';
 import Filters from './Filters/Filters';
+import ListHeader from '../../../Components/ListHeader/ListHeader';
 
 const BabysitterSearch = () => {
   const [page, setPage] = useState(1);
@@ -27,28 +28,16 @@ const BabysitterSearch = () => {
       </div>
       <div className={s.babysitter_search_main_content}>
 
-        <h2>Βρείτε νταντά</h2>
-        <div className={s.babysitter_search_table_info}>
-          <div className={s.babysitter_search_pagination_info}>
-            <p>147 Αγγελίες</p>
-            <p>•</p>
-            <p>Εμφάνιση ανά:</p>
-            <Dropdown
-              selectedOption={pageSize}
-              options={[10, 20, 40]}
-              onChange={(newPageSize) => setPageSize(newPageSize)}
-            />
-          </div>
-          <div className={s.babysitter_search_sorting_info}>
-            <p>Ταξινόμηση κατά:</p>
-            <Dropdown
-              selectedOption={sorting}
-              options={['Αξιολόγηση (Φθίνουσα)', 'Αξιολόγηση (Αύξουσα)']}
-              onChange={(newSorting) => setSorting(newSorting)}
-            />
-          </div>
-        </div>
-
+        <ListHeader
+          title='Βρείτε νταντά'
+          listSize='147 Αγγελίες'
+          pageSize={pageSize}
+          sorting={sorting}
+          pageSizeOptions={[10, 20, 40]}
+          sortingOptions={['Αξιολόγηση (Φθίνουσα)', 'Αξιολόγηση (Αύξουσα)']}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          onSortingChange={(newSorting) => setSorting(newSorting)}
+        />
         <hr />
 
         <div className={s.babysitter_search_table_with_filters}>
@@ -56,7 +45,7 @@ const BabysitterSearch = () => {
           <Filters
             filters={filters}
             availabilityFilter={availabilityFilter}
-            onChange={setFilters}
+            onFilterChange={setFilters}
             onAvailabilityFilterChange={setAvailabilityFilter}
             triggerFetch={fetchBabysitterListings}
           />

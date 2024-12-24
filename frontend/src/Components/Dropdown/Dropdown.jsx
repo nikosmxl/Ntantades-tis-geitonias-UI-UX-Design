@@ -3,14 +3,16 @@ import s from './DropdownStyle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
 
-const Dropdown = ({ selectedOption, placeholder, options, onChange }) => {
+const Dropdown = ({ selectedOption, placeholder, options, onChange, isEnabled=true }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const noneSelected = selectedOption === null || (typeof(selectedOption) === 'string' && selectedOption.trim() === '');
 
   const handleSelection = (option) => {
-    setMenuOpen(false);
-    onChange(option);
+    if (isEnabled) {
+      setMenuOpen(false);
+      onChange(option);
+    }
   };
 
   return (

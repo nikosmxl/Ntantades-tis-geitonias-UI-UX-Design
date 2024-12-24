@@ -1,0 +1,27 @@
+.babysitter_search_table_info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+  margin-bottom: 7px;
+}
+
+.babysitter_search_pagination_info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.babysitter_search_pagination_info > p {
+  font-size: 15px;
+}
+
+.babysitter_search_sorting_info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.babysitter_search_sorting_info > p {
+  font-size: 15px;
+}

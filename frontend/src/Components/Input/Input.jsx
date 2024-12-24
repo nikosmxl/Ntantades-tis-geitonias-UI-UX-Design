@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './InputStyle.module.css';
 
-const Input = ({ name, value, placeholder, onChange }) => {
+const Input = ({ name, value, placeholder, onChange, isEnabled=true }) => {
   
   const noneSelected = value === null || (typeof(value) === 'string' && value.trim() === '');
 
@@ -19,6 +19,7 @@ const Input = ({ name, value, placeholder, onChange }) => {
         value={noneSelected ? '' : value}
         placeholder={placeholder}
         onChange={handleInputChange}
+        disabled={!isEnabled}
       />
     </div>
   );
