@@ -1,0 +1,32 @@
+.reference {
+  width: 850px;
+  background-color: #90B1EF;
+  border-radius: 10px;
+  height: 36px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 25px;
+}
+
+.reference_info {
+  display: flex;
+  gap: 40px;
+}
+
+.reference_info svg {
+  height: 23px;
+  width: 15px;
+  align-self: center;
+}
+
+.reference_info h4 {
+  font-size: 14px;
+  align-self: center;
+}
+
+.reference p {
+  font-size: 13px;
+  align-self: top;
+  justify-self: right;
+}
