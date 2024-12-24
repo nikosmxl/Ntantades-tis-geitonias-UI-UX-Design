@@ -1,10 +1,8 @@
 import s from "./ApplicationStyle.module.css"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faEye, faPencil, faTrashCan, faXmark } from "@fortawesome/free-solid-svg-icons";
-import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
 import { useState } from "react";
+import ExpandButtons from "../ExpandButtons/ExpandButtons";
 
 function Application({isParent = true, application_state = null, isHistory = false, isEditable = false}){
     const [isExpanded, setIsExpanded] = useState(false);
@@ -64,43 +62,11 @@ function Application({isParent = true, application_state = null, isHistory = fal
                     </div>
                 }
             </div>
-            <div className={s.buttons}>
-                <button className={s.show_more_button} onClick={toggleIsExpanded}>
-                    {isExpanded 
-                    ?
-                        <FontAwesomeIcon icon={faEye} className={s.expanded} />
-                    :
-                        <FontAwesomeIcon icon={faEyeSlash} className={s.not_expanded} />
-                    }
-                </button>
-                <div className={`${s.smooth_transition} ${isExpanded && !isHistory ? s.open : ''}`}>
-                    <div className={s.options_buttons}>
-                        {isParent
-                        ?
-                            <button className={s.delete_button}>
-                                <FontAwesomeIcon icon={faTrashCan} />
-                            </button>
-                        :
-                            <button className={s.decline_button}>
-                                <FontAwesomeIcon icon={faXmark} />
-                            </button>
-                        }
-                        {isParent
-                        ?
-                            isEditable && (
-                                <button className={s.edit_button}>
-                                    <FontAwesomeIcon icon={faPencil} />
-                                </button>
-                            )
-                        :
-                            <button className={s.accept_button}>
-                                <FontAwesomeIcon icon={faCheck} />
-                            </button>
-                        }
-                    </div>
-                </div>
-                
-            </div>
+            <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={toggleIsExpanded}
+                showOptionsButtons={!isHistory} showDeleteButton={isParent} 
+                showDeclineButton={!isParent} showEditButton={isParent && isEditable}
+                showAcceptButton={!isParent} 
+            />
         </div>
     )
 }

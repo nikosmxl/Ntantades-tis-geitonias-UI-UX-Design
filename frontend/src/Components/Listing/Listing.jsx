@@ -1,10 +1,8 @@
 import s from "./ListingStyle.module.css"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
 import { useState } from "react";
+import ExpandButtons from "../ExpandButtons/ExpandButtons";
 
 function Listing({ isHistory = false, isEditable = false }){
     const [availabilityList, setAvailabilityList] = useState([ [0, 1], [2, 3], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4] ]);
@@ -116,29 +114,10 @@ function Listing({ isHistory = false, isEditable = false }){
                 </div>
                 <p className={`${s.listing_date} ${!isExpanded ? s.collapsed : ''}`}>25/12/2024</p>
             </div>
-            <div className={s.buttons}>
-                <button className={s.show_more_button} onClick={isExpanded ? setVariables : setVariables2}>
-                    {isExpanded 
-                    ?
-                        <FontAwesomeIcon icon={faEye} className={s.expanded} />
-                    :
-                        <FontAwesomeIcon icon={faEyeSlash} className={s.not_expanded} />
-                    }
-                </button>
-                <div className={`${s.smooth_transition} ${isExpanded && !isHistory ? s.open : ''}`}>
-                    <div className={s.options_buttons}>
-                        <button className={s.delete_button}>
-                            <FontAwesomeIcon icon={faTrashCan} />
-                        </button>
-                        {isEditable &&
-                            <button className={s.edit_button}>
-                                <FontAwesomeIcon icon={faPencil} />
-                            </button>
-                        }
-                    </div>
-                </div>
-                
-            </div>
+            <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={isExpanded ? setVariables : setVariables2}
+                showOptionsButtons={!isHistory} showDeleteButton={true}
+                showEditButton={isEditable} 
+            />
         </div>
     )
 }

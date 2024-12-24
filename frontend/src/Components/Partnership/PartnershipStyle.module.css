@@ -172,7 +172,7 @@
 .partnership_buttons_row{
     display: flex;
     margin: 0 45px 0 20px;
-    height: 60px;
+    height: 65px;
     transition: height 0.3s ease-in-out;
     overflow: hidden;
 }
@@ -189,6 +189,7 @@
     font-weight: 600;
     color: rgba(0, 0, 0, 0.75);
     border: 3px solid rgba(0, 0, 0, 0.75);
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
@@ -199,30 +200,42 @@
     font-weight: 600;
     color: rgba(0, 0, 0, 0.75);
     border: 3px solid rgba(0, 0, 0, 0.75);
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
 
 .end_partnership_button.disabled{
     color: rgba(0, 0, 0, 0.2);
     border: 3px solid rgba(0, 0, 0, 0.2);
+    box-shadow: none;
     cursor: default;
 }
 
-.complete_month_button{
+.complete_month_button, .renew_button{
     position: relative;
     width: 240px;
     height: 60px;
     margin-left: 50px;
     border-radius: 21px;
     font-weight: 600;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.renew_button{
+    color: #2761CE;
+    border: 3px solid #2761CE;
+}
+
+.complete_month_button{
     color: #008897;
     border: 3px solid #008897;
-    cursor: pointer;
 }
 
 .complete_month_button.disabled{
     color: rgba(0, 136, 151, 0.2);
     border: 3px solid rgba(0, 136, 151, 0.2);
+    box-shadow: none;
     cursor: default;
 }
 
@@ -252,58 +265,28 @@
     }
 }
 
-.buttons{
+.rate_button_area{
     display: flex;
-    gap: 38px;
-}
-
-.buttons button{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 61px;
-    height: 46px;
-    background-color: #D9D9D9;
-    border-radius: 14px;
-    border: solid rgba(0, 0, 0, 0.6);
-    border-width: 2px 2px 6px 2px;
-    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-}
-
-.buttons .not_expanded{
-    font-size: 24px;
-    color: black;
-}
-
-.buttons .expanded{
-    font-size: 24px;
-    color: #2761CE;
-}
-
-.smooth_transition{
-    width: 0;
-    transition: width 0.3s ease-in-out;
+    margin: 15px 45px 0 20px;
+    height: 65px;
+    transition: height 0.3s ease-in-out, margin-top 0.3s ease-in-out;
     overflow: hidden;
 }
 
-.smooth_transition.open{
-    width: 160px;
+.rate_button_area.collapsed{
+    height: 0;
+    margin-top: 0;
 }
 
-.options_buttons{
-    display: flex;
-    align-items: center;
-    gap: 38px;
-    padding-bottom: 6px;
-}
-
-.delete_button{
-    font-size: 24px;
-    color: #870000;
-}
-
-.edit_button{
-    font-size: 24px;
+.rate_button{
+    width: 240px;
+    height: 60px;
+    margin-left: auto;
+    border-radius: 21px;
+    font-weight: 600;
     color: #E9BA00;
+    border: 3px solid #E9BA00;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
+

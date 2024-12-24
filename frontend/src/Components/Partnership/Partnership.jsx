@@ -1,11 +1,10 @@
 import s from "./PartnershipStyle.module.css"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faPencil, faTrashCan } from "@fortawesome/free-solid-svg-icons";
-import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
 import { useState } from "react";
 import Dropdown from "../Dropdown/Dropdown";
+import ConfirmationPopUp from "../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
+import ExpandButtons from "../ExpandButtons/ExpandButtons";
 
 function Partnership({isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false}){
     const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -18,8 +17,8 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
         "signedBy": [],
         "isSentTo": 123,
         "answer": null,
-        "ParentName": "Δήμητρα Χατζή",
-        "BabysitterName": "Γεωργία Χατζηνικολάου",
+        "parentName": "Δήμητρα Χατζή",
+        "babysitterName": "Γεωργία Χατζηνικολάου",
         //Στοιχεια και των δυο
         "placeOfService": {
             "ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ": ["Τζιτζιφιές", "Αγία Ελεούσα"],
@@ -64,24 +63,37 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
     };
 
     const [isExpanded, setIsExpanded] = useState(false);
-    const isPartnershipOver = false;
-    const isMonthCompleted = true;
+    const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+    const isPartnershipOver = true;
+    const isPayAvailable = true;
 
     const toggleIsExpanded = () => {
         setIsExpanded(!isExpanded);
+    };
+
+    const openConfirmPopup = () => {
+        setIsConfirmPopupOpen(true);
+    }
+
+    const handleConfirm = () => {
+        console.log("CONFIRMED SIR!")
+    };
+
+    const handleConfirmPopupClose = () => {
+        setIsConfirmPopupOpen(false); // Closes popup
     };
 
     return (
         <div className={s.partnership_with_buttons}>
             <div className={`${s.partnership} ${isExpanded ? s.open : ''} ${((isParent && isSent) || isHistory) ? (isPending ? s.pending : s.declined) : ''}`}>
                 {isRunning && 
-                    <span className={`${s.partnership_dot} ${!isParent || isExpanded || !isMonthCompleted ? s.disabled : ''}`}></span>
+                    <span className={`${s.partnership_dot} ${!isParent || isExpanded || !isPayAvailable ? s.disabled : ''}`}></span>
                 }
                 <div className={s.partnership_row}>
                     <img src={troll_prof} alt="Profile" />
                     <div className={s.second_column}>
-                        <p><span>Ονοματεπώνυμο:</span>{sample.name}</p>
-                        <p><span>Χρόνος απασχόλησης:</span>{sample.working_hours}</p>
+                        <p><span>Ονοματεπώνυμο:</span>{sample.babysitterName}</p>
+                        <p><span>Χρόνος απασχόλησης:</span>{sample.workingHours}</p>
                         <div className={`${s.timetable_to_hide} ${!isExpanded ? s.hidden : ''}`}>
                             <p className={s.underline}><span>Διαθεσιμότητα και ώρες</span></p>
                             <div>
@@ -132,44 +144,40 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                         {isRunning &&
                             <>
                                 {isParent &&
-                                    <button className={`${s.end_partnership_button} ${!isPartnershipOver ? s.disabled : ''}`}>
+                                    <button className={`${s.end_partnership_button} ${!isPartnershipOver ? s.disabled : ''}`} onClick={openConfirmPopup}>
                                         ΛΗΞΗ ΣΥΝΕΡΓΑΣΙΑΣ
                                     </button>
                                 }
-                                <button className={`${s.complete_month_button} ${!isMonthCompleted ? s.disabled : ''}`}>
-                                    ΟΛΟΚΛΗΡΩΣΗ ΜΗΝΑ
-                                    <span className={s.dot}></span>
-                                </button>
+                                {isPartnershipOver && !isPayAvailable
+                                ?
+                                    <button className={s.renew_button}>
+                                        ΑΝΑΝΕΩΣΗ ΣΥΝΕΡΓΑΣΙΑΣ
+                                    </button>
+                                :
+                                    <button className={`${s.complete_month_button} ${!isPayAvailable ? s.disabled : ''}`}>
+                                        ΟΛΟΚΛΗΡΩΣΗ ΜΗΝΑ
+                                        <span className={s.dot}></span>
+                                    </button>
+                                }
                             </>
                         }
                     </div>
                 }
-            </div>
-            <div className={s.buttons}>
-                <button className={s.show_more_button} onClick={toggleIsExpanded}>
-                    {isExpanded 
-                    ?
-                        <FontAwesomeIcon icon={faEye} className={s.expanded} />
-                    :
-                        <FontAwesomeIcon icon={faEyeSlash} className={s.not_expanded} />
-                    }
-                </button>
-                <div className={`${s.smooth_transition} ${isExpanded && isEditable ? s.open : ''}`}>
-                    <div className={s.options_buttons}>
-                        {isParent && isEditable &&
-                            <button className={s.delete_button}>
-                                <FontAwesomeIcon icon={faTrashCan} />
-                            </button>
-                        }
-                        {isEditable &&
-                            <button className={s.edit_button}>
-                                <FontAwesomeIcon icon={faPencil} />
-                            </button>
-                        }
+                {isParent && isPartnershipOver && isRunning &&
+                    <div className={`${s.rate_button_area} ${!isExpanded ? s.collapsed : ''}`}>
+                        <button className={s.rate_button} onClick={() => {}}>
+                            ΑΞΙΟΛΟΓΗΣΗ
+                        </button>
                     </div>
-                </div>
-                
+                }
             </div>
+            <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={toggleIsExpanded} 
+                showOptionsButtons={isEditable} showDeleteButton={isParent} 
+                showEditButton={true}
+            />
+            {isConfirmPopupOpen && 
+                <ConfirmationPopUp onConfirm={handleConfirm} onClose={handleConfirmPopupClose}/>
+            }
         </div>
     )
 }
