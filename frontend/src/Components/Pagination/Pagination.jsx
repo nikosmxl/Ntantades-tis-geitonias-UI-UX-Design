@@ -3,7 +3,7 @@ import s from './PagiationStyle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
-const Pagination = ({ pages, currentPage, onChange }) => {
+const Pagination = ({ pages, currentPage, onChange, width='100%' }) => {
 
   const getPaginationItems = () => {
     let paginationItems = [];
@@ -36,7 +36,10 @@ const Pagination = ({ pages, currentPage, onChange }) => {
   };
 
   return (
-    <div className={s.pagination_container}>
+    <div
+      className={s.pagination_container}
+      style={{width: width}}
+    >
       <div className={s.pagination_items}>
         <div
           className={`${s.pagination_item} ${s.active}`}
