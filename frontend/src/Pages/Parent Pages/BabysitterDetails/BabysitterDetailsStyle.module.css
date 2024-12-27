@@ -1,5 +1,5 @@
 .babysitter_details_main_content {
-  width: 1110px;
+  width: 1329px;
   margin: auto;
   margin-top: 27px;
   display: flex;
@@ -47,7 +47,7 @@
 
 .babysitter_details_top_container_main {
   padding-top: 60px;
-  width: 800px;
+  width: 900px;
   display: flex;
   flex-direction: column;
 }

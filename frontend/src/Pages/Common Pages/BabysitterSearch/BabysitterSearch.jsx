@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import s from './BabysitterSearchStyle.module.css';
 import BabysitterListingCard from '../../../Components/BabysitterListingCard/BabysitterListingCard';
 import Pagination from '../../../Components/Pagination/Pagination';
-import Dropdown from '../../../Components/Dropdown/Dropdown';
 import Filters from './Filters/Filters';
 import ListHeader from '../../../Components/ListHeader/ListHeader';
 
@@ -30,10 +29,10 @@ const BabysitterSearch = () => {
 
         <ListHeader
           title='Βρείτε νταντά'
-          listSize='147 Αγγελίες'
+          listSize={147}
+          listElementName='Αγγελίες'
           pageSize={pageSize}
           sorting={sorting}
-          pageSizeOptions={[10, 20, 40]}
           sortingOptions={['Αξιολόγηση (Φθίνουσα)', 'Αξιολόγηση (Αύξουσα)']}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           onSortingChange={(newSorting) => setSorting(newSorting)}
