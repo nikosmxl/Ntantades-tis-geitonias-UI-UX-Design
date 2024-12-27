@@ -46,14 +46,14 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
         "childrenInfo": [
             {
                 "age": 2,
-                "sex": 0,
+                "gender": 0,
                 "AMEA": 0,
                 "allergies": 0,
                 "fewWords": "Μπλα μπλα...",
             },
             {
                 "age": 2,
-                "sex": 0,
+                "gender": 0,
                 "AMEA": 0,
                 "allergies": 0,
                 "fewWords": "Μπλα μπλα...",
