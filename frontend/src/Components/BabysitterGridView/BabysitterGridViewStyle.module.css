@@ -1,0 +1,9 @@
+.grid_view {
+  align-self: center;
+  display: grid;
+  width: 945px;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 23px;
+  row-gap: 23px;
+  margin: 23px 0 40px;
+}
