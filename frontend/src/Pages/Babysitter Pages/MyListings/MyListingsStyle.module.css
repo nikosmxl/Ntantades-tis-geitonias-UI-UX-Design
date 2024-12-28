@@ -8,7 +8,7 @@
 .breadcrumbs{
     display: flex;
     gap: 7px;
-    margin-bottom: 45px;
+    margin-bottom: 35px;
     margin-left: 30px;
     font-size: 13px;
 }
@@ -41,4 +41,28 @@
 
 .history_button:hover{
     transform: scale(1.05);
+}
+
+.running_listing_title{
+    font-size: 20px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.running_listing{
+    margin-top: 20px;
+    margin-left: 120px;
+}
+
+.list_header{
+    margin-top: 45px;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+    padding-left: 120px;
+    margin-top: 20px;
+    margin-bottom: 45px;
+    gap: 30px;
 }
