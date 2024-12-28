@@ -26,9 +26,8 @@ const BabysitterSearch = () => {
         Αρχική Σελίδα > Βρείτε νταντά
       </div>
       <div className={s.babysitter_search_main_content}>
-
+        <h2>Βρείτε νταντά</h2>
         <ListHeader
-          title='Βρείτε νταντά'
           listSize={147}
           listElementName='Αγγελίες'
           pageSize={pageSize}
@@ -37,7 +36,6 @@ const BabysitterSearch = () => {
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
           onSortingChange={(newSorting) => setSorting(newSorting)}
         />
-        <hr />
 
         <div className={s.babysitter_search_table_with_filters}>
 

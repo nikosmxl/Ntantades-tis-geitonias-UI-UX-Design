@@ -4,8 +4,9 @@ import MyListings from "./Pages/Babysitter Pages/MyListings/MyListings";
 import BabysitterSearch from "./Pages/Common Pages/BabysitterSearch/BabysitterSearch";
 import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentApplications";
 import BabysitterDetails from './Pages/Parent Pages/BabysitterDetails/BabysitterDetails';
-// import FamilyProfile from "./Pages/Parent Pages/FamilyProfile/FamilyProfile";
+import FamilyProfile from "./Pages/Parent Pages/FamilyProfile/FamilyProfile";
 import ParentPartnership from "./Pages/Parent Pages/Parent Partnership/ParentPartnership";
+import ParentDates from "./Pages/Parent Pages/ParentDates/ParentDates";
 import BabysitterPartnership from "./Pages/Babysitter Pages/Babysitter Partnership/BabysitterPartnership";
 
 /*
@@ -30,11 +31,11 @@ const routes = [
     path: 'babysitter-details/:babysitterId',
     page: <BabysitterDetails />,
   },
-  // {
-  //   context: 'parent',
-  //   path: 'family-profile/:id',
-  //   page: <FamilyProfile />,
-  // },
+  {
+    context: 'parent',
+    path: 'family-profile/:id',
+    page: <FamilyProfile />,
+  },
   {
     context: 'parent',
     path: 'applications',
@@ -44,6 +45,11 @@ const routes = [
     context: 'parent',
     path: 'partnership',
     page: <ParentPartnership />,
+  },
+  {
+    context: 'parent',
+    path: 'dates',
+    page: <ParentDates />,
   },
   {
     context: 'babysitter',

@@ -1,0 +1,7 @@
+.parent_dates_main_content {
+  width: 1110px;
+  margin: auto;
+  margin-top: 27px;
+  display: flex;
+  flex-direction: column;
+}
