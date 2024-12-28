@@ -6,6 +6,7 @@ import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentA
 import BabysitterDetails from './Pages/Parent Pages/BabysitterDetails/BabysitterDetails';
 // import FamilyProfile from "./Pages/Parent Pages/FamilyProfile/FamilyProfile";
 import ParentPartnership from "./Pages/Parent Pages/Parent Partnership/ParentPartnership";
+import ParentDates from "./Pages/Parent Pages/ParentDates/ParentDates";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -43,6 +44,11 @@ const routes = [
     context: 'parent',
     path: 'partnership',
     page: <ParentPartnership />,
+  },
+  {
+    context: 'parent',
+    path: 'dates',
+    page: <ParentDates />,
   },
   {
     context: 'babysitter',
