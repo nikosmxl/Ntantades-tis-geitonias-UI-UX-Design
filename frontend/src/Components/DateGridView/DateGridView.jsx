@@ -2,7 +2,7 @@ import React from 'react';
 import s from './DateGridViewStyle.module.css';
 import Date from './Date/Date';
 
-const DateGridView = ({ dates }) => {
+const DateGridView = ({ dates, onDateClick }) => {
   return (
 
     <div className={s.grid_view}>
@@ -12,6 +12,7 @@ const DateGridView = ({ dates }) => {
             <Date
               key={`${date.status} ${index}`}
               date={date}
+              onClick={onDateClick}
             />
           )
         })
