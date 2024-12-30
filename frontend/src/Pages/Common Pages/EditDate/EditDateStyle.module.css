@@ -1,0 +1,140 @@
+.edit_date_main_content {
+  width: 972px;
+  margin: auto;
+  margin-top: 27px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mandatory_fields_info {
+  font-size: 13px;
+}
+
+.date_info_container {
+  margin-top: 27px;
+  align-self: end;
+  display: flex;
+  align-items: top;
+  gap: 150px;
+}
+
+.date_info_user_avatar_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 21px;
+}
+
+.date_info_user_avatar_container > h3 {
+  font-size: 20px;
+}
+
+.date_info_user_avatar {
+  width: 120px;
+  height: 120px;
+}
+
+.date_info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 500px;
+}
+
+.date_info > h3 {
+  font-size: 20px;
+}
+
+.date_info p, .date_scheduler_container p {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.date_info textarea {
+  width: calc(100% - 20px);
+  height: 80px;
+  align-self: center;
+  resize: none;
+  border-radius: 7px;
+  font-family: Inter;
+  color: black;
+  margin-top: 10px;
+  padding: 10px 10px 10px 10px;
+  background-color: #D9D9D9;
+  border: none;
+}
+
+.date_details_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date_details_flex input {
+  border-radius: 4px;
+  border: 1px solid rgb(204, 204, 204);
+  padding: 10px;
+  color: hsl(0, 0%, 20%);
+}
+
+.date_place, .date_address {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(0, 52, 117, 0.65);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.65);
+  padding: 5px 10px;
+}
+
+.date_online_address_container {
+  display: flex;
+}
+
+.date_online_address {
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(0, 52, 117, 0.65);
+  border-radius: 5px 0 0 5px;
+  background-color: rgba(255, 255, 255, 0.65);
+  padding: 5px 10px;
+}
+
+.date_scheduler_container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.edit_date_actions_container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  width: 100%;
+  gap: 25px;
+  margin-top: 50px;
+}
+
+.cancel_edit_button, .confirm_changes_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 126px;
+  height: 36px;
+  font-size: 13px;
+  border-radius: 11px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.cancel_edit_button {
+  background-color: #666666;
+}
+
+.confirm_changes_button {
+  background-color: #4384D5;
+}

@@ -2,14 +2,25 @@ import React from 'react';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import s from './DateStyle.module.css';
 
-const Date = ({ date }) => {
+const Date = ({ date, onClick }) => {
   
   const handleNavigate = () => {
     // TODO: depends on displayed user's role, the url is different each time
   };
 
-  const handleModal = () => {
-    // TODO: open modal depending on date status
+  const handleAction = () => {
+    const dateStatus = date.status;
+
+    switch (dateStatus) {
+      case 'rejected':
+        break;
+      case 'completed':
+        // navigate to partnership or partnerships
+        break;
+      default:
+        onClick(date);
+        break;
+    }
   };
 
   const getContainerClassName = () => {
@@ -69,7 +80,7 @@ const Date = ({ date }) => {
     return (
       <button
         className={className}
-        onClick={handleModal}
+        onClick={handleAction}
       >
         {label}
       </button>
@@ -87,7 +98,7 @@ const Date = ({ date }) => {
         src={trollProf}
         onClick={handleNavigate}
       />
-      <p>Ονοματεπώνυμο Νταντάς</p>
+      <p>Ονοματεπώνυμο</p>
       <div className={s.date_info_container}>
         <p>Τοποθεσία:</p>
         <p>Καλλιθέα</p>
