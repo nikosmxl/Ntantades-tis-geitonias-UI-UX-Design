@@ -36,7 +36,7 @@ const ParentDates = ({}) => {
   return (
     <div className={s.parent_dates_container}>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Βρείτε νταντά
+        Αρχική Σελίδα > Ραντεβού Γνωριμίας
       </div>
       <div className={s.parent_dates_main_content}>
         <h2>Τα ραντεβού μου</h2>
