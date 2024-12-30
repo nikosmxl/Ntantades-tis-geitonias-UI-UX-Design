@@ -4,10 +4,13 @@ import trollProf from '../../Assets/Pictures/troll_prof.jpg';
 import xIcon from '../../Assets/Icons/X-icon.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan, faCheck, faLink, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 const DatePopUp = ({ date, onClose }) => {
   const [isLoading, setIsLoading] = useState(false); // Όταν θα επιβεβαιώνει θα κάνει asyncronous tasks λογικά (θα θέλει λιγο χρονο για ενεργειες στο backend)
   const [isClosing, setIsClosing] = useState(false); // Για το animation
+
+  const navigate = useNavigate();
 
   const handleClosePopup = () => {
       setIsClosing(true); // Για να ενεργοποιηθεί το animation
@@ -30,7 +33,7 @@ const DatePopUp = ({ date, onClose }) => {
 
   const handleEditDate = () => {
     // navigate to edit date page
-    handleClosePopup();
+    navigate('../edit-date/1', {path: '..'});
   };
 
   return (
@@ -60,7 +63,7 @@ const DatePopUp = ({ date, onClose }) => {
               <p className={s.date_place}>{date.place === 'online' ? 'Διαδικτυακά' : 'Δια ζώσης'}</p>
             </div>
             <div className={s.date_details_flex}>
-              <p>Εφαρμογή:</p>
+              <p>{date.place === 'online' ? 'Εφαρμογή' : 'Διεύθυνση'}:</p>
               {
                 date.place === 'online' ? (
                   <div className={s.date_online_address_container}>
