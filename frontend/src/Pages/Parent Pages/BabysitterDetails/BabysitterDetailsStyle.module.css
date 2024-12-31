@@ -190,7 +190,7 @@
 }
 
 .babysitter_availability_date_container {
-  width: 860px;
+  width: 960px;
   display: grid;
   grid-template-columns: auto auto auto;
   margin-top: 40px;
