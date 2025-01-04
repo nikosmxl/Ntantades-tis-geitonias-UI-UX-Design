@@ -43,7 +43,9 @@ function App() {
               path='/parent'
               element={
                 <>
-                  <NavBar />
+                  <NavBar
+                    context='parent'
+                  />
                   <div className='page-container'>
                     <Outlet />
                     <Footer />
@@ -60,7 +62,9 @@ function App() {
               path='/babysitter'
               element={
                 <>
-                  <NavBar />
+                  <NavBar
+                    context='babysitter'
+                  />
                   <div className='page-container'>
                     <Outlet />
                     <Footer />
