@@ -2,8 +2,9 @@ import React from 'react';
 import s from './FilterSectionStyle.module.css';
 import Checkbox from '../Checkbox/Checkbox';
 import Timetable from '../Timetable/Timetable';
-import Dropdown from '../Dropdown/Dropdown';
+import Select from 'react-select';
 import Input from '../Input/Input';
+import DateDropdowns from '../DateDropdowns/DateDropdowns';
 
 const FilterSection = ({ sectionLabel, fields=[] }) => {
   return (
@@ -34,11 +35,15 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
               );
             } else if (field.type === 'dropdown') {
               return (
-                <Dropdown
+                <Select
                   key={field.name}
-                  selectedOption={field.selectedOption}
                   placeholder={field.placeholder}
-                  options={field.options}
+                  options={field.options.map(option => {
+                    return {
+                      value: option,
+                      label: option,
+                    };
+                  })}
                   onChange={field.onChange}
                 />
               );
@@ -52,6 +57,17 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
                   onChange={field.onChange}
                 />
               );
+            } else if (field.type === 'date') {
+              return (
+                <DateDropdowns
+                  key={field.name}
+                  layout={'column'}
+                  day={field.date?.day ?? ''}
+                  month={field.date?.month ?? ''}
+                  year={field.date?.year ?? ''}
+                  onChange={field.onChange}
+                />
+              )
             }
           })
         }
