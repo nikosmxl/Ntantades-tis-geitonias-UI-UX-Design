@@ -3,10 +3,25 @@ import s from './FilterSectionStyle.module.css';
 import Checkbox from '../Checkbox/Checkbox';
 import Timetable from '../Timetable/Timetable';
 import Select from 'react-select';
-import Input from '../Input/Input';
-import DateDropdowns from '../DateDropdowns/DateDropdowns';
+import FilterSectionInput from '../Input/Input';
+import { Input } from 'reactstrap';
 
 const FilterSection = ({ sectionLabel, fields=[] }) => {
+
+  const handleDateChange = (field, newDateStr) => {
+    const newDate = new Date(newDateStr);
+
+    const newDay = newDate.getDate();
+    const newMonth = newDate.getMonth() + 1;
+    const newYear = newDate.getFullYear();
+
+    field.onChange({
+      day: newDay,
+      month: newMonth,
+      year: newYear,
+    });
+  };
+
   return (
     <div className={s.filter_section}>
       <p>{sectionLabel}</p>
@@ -49,7 +64,7 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
               );
             } else if (field.type === 'input') {
               return (
-                <Input
+                <FilterSectionInput
                   key={field.name}
                   name={field.name}
                   value={field.value}
@@ -59,13 +74,17 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
               );
             } else if (field.type === 'date') {
               return (
-                <DateDropdowns
+                <Input
                   key={field.name}
-                  layout={'column'}
-                  day={field.date?.day ?? ''}
-                  month={field.date?.month ?? ''}
-                  year={field.date?.year ?? ''}
-                  onChange={field.onChange}
+                  type='date'
+                  onChange={(e) => handleDateChange(field, e.target.value)}
+                  style={{
+                    fontFamily: 'Inter',
+                    fontSize: '14px',
+                    padding: '3px 5px',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(0, 0, 0, 0.5)',
+                  }}
                 />
               )
             }
