@@ -154,13 +154,13 @@ const FamilyProfile = ({}) => {
             <>
               <button
                 className={s.cancel_button}
-                onClick={handleEdit}
+                onClick={handleCancel}
               >
                 <FontAwesomeIcon icon={faXmark}/><p>Ακύρωση</p>
               </button>
               <button
                 className={s.save_button}
-                onClick={handleCancel}
+                onClick={handleSave}
               >
                 <FontAwesomeIcon icon={faFloppyDisk}/><p>Αποθήκευση Επιλογών</p>
               </button>
@@ -168,7 +168,7 @@ const FamilyProfile = ({}) => {
           ) : (
             <button
               className={s.edit_button}
-              onClick={handleSave}
+              onClick={handleEdit}
             >
               <FontAwesomeIcon icon={faPencil}/><p>Επεξεργασία</p>
             </button>

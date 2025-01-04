@@ -2,10 +2,26 @@ import React from 'react';
 import s from './FilterSectionStyle.module.css';
 import Checkbox from '../Checkbox/Checkbox';
 import Timetable from '../Timetable/Timetable';
-import Dropdown from '../Dropdown/Dropdown';
-import Input from '../Input/Input';
+import Select from 'react-select';
+import FilterSectionInput from '../Input/Input';
+import { Input } from 'reactstrap';
 
 const FilterSection = ({ sectionLabel, fields=[] }) => {
+
+  const handleDateChange = (field, newDateStr) => {
+    const newDate = new Date(newDateStr);
+
+    const newDay = newDate.getDate();
+    const newMonth = newDate.getMonth() + 1;
+    const newYear = newDate.getFullYear();
+
+    field.onChange({
+      day: newDay,
+      month: newMonth,
+      year: newYear,
+    });
+  };
+
   return (
     <div className={s.filter_section}>
       <p>{sectionLabel}</p>
@@ -34,17 +50,21 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
               );
             } else if (field.type === 'dropdown') {
               return (
-                <Dropdown
+                <Select
                   key={field.name}
-                  selectedOption={field.selectedOption}
                   placeholder={field.placeholder}
-                  options={field.options}
+                  options={field.options.map(option => {
+                    return {
+                      value: option,
+                      label: option,
+                    };
+                  })}
                   onChange={field.onChange}
                 />
               );
             } else if (field.type === 'input') {
               return (
-                <Input
+                <FilterSectionInput
                   key={field.name}
                   name={field.name}
                   value={field.value}
@@ -52,6 +72,21 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
                   onChange={field.onChange}
                 />
               );
+            } else if (field.type === 'date') {
+              return (
+                <Input
+                  key={field.name}
+                  type='date'
+                  onChange={(e) => handleDateChange(field, e.target.value)}
+                  style={{
+                    fontFamily: 'Inter',
+                    fontSize: '14px',
+                    padding: '3px 5px',
+                    borderRadius: '10px',
+                    border: '1px solid rgba(0, 0, 0, 0.5)',
+                  }}
+                />
+              )
             }
           })
         }

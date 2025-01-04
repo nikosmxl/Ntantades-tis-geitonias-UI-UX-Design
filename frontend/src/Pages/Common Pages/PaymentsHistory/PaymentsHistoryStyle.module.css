@@ -1,0 +1,21 @@
+.breadcrumbs_container {
+
+}
+
+.payments_history_main_content {
+  width: 1460px;
+  margin: auto;
+  margin-top: 27px;
+}
+
+.payments_history_table_with_filters {
+  display: flex;
+  justify-content: space-between;
+}
+
+.payments_history_table {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}

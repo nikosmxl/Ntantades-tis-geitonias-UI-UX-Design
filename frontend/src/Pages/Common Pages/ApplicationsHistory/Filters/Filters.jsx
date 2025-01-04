@@ -2,27 +2,31 @@ import React from 'react';
 import FilterSection from '../../../../Components/FilterSection/FilterSection';
 import s from './FiltersStyle.module.css';
 
-const Filters = ({ filters, availabilityFilter, onFilterChange, onAvailabilityFilterChange, triggerFetch }) => {
-
+const Filters = ({ filters, onFilterChange }) => {
   return (
-    <div className={s.babysitter_search_filters_container}>
+    <div className={s.applications_history_filters_container}>
       <p>Φίλτρα</p>
-      <div className={s.babysitter_search_filters}>
+      <div className={s.applications_history_filters}>
         <FilterSection
-          sectionLabel='Περιοχή'
+          sectionLabel='Τύπος αίτησης'
           fields={[
-            {type: 'input', name: 'area', value: filters.area, placeholder: 'Πόλη ή Τ.Κ.', onChange: (newArea) => onFilterChange({ ...filters, area: newArea })},
+            {type: 'checkbox', name: 'accepted', label: 'Έγινε Αποδοχή', isChecked: filters.accepted, onChange: () => onFilterChange({ ...filters, accepted: !filters.accepted })},
+            {type: 'checkbox', name: 'rejected', label: 'Απορρίφθηκε', isChecked: filters.rejected, onChange: () => onFilterChange({ ...filters, rejected: !filters.rejected })},
           ]}
         />
 
         <FilterSection
-          sectionLabel='Δημοφιλείς αναζητήσεις'
+          sectionLabel='Ημερομηνία Δημοσίευσης'
           fields={[
-            {type: 'checkbox', name: 'cookingFamousSearch', label: 'Μαγείρεμα', isChecked: filters.cooking, onChange: () => onFilterChange({ ...filters, cooking: !filters.cooking })},
-            {type: 'checkbox', name: 'firstAidFamousSearch', label: 'Α` βοήθειες', isChecked: filters.firstAid, onChange: () => onFilterChange({ ...filters, firstAid: !filters.firstAid })},
-            {type: 'checkbox', name: 'babysitterCertificateFamousSearch', label: 'Πιστοποίηση Νταντάς', isChecked: filters.babysitterCertificate, onChange: () => onFilterChange({ ...filters, babysitterCertificate: !filters.babysitterCertificate })},
-            {type: 'checkbox', name: 'homeworkHelpFamousSearch', label: 'Βοήθεια με μαθήματα', isChecked: filters.homeworkHelp, onChange: () => onFilterChange({ ...filters, homeworkHelp: !filters.homeworkHelp })},
-            {type: 'checkbox', name: 'englishNativeSpeakerFamousSearch', label: 'English Native Speaker', isChecked: filters.englishNativeSpeaker, onChange: () => onFilterChange({ ...filters, englishNativeSpeaker: !filters.englishNativeSpeaker })},
+            {type: 'date', name: 'publicationDate', date: filters.publicationDate, onChange: (newDate) => onFilterChange({...filters, publicationDate: newDate})},
+          ]}
+        />
+
+        <FilterSection
+          sectionLabel='Aπασχόληση'
+          fields={[
+            {type: 'checkbox', name: 'partTime', label: 'Μερική', isChecked: filters.partTime, onChange: () => onFilterChange({ ...filters, partTime: !filters.partTime })},
+            {type: 'checkbox', name: 'fullTime', label: 'Πλήρης', isChecked: filters.fullTime, onChange: () => onFilterChange({ ...filters, fullTime: !filters.fullTime })},
           ]}
         />
 
@@ -49,55 +53,9 @@ const Filters = ({ filters, availabilityFilter, onFilterChange, onAvailabilityFi
         />
 
         <FilterSection
-          sectionLabel='Χρόνος Απασχόλησης'
-          fields={[
-            {type: 'checkbox', name: 'partTime', label: 'Μερική', isChecked: filters.partTime, onChange: () => onFilterChange({ ...filters, partTime: !filters.partTime })},
-            {type: 'checkbox', name: 'fullTime', label: 'Πλήρης', isChecked: filters.fullTime, onChange: () => onFilterChange({ ...filters, fullTime: !filters.fullTime })},
-          ]}
-        />
-
-        <FilterSection
-          sectionLabel='Διαθεσιμότητα & ώρα'
-          fields={[
-            {type: 'checkbox', name: 'currentlyAvailable', label: 'Άμεσα Διαθέσιμος/η', isChecked: filters.currentlyAvailable, onChange: () => onFilterChange({ ...filters, babysitterExperience: !filters.currentlyAvailable })},
-            {type: 'timetable', width: '275px', height: '200px'},
-          ]}
-        />
-
-        <button
-          className={s.availability_search_button}
-          onClick={() => triggerFetch()}
-        >
-          Αναζήτηση
-        </button>
-
-        <FilterSection
           sectionLabel='Έτη Προϋπηρεσίας'
           fields={[
             {type: 'dropdown', name: 'babysitterExperience', placeholder: '', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterExperience: selectedOption.value })},
-          ]}
-        />
-
-        <FilterSection
-          sectionLabel='Εμπειρία με παιδιά ηλικίας'
-          fields={[
-            {type: 'checkbox', name: 'twoToSixMonths', label: '2-6 μηνών', isChecked: filters.twoToSixMonths, onChange: () => onFilterChange({ ...filters, twoToSixMonths: !filters.twoToSixMonths })},
-            {type: 'checkbox', name: 'sixToTwelveMonths', label: '6-12 μηνών', isChecked: filters.sixToTwelveMonths, onChange: () => onFilterChange({ ...filters, sixToTwelveMonths: !filters.sixToTwelveMonths })},
-            {type: 'checkbox', name: 'oneToTwoyears', label: '1-2 ετών', isChecked: filters.oneToTwoyears, onChange: () => onFilterChange({ ...filters, oneToTwoyears: !filters.oneToTwoyears })},
-            {type: 'checkbox', name: 'moreThanTwoYears', label: '> 2 ετών', isChecked: filters.moreThanTwoYears, onChange: () => onFilterChange({ ...filters, moreThanTwoYears: !filters.moreThanTwoYears })},
-          ]}
-        />
-
-        <FilterSection
-          sectionLabel='Γνώσεις ξένων γλωσσών'
-          fields={[
-            {type: 'checkbox', name: 'english', label: 'Αγγλικά', isChecked: filters.english, onChange: () => onFilterChange({ ...filters, english: !filters.english })},
-            {type: 'checkbox', name: 'french', label: 'Γαλλικά', isChecked: filters.french, onChange: () => onFilterChange({ ...filters, french: !filters.french })},
-            {type: 'checkbox', name: 'italian', label: 'Ιταλικά', isChecked: filters.italian, onChange: () => onFilterChange({ ...filters, italian: !filters.italian })},
-            {type: 'checkbox', name: 'spanish', label: 'Ισπανικά', isChecked: filters.spanish, onChange: () => onFilterChange({ ...filters, spanish: !filters.spanish })},
-            {type: 'checkbox', name: 'russian', label: 'Ρωσικά', isChecked: filters.russian, onChange: () => onFilterChange({ ...filters, russian: !filters.russian })},
-            {type: 'checkbox', name: 'arabic', label: 'Αραβικά', isChecked: filters.arabic, onChange: () => onFilterChange({ ...filters, arabic: !filters.arabic })},
-            {type: 'checkbox', name: 'german', label: 'Γερμανικά', isChecked: filters.german, onChange: () => onFilterChange({ ...filters, german: !filters.german })},
           ]}
         />
 
@@ -134,10 +92,9 @@ const Filters = ({ filters, availabilityFilter, onFilterChange, onAvailabilityFi
             {type: 'checkbox', name: 'hosting', label: 'Φιλοξενία στην οικία μου', isChecked: filters.hosting, onChange: () => onFilterChange({ ...filters, hosting: !filters.hosting })},
           ]}
         />
-
       </div>
     </div>
   );
-}
+};
  
 export default Filters;
