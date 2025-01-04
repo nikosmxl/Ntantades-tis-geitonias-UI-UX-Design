@@ -1,0 +1,21 @@
+.payments_history_filters_container {
+  margin-top: 15px;
+}
+
+.payments_history_filters_container > p {
+  font-size: 20px;
+  margin-left: 33px;
+}
+
+.payments_history_filters {
+  margin-top: 13px;
+  background-color: rgba(197, 197, 197, 0.35);
+  border: 1px rgba(0, 0, 0, 0.6) solid;
+  border-radius: 30px;
+  padding: 23px 0 23px 33px;
+  width: 263px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: stretch;
+}

@@ -1,0 +1,58 @@
+import React, { useState } from 'react';
+import s from './PartnershipHistoryStyle.module.css';
+import ListHeader from "../../../Components/ListHeader/ListHeader";
+import Filters from './Filters/Filters';
+import Pagination from "../../../Components/Pagination/Pagination";
+import Partnership from '../../../Components/Partnership/Partnership';
+
+const PartnershipHistory = ({}) => {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const [sorting, setSorting] = useState('Πιο πρόσφατη');
+  const [filters, setFilters] = useState({});
+
+
+  return (
+    <div className={s.partnership_history_container}>
+      <div className={s.breadcrumbs_container}>
+        Αρχική Σελίδα > Ιστορικό > Ιστορικό Συνεργασιών
+      </div>
+      <div className={s.partnership_history_main_content}>
+        <ListHeader
+          title='Ιστορικό Συνεργασιών'
+          listSize={8}
+          listElementName='Συνεργασίες'
+          pageSize={pageSize}
+          sorting={sorting}
+          sortingOptions={['Πιο πρόσφατη', 'Λιγότερο πρόσφατη']}
+          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+          onSortingChange={(newSorting) => setSorting(newSorting)}
+        />
+
+        <div className={s.partnership_history_table_with_filters}>
+
+          <Filters
+            filters={filters}
+            onFilterChange={setFilters}
+          />
+
+          <div className={s.partnership_history_table}>
+            <Partnership
+              isRunning={false}
+              isHistory={true}
+            />
+            <Pagination
+              pages={3}
+              currentPage={page}
+              onChange={(pageNum) => setPage(pageNum)}
+              width='501px'
+            />
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PartnershipHistory;

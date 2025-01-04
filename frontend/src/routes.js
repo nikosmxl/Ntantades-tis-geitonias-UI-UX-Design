@@ -9,6 +9,10 @@ import ParentPartnership from "./Pages/Parent Pages/Parent Partnership/ParentPar
 import ParentDates from "./Pages/Parent Pages/ParentDates/ParentDates";
 import BabysitterPartnership from "./Pages/Babysitter Pages/Babysitter Partnership/BabysitterPartnership";
 import EditDate from "./Pages/Common Pages/EditDate/EditDate";
+import ParentHistory from './Pages/Parent Pages/History/History';
+import ParentApplicationsHistory from './Pages/Parent Pages/ApplicationsHistory/ApplicationsHistory';
+import ParentPaymentsHistory from './Pages/Parent Pages/PaymentsHistory/PaymentsHistory';
+import ParentPartnershipHistory from './Pages/Parent Pages/PartnershipHistory/PartnershipHistory';
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -76,6 +80,26 @@ const routes = [
     context: 'babysitter',
     path: 'edit-date/:id',
     page: <EditDate />,
+  },
+  {
+    context: 'parent',
+    path: 'history',
+    page: <ParentHistory />,
+  },
+  {
+    context: 'parent',
+    path: 'history/applications',
+    page: <ParentApplicationsHistory />,
+  },
+  {
+    context: 'parent',
+    path: 'history/payments',
+    page: <ParentPaymentsHistory />,
+  },
+  {
+    context: 'parent',
+    path: 'history/partnerships',
+    page: <ParentPartnershipHistory />,
   },
 ];
 
