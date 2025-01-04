@@ -9,10 +9,11 @@ import ParentPartnership from "./Pages/Parent Pages/Parent Partnership/ParentPar
 import ParentDates from "./Pages/Parent Pages/ParentDates/ParentDates";
 import BabysitterPartnership from "./Pages/Babysitter Pages/Babysitter Partnership/BabysitterPartnership";
 import EditDate from "./Pages/Common Pages/EditDate/EditDate";
-import ParentHistory from './Pages/Parent Pages/History/History';
-import ParentApplicationsHistory from './Pages/Parent Pages/ApplicationsHistory/ApplicationsHistory';
-import ParentPaymentsHistory from './Pages/Parent Pages/PaymentsHistory/PaymentsHistory';
-import ParentPartnershipHistory from './Pages/Parent Pages/PartnershipHistory/PartnershipHistory';
+import ParentHistory from './Pages/Common Pages/History/History';
+import ApplicationsHistory from './Pages/Common Pages/ApplicationsHistory/ApplicationsHistory';
+import PaymentsHistory from './Pages/Common Pages/PaymentsHistory/PaymentsHistory';
+import PartnershipHistory from './Pages/Common Pages/PartnershipHistory/PartnershipHistory';
+import ListingsHistory from './Pages/Babysitter Pages/ListingsHistory/ListingsHistory';
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -89,17 +90,37 @@ const routes = [
   {
     context: 'parent',
     path: 'history/applications',
-    page: <ParentApplicationsHistory />,
+    page: <ApplicationsHistory />,
   },
   {
     context: 'parent',
     path: 'history/payments',
-    page: <ParentPaymentsHistory />,
+    page: <PaymentsHistory />,
   },
   {
     context: 'parent',
     path: 'history/partnerships',
-    page: <ParentPartnershipHistory />,
+    page: <PartnershipHistory />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history/applications',
+    page: <ApplicationsHistory />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history/payments',
+    page: <PaymentsHistory />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history/partnerships',
+    page: <PartnershipHistory />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history/listings',
+    page: <ListingsHistory />,
   },
 ];
 
