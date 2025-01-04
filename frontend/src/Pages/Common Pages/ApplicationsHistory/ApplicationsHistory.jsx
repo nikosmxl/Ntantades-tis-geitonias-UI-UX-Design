@@ -10,7 +10,7 @@ const ApplicationsHistory = ({}) => {
   const [pageSize, setPageSize] = useState(5);
   const [sorting, setSorting] = useState('Πιο πρόσφατη');
   const [filters, setFilters] = useState({});
-console.log(filters)
+
   return (
     <div className={s.applications_history_container}>
       <div className={s.breadcrumbs_container}>

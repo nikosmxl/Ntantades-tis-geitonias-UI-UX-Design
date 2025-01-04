@@ -19,6 +19,10 @@ const History = ({}) => {
     navigate('../history/payments');
   };
 
+  const handleNavigateToListings = () => {
+    navigate('../history/listings');
+  };
+
   return (
     <div className={s.history_container}>
       <div className={s.breadcrumbs_container}>
@@ -55,6 +59,19 @@ const History = ({}) => {
               onClick={handleNavigateToPayments}
             />
           </div>
+          {
+            false && (
+              <div className={s.history_category}>
+                <h2 onClick={handleNavigateToListings}>Ιστορικό Αγγελιών</h2>
+                <FontAwesomeIcon
+                  icon={faUpRightFromSquare}
+                  fontSize={'20px'}
+                  cursor={'pointer'}
+                  onClick={handleNavigateToListings}
+                />
+              </div>
+            )
+          }
         </div>
       </div>
     </div>

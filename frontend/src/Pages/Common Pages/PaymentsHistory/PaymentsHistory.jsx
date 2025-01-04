@@ -4,6 +4,7 @@ import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Filters from './Filters/Filters';
 import Pagination from "../../../Components/Pagination/Pagination";
 import Payment from '../../../Components/Payment/Payment';
+import { useLocation } from 'react-router-dom';
 
 const PaymentsHistory = ({}) => {
   const [page, setPage] = useState(1);
@@ -17,6 +18,8 @@ const PaymentsHistory = ({}) => {
     { status: 'notRedeemed' },
     { status: 'notRedeemed' },
   ]);
+
+  let location = useLocation();
 
   return (
     <div className={s.payments_history_container}>
@@ -49,6 +52,7 @@ const PaymentsHistory = ({}) => {
                   <Payment
                     key={`${payment.status} ${index}`}
                     payment={payment}
+                    isParent={location.pathname.includes('parent')}
                   />
                 )
               })
