@@ -59,7 +59,6 @@
 }
 
 .column{
-    background-color: red;
     display: flex;
     flex-direction: column;
     padding-left: 120px;
