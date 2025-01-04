@@ -5,6 +5,7 @@ import Partnership from "../../../Components/Partnership/Partnership";
 import ListHeader from "../../../Components/ListHeader/ListHeader";
 import { useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
+import BabysitterGridView from '../../../Components/BabysitterGridView/BabysitterGridView';
 
 function ParentPartnership(){
     const [futurePartnershipsPageSize, setFuturePartnershipsPageSize] = useState(3);
@@ -31,6 +32,15 @@ function ParentPartnership(){
     const editablePartnershipsPages = 5;
     const [editablePartnershipsCurrentPage, setEditablePartnershipsCurrentPage] = useState(1);
     
+    const [babysitters, setBabysitters] = useState([
+      { id: 1, name: 'Δήμητρα Χατζή'},
+      { id: 2, name: 'Δήμητρα Χατζή'},
+      { id: 3, name: 'Δήμητρα Χατζή'},
+      { id: 4, name: 'Δήμητρα Χατζή'},
+      { id: 5, name: 'Δήμητρα Χατζή'},
+      { id: 6, name: 'Δήμητρα Χατζή'},
+    ]);
+
     return (
         <div className={s.partnership_page}>
             <div className={s.breadcrumbs}>
@@ -88,6 +98,11 @@ function ParentPartnership(){
                     listSize={100} pageSize={recommendedBabysittersPageSize}
                     sorting={recommendedBabysittersSorting} sortingOptions={recommendedBabysittersSortingOptions}
                     onPageSizeChange={setRecommendedBabysittersPageSize} onSortingChange={setRecommendedBabysittersSorting}
+                />
+            </div>
+            <div className={s.column}>
+                <BabysitterGridView
+                    babysitters={babysitters}
                 />
             </div>
             {/* Εδώ θα μπουν τα dates */}
