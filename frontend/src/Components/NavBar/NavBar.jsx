@@ -31,7 +31,6 @@ function NavBar({ context }){
                         {
                           context === 'parent' ? (
                             parentNavbarCategories.map((navBarCategory, index) => {
-                              console.log('prent')
                               return (
                                 <NavBarCategory
                                   key={`${navBarCategory.header} ${index}`}
@@ -42,7 +41,6 @@ function NavBar({ context }){
                             })
                           ) : (
                             babysitterNavbarCategories.map((navBarCategory, index) => {
-                              console.log('prent')
                               return (
                                 <NavBarCategory
                                   key={`${navBarCategory.header} ${index}`}

@@ -51,7 +51,7 @@ const Payment = ({ payment, isParent = true }) => {
       <ExpandButtons
         isExpanded={isExpanded}
         toggleIsExpanded={toggleIsExpanded}
-        showExpandButton={isParent}
+        showExpandButton={!isParent}
         showOptionsButtons={false}
         showDeleteButton={false} 
         showDeclineButton={false}
