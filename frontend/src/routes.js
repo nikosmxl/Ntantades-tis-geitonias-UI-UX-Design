@@ -6,6 +6,11 @@ import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentA
 import BabysitterDetails from './Pages/Parent Pages/BabysitterDetails/BabysitterDetails';
 // import FamilyProfile from "./Pages/Parent Pages/FamilyProfile/FamilyProfile";
 import ParentPartnership from "./Pages/Parent Pages/Parent Partnership/ParentPartnership";
+<<<<<<< Updated upstream
+=======
+import BabysitterPartnership from "./Pages/Babysitter Pages/Babysitter Partnership/BabysitterPartnership";
+import BabysitterSignupForm from "./Pages/Common Pages/BabysitterSignupForm/BabysitterSignupForm";
+>>>>>>> Stashed changes
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -18,6 +23,11 @@ const routes = [
     context: 'loggedOut',
     path: 'babysitter-search',
     page: <BabysitterSearch />,
+  },
+  {
+    context: 'loggedOut',
+    path: 'signup/babysitter',
+    page: <BabysitterSignupForm />,
   },
   {
     context: 'parent',

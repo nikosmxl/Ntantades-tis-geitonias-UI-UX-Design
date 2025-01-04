@@ -1,3 +1,7 @@
+.pagination_container {
+  align-self: center;
+}
+
 .pagination_items {
   display: flex;
   align-items: center;

@@ -1,0 +1,69 @@
+.partnership_page{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 9px 70px 0 145px;
+}
+
+.breadcrumbs{
+    display: flex;
+    gap: 7px;
+    margin-bottom: 35px;
+    margin-left: 30px;
+    font-size: 13px;
+}
+
+.title_history_row{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.title_history_row h3{
+    font-size: 24px;
+}
+
+.history_button{
+    display: flex;
+    gap: 15px;
+    padding: 10px 20px;
+    background-color: #D9D9D9;
+    color: #5C5C5C;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 10px;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.history_button:hover{
+    transform: scale(1.05);
+}
+
+.running_partnership_title{
+    font-size: 20px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.running_partnership{
+    margin-top: 20px;
+    margin-left: 120px;
+}
+
+.list_header{
+    margin-top: 45px;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+    padding-left: 120px;
+    margin-top: 20px;
+    margin-bottom: 45px;
+    gap: 30px;
+}
+

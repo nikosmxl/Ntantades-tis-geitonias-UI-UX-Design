@@ -1,5 +1,5 @@
 import React from 'react';
-import s from './PagiationStyle.module.css';
+import s from './PaginationStyle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
