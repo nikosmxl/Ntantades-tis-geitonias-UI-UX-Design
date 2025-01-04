@@ -15,6 +15,11 @@ import Rating from '../../../Components/Rating/Rating';
 const BabysitterDetails = () => {
   const [isOptionsOpen, setOptionsOpen] = useState(true);
   const [ratingsPage, setRatingsPage] = useState(1);
+  const [date, setDate] = useState({
+    day: null,
+    month: null,
+    year: null,
+  });
   const { babysitterId } = useParams();
   const babysitterHasActiveListing = true;
 
@@ -262,10 +267,11 @@ const BabysitterDetails = () => {
                     {
                       true && (
                         <DateDropdowns
-                          isEnabled={false}
-                          day={12}
-                          month={4}
-                          year={2025}
+                          isEnabled={true}
+                          day={date.day}
+                          month={date.month}
+                          year={date.year}
+                          onChange={(newDate) => setDate(newDate)}
                         />
                       )
                     }

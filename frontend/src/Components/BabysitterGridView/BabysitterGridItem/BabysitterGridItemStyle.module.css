@@ -1,0 +1,37 @@
+.babysitter_grid_item_container {
+  width: 181px;
+  height: 118px;
+  border-radius: 26px;
+  border: 2px solid #2F72EF;
+  border-bottom: 6px solid #2F72EF;
+  background-color: #90B2EF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 27px 17px;
+  position: relative;
+}
+
+.babysitter_grid_item_delete_button {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 13px;
+  color: #D9D9D9;
+  cursor: pointer;
+}
+
+.babysitter_grid_item_avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.babysitter_grid_item_container > p {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 800;
+}

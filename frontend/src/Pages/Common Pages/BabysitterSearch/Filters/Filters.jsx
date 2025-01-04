@@ -29,22 +29,22 @@ const Filters = ({ filters, availabilityFilter, onFilterChange, onAvailabilityFi
         <FilterSection
           sectionLabel='Φύλο Νταντάς'
           fields={[
-            {type: 'dropdown', name: 'babysitterGender', selectedOption: filters.babysitterGender, placeholder: 'Επιλέξτε φύλο', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterGender: selectedOption })},
+            {type: 'dropdown', name: 'babysitterGender', placeholder: 'Επιλέξτε φύλο', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterGender: selectedOption.value })},
           ]}
         />
 
         <FilterSection
           sectionLabel='Ηλικία Νταντάς'
           fields={[
-            {type: 'dropdown', name: 'babysitterMinAge', selectedOption: filters.babysitterMinAge, placeholder: 'Από', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterMinAge: selectedOption })},
-            {type: 'dropdown', name: 'babysitterMaxAge', selectedOption: filters.babysitterMaxAge, placeholder: 'Εώς', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterMaxAge: selectedOption })},
+            {type: 'dropdown', name: 'babysitterMinAge', placeholder: 'Από', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterMinAge: selectedOption.value })},
+            {type: 'dropdown', name: 'babysitterMaxAge', placeholder: 'Εώς', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterMaxAge: selectedOption.value })},
           ]}
         />
 
         <FilterSection
           sectionLabel='Εθνικότητα Νταντάς'
           fields={[
-            {type: 'dropdown', name: 'babysitterNationality', selectedOption: filters.babysitterNationality, placeholder: 'Επιλέξτε εθνικότητα', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterNationality: selectedOption })},
+            {type: 'dropdown', name: 'babysitterNationality', placeholder: 'Επιλέξτε εθνικότητα', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterNationality: selectedOption.value })},
           ]}
         />
 
@@ -74,7 +74,7 @@ const Filters = ({ filters, availabilityFilter, onFilterChange, onAvailabilityFi
         <FilterSection
           sectionLabel='Έτη Προϋπηρεσίας'
           fields={[
-            {type: 'dropdown', name: 'babysitterExperience', selectedOption: filters.babysitterExperience, placeholder: '', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterExperience: selectedOption })},
+            {type: 'dropdown', name: 'babysitterExperience', placeholder: '', options: ['Άντρας', 'Γυναίκα'], onChange: (selectedOption) => onFilterChange({ ...filters, babysitterExperience: selectedOption.value })},
           ]}
         />
 

@@ -5,6 +5,7 @@
 
 .filters {
   margin-top: 10px;
+  margin-right: 23px;
   display: flex;
   flex-direction: column;
   gap: 10px;
