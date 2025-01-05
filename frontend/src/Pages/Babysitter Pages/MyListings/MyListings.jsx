@@ -1,6 +1,6 @@
 import s from "./MyListingsStyle.module.css"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
+import { faClockRotateLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 import Listing from "../../../Components/Listing/Listing";
 import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Pagination from "../../../Components/Pagination/Pagination";
@@ -40,6 +40,12 @@ function MyListings(){
                     onPageSizeChange={setEditableListingsPageSize} onSortingChange={setEditableListingsSorting}
                 />
             </div>
+
+            <button className={s.create_listing}>
+                Δημιουργία αγγελίας
+                <FontAwesomeIcon icon={faPlus} />
+            </button>
+
             <div className={s.column}>
                 <Listing isHistory={false} isEditable={true} />
                 <Listing isHistory={false} isEditable={true} />

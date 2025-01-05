@@ -21,6 +21,7 @@
     z-index: 1;
     background-color: white;
     transition: 0.5s background-color ease-in-out;
+    cursor: pointer;
 }
 
 .step_circle.current{

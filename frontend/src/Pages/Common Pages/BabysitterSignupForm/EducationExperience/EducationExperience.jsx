@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import s from "./EducationExperienceStyle.module.css"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
 import MultiDropdownMenu from "../../../../Components/MultiDropdownMenu/MultiDropdownMenu";
 import Checkbox from "../../../../Components/Checkbox/Checkbox";
+import CertificatesList from "../../../../Components/CertificatesList/CertificatesList";
 
 function EducationExperience({ 
     fixHeight, handleErrorChange,
@@ -181,22 +180,9 @@ function EducationExperience({
             }
 
             {educationCertificates.length > 0 && (
-                <ul className={s.certificates_list}>
-                {educationCertificates.map((file, index) => (
-                    <li key={index} className={s.certificate_item}>
-                        <span>{file.name}</span>
-                        {!ShowOff &&
-                            <button
-                                type="button"
-                                className={s.remove_button}
-                                onClick={() => handleCertificateRemove(index)}
-                            >
-                                <FontAwesomeIcon icon={faX} />
-                            </button>
-                        }
-                    </li>
-                ))}
-                </ul>
+                <div className={s.certificates_list}>
+                    <CertificatesList certificates={educationCertificates} isEditable={!ShowOff} handleCertificateRemove={handleCertificateRemove} />
+                </div>
             )}
 
             <div className={s.languages_dropdown}>
