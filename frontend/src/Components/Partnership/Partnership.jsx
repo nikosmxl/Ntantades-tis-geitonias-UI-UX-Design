@@ -2,16 +2,16 @@ import s from "./PartnershipStyle.module.css"
 import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
 import { useState } from "react";
-import Dropdown from "../Dropdown/Dropdown";
 import ConfirmationPopUp from "../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
 import ExpandButtons from "../ExpandButtons/ExpandButtons";
+import DateDropdowns from '../DateDropdowns/DateDropdowns';
+import StyledSelect from "../StyledSelect/StyledSelect";
 
 function Partnership({isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false}){
-    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const [number, setNumber] = useState(1);
     const perioxes = ['ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ', 'ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ'];
     const [perioxh, setPerioxh] = useState('ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ');
     const [availabilityList, setAvailabilityList] = useState([ [0, 1], [2, 3], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4] ]);
+    const [partnershipDate, setPartnershipDate] = useState({});
     
     const sample = {
         "signedBy": [],
@@ -105,25 +105,39 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                         <div className={`${s.section_to_hide} ${!isExpanded ? s.hidden : ''}`}>
                             <p className={s.underline}><span>Περιοχές εξυπηρέτησης</span></p>
                             <div className={s.dropdown}>
-                                <Dropdown selectedOption={perioxh} placeholder={null} options={perioxes} onChange={setPerioxh}/>
+                                <StyledSelect
+                                  isDisabled
+                                  value={{value: perioxh, label: perioxh}}
+                                />
                                 <div className={s.inner_dropdown}>
-                                    <Dropdown selectedOption={perioxh} placeholder={null} options={perioxes} onChange={setPerioxh}/>
+                                    <StyledSelect
+                                      isDisabled
+                                      value={{value: perioxh, label: perioxh}}
+                                    />
                                 </div>
                             </div>
                             <p><span>Οδός εξυπηρέτησης:</span>{sample.address}</p>
                         </div>
                         <p className={s.underline}><span>Ημερομηνία έναρξης συνεργασίας</span></p>
                         <div className={s.dropdown_row}>
-                            <Dropdown selectedOption={number} placeholder={null} options={numbers} onChange={setNumber}/>
-                            <Dropdown selectedOption={number} placeholder={null} options={numbers} onChange={setNumber}/>
-                            <Dropdown selectedOption={number} placeholder={null} options={numbers} onChange={setNumber}/>
+                          <DateDropdowns
+                            day={partnershipDate?.day ?? null}
+                            month={partnershipDate?.month ?? null}
+                            year={partnershipDate?.year ?? null}
+                            isEnabled={false}
+                            onChange={(newDate) => setPartnershipDate(newDate)}
+                          />
                         </div>
                         <div className={`${s.dropdown_to_hide} ${!isExpanded ? s.hidden : ''}`}>
                             <p className={s.underline}><span>Ημερομηνία λήξης συνεργασίας</span></p>
                             <div className={s.dropdown_row}>
-                                <Dropdown selectedOption={number} placeholder={null} options={numbers} onChange={setNumber}/>
-                                <Dropdown selectedOption={number} placeholder={null} options={numbers} onChange={setNumber}/>
-                                <Dropdown selectedOption={number} placeholder={null} options={numbers} onChange={setNumber}/>
+                              <DateDropdowns
+                                day={partnershipDate?.day ?? null}
+                                month={partnershipDate?.month ?? null}
+                                year={partnershipDate?.year ?? null}
+                                isEnabled={false}
+                                onChange={(newDate) => setPartnershipDate(newDate)}
+                              />
                             </div>
                         </div>
                     </div>
