@@ -3,7 +3,7 @@ import blankProfilePic from "../../../../Assets/Pictures/blankProfilePic.png"
 import { useState } from "react";
 
 function PersonalDetails({ userData, onProfileChange, ShowOff = false }){
-    const [profilePicturePreview, setProfilePicturePreview] = useState(blankProfilePic);
+    const [profilePicturePreview, setProfilePicturePreview] = useState(userData?.profilePic ?? blankProfilePic);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];

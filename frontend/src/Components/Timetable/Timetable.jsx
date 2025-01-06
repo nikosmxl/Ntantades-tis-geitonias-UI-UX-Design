@@ -47,7 +47,18 @@ function Timetable({ width = "400px", height = "200px", isEnabled = true, checke
                     type="checkbox"
                     checked={isChecked(colIndex, rowIndex)}
                     readOnly={!isEnabled}
-                    onChange={onChange}
+                    onChange={() => {
+                      if (isChecked(colIndex, rowIndex)) {
+                        onChange(checkedSlots.filter((slot) => {
+                          return (slot[0] !== colIndex || slot[1] !== rowIndex);
+                        }));
+                        return;
+                      }
+                      onChange([
+                        ...checkedSlots,
+                        [colIndex, rowIndex],
+                      ]);
+                    }}
                     className={s.checkbox}
                     style={{
                       width: `calc(${width} / 15)`,

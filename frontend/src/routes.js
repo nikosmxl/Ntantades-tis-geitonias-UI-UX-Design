@@ -15,6 +15,8 @@ import ApplicationsHistory from './Pages/Common Pages/ApplicationsHistory/Applic
 import PaymentsHistory from './Pages/Common Pages/PaymentsHistory/PaymentsHistory';
 import PartnershipHistory from './Pages/Common Pages/PartnershipHistory/PartnershipHistory';
 import ListingsHistory from './Pages/Babysitter Pages/ListingsHistory/ListingsHistory';
+import ParentPartnershipForm from "./Pages/Parent Pages/ParentPartnershipForm/ParentPartnershipForm";
+import BabysitterPartnershipForm from "./Pages/Babysitter Pages/BabysitterPartnershipForm/BabysitterPartnershipForm";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -127,6 +129,16 @@ const routes = [
     context: 'babysitter',
     path: 'history/listings',
     page: <ListingsHistory />,
+  },
+  {
+    context: 'parent',
+    path: 'sign-partnership/:id',
+    page: <ParentPartnershipForm />,
+  },
+  {
+    context: 'babysitter',
+    path: 'sign-partnership/:id',
+    page: <BabysitterPartnershipForm />,
   },
 ];
 
