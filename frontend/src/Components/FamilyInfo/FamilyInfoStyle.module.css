@@ -1,0 +1,54 @@
+.family_profile_section_container > h3 {
+    font-size: 20px;
+}
+
+.family_profile_section_container > p{
+    font-size: 10px;
+}
+  
+.family_profile_family_info {
+    margin-top: 25px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 50px;
+}
+  
+.family_description {
+    width: 679px;
+    min-height: 164px;
+    resize: none;
+    border-radius: 7px;
+    background-color: #D9D9D9;
+    font-family: Inter;
+    color: black;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: 300;
+}
+  
+.family_description_editable {
+    width: 679px;
+    min-height: 164px;
+    resize: none;
+    border-radius: 7px;
+    background-color: #FFFFFF;
+    font-family: Inter;
+    color: black;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: 300;
+}
+  
+.family_profile_section_container p {
+    font-size: 14px;
+    font-weight: 800;
+}
+  
+.family_profile_info_with_dropdown_container {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
