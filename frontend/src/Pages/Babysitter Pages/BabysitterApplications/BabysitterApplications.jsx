@@ -5,6 +5,7 @@ import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Pagination from "../../../Components/Pagination/Pagination";
 import { useState } from "react";
+import Notification from "../../../Components/Notification/Notification";
 
 function BabysitterApplications(){
     const [incomingApplicationsPageSize, setIncomingApplicationsPageSize] = useState(3);
@@ -29,13 +30,14 @@ function BabysitterApplications(){
             </div>
             
             <div className={s.list_header}>
-                <ListHeader title={"Υπό επεξεργασία"} listElementName={"Αιτήσεις"} 
+                <ListHeader title={"Εισερχόμενες Αιτήσεις"} listElementName={"Αιτήσεις"} 
                     listSize={100} pageSize={incomingApplicationsPageSize}
                     sorting={incomingApplicationsSorting} sortingOptions={incomingApplicationsSortingOptions}
                     onPageSizeChange={setIncomingApplicationsPageSize} onSortingChange={setIncomingApplicationsSorting}
                 />
             </div>
             <div className={s.column}>
+                <Notification context={"Η Γεωργία Χατζηχρήστου κατέθεσε μία νέα αίτηση στις 16/12/2024 και ώρα 16:24."} />
                 <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />
                 <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />
                 <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />

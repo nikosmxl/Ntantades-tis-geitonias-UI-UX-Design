@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import s from './FamilyProfileStyle.module.css';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
-import Input from '../../../Components/Input/Input';
-import Select from 'react-select';
-import KidCard from '../../../Components/KidCard/KidCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
+import FamilyInfo from '../../../Components/FamilyInfo/FamilyInfo';
 
-const FamilyProfile = ({}) => {
+const FamilyProfile = () => {
   const [isEditOpen, setEditOpen] = useState(false);
   const [description, setDescription] = useState('');
   const [kids, setKids] = useState([]);
@@ -63,7 +61,7 @@ const FamilyProfile = ({}) => {
       <div className={s.family_profile_main_content}>
         <div className={s.family_profile_top_container}>
           <div className={s.family_profile_left_sidebar}>
-            <img src={trollProf} className={s.profile_pic}/>
+            <img src={trollProf} className={s.profile_pic} alt='Profile'/>
             <p>+ Προσθέστε Φωτογραφία</p>
           </div>
           
@@ -92,61 +90,15 @@ const FamilyProfile = ({}) => {
           </div>
         </div>
 
-        <div className={s.family_profile_section_container}>
-          <h3>Οικογένεια</h3>
-          <hr />
-
-          <div className={s.family_profile_family_info}>
-            <textarea
-              className={isEditOpen ? s.family_description_editable : s.family_description}
-              disabled={!isEditOpen}
-              value={description}
-              onChange={handleDescriptionChange}
-            />
-
-            <div className={s.family_profile_info_with_dropdown_container}>
-              <p>Αριθμός Παιδιών:</p>
-              <Select
-                defaultValue={{label: kids.length, value: kids.length}}
-                options={[
-                  {label: 1, value: 1},
-                  {label: 2, value: 2},
-                  {label: 3, value: 3},
-                  {label: 4, value: 4},
-                ]}
-                onChange={(selectedOption) => handleKidsNumChange(selectedOption)}
-                isDisabled={!isEditOpen}
-              />
-            </div>
-
-            {
-              kids.map((kid, index) => {
-                return (
-                  <KidCard
-                    key={`${kid.id} ${kid.age} ${kid.gender} ${index}`}
-                    kid={kid}
-                    onChange={handleKidChange}
-                    isEditable={isEditOpen}
-                  />
-                );
-              })
-            }
-
-            <div className={s.family_profile_info_with_dropdown_container}>
-              <p>Κατοικίδια:</p>
-              <Select
-                defaultValue={{label: 'Οχι', value: false}}
-                options={[
-                  {label: 'Ναι', value: true},
-                  {label: 'Οχι', value: false},
-                ]}
-                onChange={(selectedOption) => setHasPets(selectedOption.value)}
-                isDisabled={!isEditOpen}
-              />
-            </div>
-          </div>
-
-        </div>
+        <FamilyInfo 
+          isEditable={isEditOpen} 
+          description={description}
+          onDescriptionChange={handleDescriptionChange} 
+          kids={kids}
+          onKidsNumChange={handleKidsNumChange}
+          onKidChange={handleKidChange}
+          onHasPetsChange={setHasPets}
+        />
 
         <div className={s.family_profile_action_buttons_container}>
         {

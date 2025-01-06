@@ -1,0 +1,35 @@
+.notification{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 948px;
+    padding: 20px;
+    background-color: #90B2EF;
+    border: 3px solid #2F72EF;
+    border-radius: 17px;
+}
+
+.notification.invisible{
+    display: none;
+}
+
+.notification > p{
+    font-size: 15px;
+}
+
+.time_and_X{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.time_and_X p{
+    font-size: 13px;
+    font-style: italic;
+}
+
+.time_and_X .icon{
+    font-size: 19px;
+    color: white;
+    cursor: pointer;
+}

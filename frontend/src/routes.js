@@ -6,7 +6,6 @@ import ParentApplications from "./Pages/Parent Pages/Parent Applications/ParentA
 import BabysitterDetails from './Pages/Parent Pages/BabysitterDetails/BabysitterDetails';
 import FamilyProfile from "./Pages/Parent Pages/FamilyProfile/FamilyProfile";
 import ParentPartnership from "./Pages/Parent Pages/Parent Partnership/ParentPartnership";
-import BabysitterSignupForm from "./Pages/Common Pages/BabysitterSignupForm/BabysitterSignupForm";
 import ParentDates from "./Pages/Parent Pages/ParentDates/ParentDates";
 import BabysitterPartnership from "./Pages/Babysitter Pages/Babysitter Partnership/BabysitterPartnership";
 import EditDate from "./Pages/Common Pages/EditDate/EditDate";
@@ -15,6 +14,8 @@ import ApplicationsHistory from './Pages/Common Pages/ApplicationsHistory/Applic
 import PaymentsHistory from './Pages/Common Pages/PaymentsHistory/PaymentsHistory';
 import PartnershipHistory from './Pages/Common Pages/PartnershipHistory/PartnershipHistory';
 import ListingsHistory from './Pages/Babysitter Pages/ListingsHistory/ListingsHistory';
+import BabysitterSignupForm from "./Pages/Babysitter Pages/BabysitterSignupForm/BabysitterSignupForm";
+import ParentSignupForm from "./Pages/Parent Pages/ParentSignupForm/ParentSignupForm";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -32,6 +33,11 @@ const routes = [
     context: 'loggedOut',
     path: 'signup/babysitter',
     page: <BabysitterSignupForm />,
+  },
+  {
+    context: 'loggedOut',
+    path: 'signup/parent',
+    page: <ParentSignupForm />,
   },
   {
     context: 'parent',

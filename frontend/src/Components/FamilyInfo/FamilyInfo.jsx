@@ -3,12 +3,12 @@ import Select from 'react-select';
 import KidCard from "../KidCard/KidCard";
 import { useEffect } from "react";
 
-function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsNumChange, onKidChange, onHasPetsChange, MandatoryFields=false}){
+function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsNumChange, onKidChange, onHasPetsChange, MandatoryFields=false, showNote=false}){
 
   return(
       <div className={s.family_profile_section_container}>
         <h3>Οικογένεια</h3>
-        {MandatoryFields && <p>Τα πεδία με τον αστερίσκο (*) είναι υποχρεωτικά</p>}
+        {isEditable && showNote && <p>Τα πεδία με τον αστερίσκο (*) είναι υποχρεωτικά</p>}
         <hr />
 
         <div className={s.family_profile_family_info}>
@@ -20,7 +20,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
           />
 
           <div className={s.family_profile_info_with_dropdown_container}>
-            <p>Αριθμός Παιδιών:</p>
+            <p>{isEditable && MandatoryFields ? "Αριθμός Παιδιών*:" : "Αριθμός Παιδιών:"}</p>
             <Select
               defaultValue={{label: kids.length, value: kids.length}}
               options={[

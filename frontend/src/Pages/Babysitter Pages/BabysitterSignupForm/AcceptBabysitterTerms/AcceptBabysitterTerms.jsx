@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Checkbox from "../../../../Components/Checkbox/Checkbox";
-import s from "./AcceptTermsStyle.module.css"
+import s from "./AcceptBabysitterTermsStyle.module.css"
 
-function AcceptTerms({handleErrorChange}){
+function AcceptBabysitterTerms({handleErrorChange}){
     const [firstTerm, setFirstTerm] = useState(false);
     const [secondTerm, setSecondTerm] = useState(false);
     const [thirdTerm, setThirdTerm] = useState(false);
@@ -65,4 +65,4 @@ function AcceptTerms({handleErrorChange}){
     )
 }
 
-export default AcceptTerms;
+export default AcceptBabysitterTerms;

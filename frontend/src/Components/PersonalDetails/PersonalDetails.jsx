@@ -1,5 +1,5 @@
 import s from "./PersonalDetailsStyle.module.css"
-import blankProfilePic from "../../../../Assets/Pictures/blankProfilePic.png"
+import blankProfilePic from "../../Assets/Pictures/blankProfilePic.png"
 import { useState } from "react";
 
 function PersonalDetails({ userData, onProfileChange, ShowOff = false }){

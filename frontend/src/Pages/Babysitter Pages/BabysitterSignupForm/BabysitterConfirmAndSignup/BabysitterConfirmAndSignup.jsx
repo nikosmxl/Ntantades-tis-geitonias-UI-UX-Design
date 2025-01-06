@@ -1,8 +1,8 @@
 import EducationExperience from "../EducationExperience/EducationExperience";
-import PersonalDetails from "../PersonalDetails/PersonalDetails";
-import s from "./ConfirmAndSignupStyle.module.css"
+import PersonalDetails from "../../../../Components/PersonalDetails/PersonalDetails";
+import s from "./BabysitterConfirmAndSignupStyle.module.css"
 
-function ConfirmAndSignup({
+function BabysitterConfirmAndSignup({
     userData, onProfileChange, 
     fixHeight, updateStepError,
     selectedLevel, setSelectedLevel,
@@ -34,4 +34,4 @@ function ConfirmAndSignup({
     )
 }
 
-export default ConfirmAndSignup;
+export default BabysitterConfirmAndSignup;
