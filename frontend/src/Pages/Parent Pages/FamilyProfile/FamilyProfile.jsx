@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import s from './FamilyProfileStyle.module.css';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
-import Input from '../../../Components/Input/Input';
 import Select from 'react-select';
 import KidCard from '../../../Components/KidCard/KidCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -3,7 +3,7 @@ import FilterSection from '../../../../Components/FilterSection/FilterSection';
 import s from './FiltersStyle.module.css';
 
 const Filters = ({ filters, onFilterChange }) => {
-  console.log(filters)
+
   return (
     <div className={s.listings_history_filters_container}>
       <p>Φίλτρα</p>
