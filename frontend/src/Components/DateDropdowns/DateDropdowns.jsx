@@ -1,58 +1,8 @@
 import React from 'react';
 import s from './DateDropdownsStyle.module.css';
-import Select from 'react-select';
+import StyledSelect from '../StyledSelect/StyledSelect';
 
 const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row'}) => {
-  const customStyles = {
-    control: (styles) => ({
-      ...styles,
-      borderColor:'rgba(0, 52, 117, 0.7)',
-      outline: '1px solid rgba(0, 52, 117, 0.7)',
-      ':hover': {
-        borderColor: 'rgba(0, 52, 117, 0.7)',
-      },
-      borderRadius: '5px'
-    }),
-    menu: (styles) => ({
-      ...styles,
-      zIndex: 10,
-    }),
-    menuPortal: (styles) => ({
-      ...styles,
-      zIndex: 10,
-    }),
-    dropdownIndicator: (styles) => ({
-      ...styles,
-      cursor: 'pointer',
-      color: 'rgba(0, 0, 0, 0.7)',
-    }),
-    clearIndicator: (styles) => ({
-        ...styles,
-        cursor: 'pointer',
-    }),
-    option: (styles, { isFocused }) => ({
-      ...styles,
-      cursor: 'pointer',
-      backgroundColor: isFocused
-        ? '#f2f2f2'
-        : styles.backgroundColor,
-    }),
-    indicatorsContainer: (styles) => ({
-      ...styles,
-      backgroundColor: 'rgba(217, 217, 217, 0.7)',
-    }),
-    indicatorSeparator: (styles) => ({
-      ...styles,
-      backgroundColor: 'rgba(0, 52, 117, 0.7)',
-      margin: '0px',
-    }),
-    valueContainer: (styles) => ({
-      ...styles,
-      width: '63px',
-      textAlign: 'center',
-    })
-  };
-
   const getDaysInMonth = (selectedMonth, selectedYear) => {
     if (!selectedMonth || !selectedYear) return Array.from({ length: 30 }, (_, i) => i + 1);
     const monthIndex = parseInt(selectedMonth, 10);
@@ -78,7 +28,7 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row
         alignItems: layout === 'row' ? 'center' : 'stretch',
       }}
     >
-      <Select
+      <StyledSelect
         placeholder={'Ημέρα'}
         options={dayOptions.map(dayOption => ({
           value: dayOption,
@@ -91,9 +41,8 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row
           year: year,
         })}
         isSearchable={false}
-        styles={customStyles}
       />
-      <Select
+      <StyledSelect
         placeholder={'Μήνας'}
         options={monthOptions.map(monthOption => ({
           value: monthOption,
@@ -106,9 +55,8 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row
           year: year,
         })}
         isSearchable={false}
-        styles={customStyles}
       />
-      <Select
+      <StyledSelect
         placeholder={'Έτος'}
         options={yearOptions.map(yearOption => ({
           value: yearOption,
@@ -121,7 +69,6 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row
           year: selectedOption.value,
         })}
         isSearchable={false}
-        styles={customStyles}
       />
     </div>
   );
