@@ -6,10 +6,10 @@ import { faGavel, faCircleLeft, faCircleRight, faRotateLeft, faFloppyDisk } from
 import ProgressBar from "../../../Components/ProgressBar/ProgressBar";
 import ConfirmAndSign from './ConfirmAndSign/ConfirmAndSign';
 import ErrorFields from "../../../Components/ErrorFields/ErrorFields";
-import PersonalDetails from '../../Common Pages/BabysitterSignupForm/PersonalDetails/PersonalDetails';
+import PersonalDetails from '../../../Components/PersonalDetails/PersonalDetails';
 import { useNavigate } from 'react-router-dom';
 
-const BabysitterPartnershipForm = ({}) => {
+const BabysitterPartnershipForm = () => {
   const [partnershipData, setPartnershipData] = useState({
     "parentDetails": {
       "profilePic": trollProf,
