@@ -8,10 +8,10 @@ import ConfirmAndSign from './ConfirmAndSign/ConfirmAndSign';
 import FamilyInfo from '../../../Components/FamilyInfo/FamilyInfo';
 import PartnershipAgreement from '../../../Components/PartnershipAgreement/PartnershipAgreement';
 import ErrorFields from "../../../Components/ErrorFields/ErrorFields";
-import PersonalDetails from '../../Common Pages/BabysitterSignupForm/PersonalDetails/PersonalDetails';
+import PersonalDetails from '../../../Components/PersonalDetails/PersonalDetails';
 import { useNavigate } from 'react-router-dom';
 
-const ParentPartnershipForm = ({}) => {
+const ParentPartnershipForm = () => {
   const [partnershipData, setPartnershipData] = useState({
     "parentDetails": {
       "profilePic": trollProf,

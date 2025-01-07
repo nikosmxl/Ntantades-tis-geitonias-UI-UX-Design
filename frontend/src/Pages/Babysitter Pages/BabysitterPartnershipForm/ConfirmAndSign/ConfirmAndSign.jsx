@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './ConfirmAndSignStyle.module.css';
 import PartnershipAgreement from '../../../../Components/PartnershipAgreement/PartnershipAgreement';
-import PersonalDetails from '../../../Common Pages/BabysitterSignupForm/PersonalDetails/PersonalDetails';
+import PersonalDetails from '../../../../Components/PersonalDetails/PersonalDetails';
 import Checkbox from '../../../../Components/Checkbox/Checkbox';
 import FamilyInfo from '../../../../Components/FamilyInfo/FamilyInfo';
 import { useNavigate } from 'react-router-dom';
