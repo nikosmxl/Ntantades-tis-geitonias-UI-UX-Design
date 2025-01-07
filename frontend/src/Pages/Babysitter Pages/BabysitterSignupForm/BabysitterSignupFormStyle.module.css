@@ -115,3 +115,22 @@
     right: 10px;
 }
 
+.signup_button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 345px;
+    height: 50px;
+    border-radius: 15px;
+    font-weight: 600;
+    background-color: #2761CE;
+    color: white;
+    border: 1px solid black;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.signup_button:hover{
+    opacity: 0.9;
+}

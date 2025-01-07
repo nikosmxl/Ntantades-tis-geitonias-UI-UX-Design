@@ -4,7 +4,7 @@ import KidCard from "../KidCard/KidCard";
 import trollProf from "../../Assets/Pictures/troll_prof.jpg";
 import { useNavigate } from 'react-router-dom';
 
-function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsNumChange, onKidChange, hasPets, onHasPetsChange, MandatoryFields=false, showParent=false, alignLeft=false}){
+function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsNumChange, onKidChange, hasPets, onHasPetsChange, MandatoryFields=false, showNote=false, showParent=false, alignLeft=false}){
 
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
 
         <div className={s.family_profile}>
           <h3>Οικογένεια</h3>
-          {MandatoryFields && <p>Τα πεδία με τον αστερίσκο (*) είναι υποχρεωτικά</p>}
+          {isEditable && showNote && <p>Τα πεδία με τον αστερίσκο (*) είναι υποχρεωτικά</p>}
           <hr />
 
           <div className={s.family_profile_family_info}>
@@ -46,7 +46,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
             />
 
             <div className={s.family_profile_info_with_dropdown_container}>
-              <p>Αριθμός Παιδιών:</p>
+              <p>{isEditable && MandatoryFields ? "Αριθμός Παιδιών*:" : "Αριθμός Παιδιών:"}</p>
               <Select
                 defaultValue={{label: kids.length, value: kids.length}}
                 options={[

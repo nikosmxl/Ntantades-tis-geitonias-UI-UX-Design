@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import s from "./BabysitterSignupFormStyle.module.css";
+import s from "./ParentSignupFormStyle.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleLeft, faCircleRight, faRightToBracket, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import ProgressBar from "../../../Components/ProgressBar/ProgressBar";
-import PersonalDetails from "./PersonalDetails/PersonalDetails";
-import EducationExperience from "./EducationExperience/EducationExperience";
-import AcceptTerms from "./AcceptTerms/AcceptTerms";
+import PersonalDetails from "../../../Components/PersonalDetails/PersonalDetails";
 import ErrorFields from "../../../Components/ErrorFields/ErrorFields";
-import ConfirmAndSignup from "./ConfirmAndSignup/ConfirmAndSignup";
+import FamilyInfo from "../../../Components/FamilyInfo/FamilyInfo";
+import AcceptParentTerms from "./AcceptParentTerms/AcceptParentTerms";
+import ParentConfirmAndSignup from "./ParentConfirmAndSignup/ParentConfirmAndSignup";
 
-function BabysitterSignupForm() {
+function ParentSignupForm() {
   const data_sample = {
     "name": "Ιωάννα",
     "surname": "Χατζή",
@@ -25,16 +25,10 @@ function BabysitterSignupForm() {
 
   const [profilePicture, setProfilePicture] = useState("");
   
-  const [selectedLevel, setSelectedLevel] = useState("");
-  const [selectedSpecialty, setSelectedSpecialty] = useState("");
-  const [educationCertificates, setEducationCertificates] = useState([]);
-  const [selectedLanguages, setSelectedLanguages] = useState([])
-  const [selectedExperience, setSelectedExperience] = useState("");
-
-  const [selectedAgeExperience, setSelectedAgeExperience] = useState([]);
-  const [selectedSpecializations, setSelectedSpecializations] = useState([]);
-
-  // const [errors, setErrors] = useState({});
+  const [description, setDescription] = useState('');
+  const [kids, setKids] = useState([]);
+  const [hasPets, setHasPets] = useState(false);
+  
   const [errorStep2, setErrorStep2] = useState(null);
   const [errorStep3, setErrorStep3] = useState(null);
 
@@ -58,13 +52,36 @@ function BabysitterSignupForm() {
       formContainerRef.current.style.height = `${activeChild.offsetHeight}px`;
     }
   }, [step]);
-  
-  const handleErrorStep2Change = (error) => {
-    setErrorStep2(error)
-  };
 
   const handleErrorStep3Change = (error) => {
     setErrorStep3(error)
+  };
+
+  const handleKidsNumChange = (newNumKids) => {
+    const newKids = Array.from(kids);
+    
+    while (newKids.length < newNumKids.value) {
+      newKids.push({id: newKids.length+1, age: null, gender: null, hasDisabilities: false, hasAllergies: false, description: ''});
+    }
+    
+    while (newKids.length > newNumKids.value) {
+      newKids.pop();
+    }
+    setKids(newKids);
+  };
+
+  const handleKidChange = (updatedKid) => {
+    const updatedKids = kids.map(kid => {
+      if (kid.id !== updatedKid.id) return kid;
+
+      return updatedKid
+    });
+    setKids(updatedKids);
+  };
+
+  const handleDescriptionChange = (e) => {
+    e.preventDefault();
+    setDescription(e.target.value.trim());
   };
 
   const steps = [
@@ -76,45 +93,68 @@ function BabysitterSignupForm() {
       onProfileChange={setProfilePicture} />,
     },
     {
-      title: "Εκπαίδευση και Εμπειρία",
+      title: "Στοιχεία Οικογένειας",
       note: "Τα πεδία με τον αστερίσκο (*) είναι υποχρεωτικά",
-      content: <EducationExperience 
-          fixHeight={fixHeight} handleErrorChange={handleErrorStep2Change}
-          selectedLevel={selectedLevel} setSelectedLevel={setSelectedLevel}
-          selectedSpecialty={selectedSpecialty} setSelectedSpecialty={setSelectedSpecialty}
-          educationCertificates={educationCertificates} setEducationCertificates={setEducationCertificates}
-          selectedLanguages={selectedLanguages} setSelectedLanguages={setSelectedLanguages} 
-          selectedExperience={selectedExperience} setSelectedExperience={setSelectedExperience}
-          setSelectedAgeExperience={setSelectedAgeExperience}
-          setSelectedSpecializations={setSelectedSpecializations}
-        />,
+      content: <FamilyInfo 
+        isEditable={true}
+        description={description}
+        onDescriptionChange={handleDescriptionChange}
+        kids={kids}
+        onKidsNumChange={handleKidsNumChange}
+        onKidChange={handleKidChange}
+        onHasPetsChange={setHasPets}
+        MandatoryFields
+      />,
     },
     {
       title: "Αποδοχή Όρων",
       note: "Όλα τα πεδία είναι υποχρεωτικά",
-      content: <AcceptTerms handleErrorChange={handleErrorStep3Change} />,
+      content: <AcceptParentTerms handleErrorChange={handleErrorStep3Change} />,
     },
     {
       title: "Επιβεβαίωση και Εγγραφή",
       note: null,
-      content: <ConfirmAndSignup 
+      content: <ParentConfirmAndSignup
         userData={data_sample}
         onProfileChange={setProfilePicture}
-        fixHeight={fixHeight} updateStepError={handleErrorStep2Change}
-        selectedLevel={selectedLevel} setSelectedLevel={setSelectedLevel}
-        selectedSpecialty={selectedSpecialty} setSelectedSpecialty={setSelectedSpecialty}
-        educationCertificates={educationCertificates} setEducationCertificates={setEducationCertificates}
-        selectedLanguages={selectedLanguages} setSelectedLanguages={setSelectedLanguages} 
-        selectedExperience={selectedExperience} setSelectedExperience={setSelectedExperience}
-        setSelectedAgeExperience={setSelectedAgeExperience}
-        setSelectedSpecializations={setSelectedSpecializations}
+        description={description}
+        onDescriptionChange={handleDescriptionChange}
+        kids={kids}
+        onKidsNumChange={handleKidsNumChange}
+        onKidChange={handleKidChange}
+        onHasPetsChange={setHasPets}
       />,
     },
   ];
 
   useEffect(() => {
+    if (kids.length === 0){
+        const errorMessage = `Ο αριθμός παιδιών πρέπει να είναι μεγαλύτερος του μηδενός.`;
+        setErrorStep2(errorMessage);
+        return;
+    }
+
+    const missingFields = new Set(); 
+    for (const kid of kids){
+        if (kid.age === null) {
+            missingFields.add("Ηλικία");
+        }
+        if (kid.gender === null) {
+            missingFields.add("Φύλο");
+        }
+    }
+
+    if (missingFields.size === 0) {
+        setErrorStep2(null); // Όλα τα πεδία είναι συμπληρωμένα
+    } else {
+        const errorMessage = `Κάποια από τα υποχρεωτικά πεδία δεν συμπληρώθηκαν: ${Array.from(missingFields).join(", ")}`;
+        setErrorStep2(errorMessage);
+    }
+  }, [kids]);
+
+  useEffect(() => {
     fixHeight();
-  }, [step, fixHeight]);
+  }, [step, kids.length, fixHeight]);
 
   const scrollToTop = () => {
     const pageContainer = document.querySelector('.page-container');
@@ -221,7 +261,7 @@ function BabysitterSignupForm() {
             </button>
           :
             <button onClick={signUp} className={s.signup_button}>
-              <FontAwesomeIcon className={s.icon} icon={faRightToBracket} fontSize={"20px"} />
+              <FontAwesomeIcon className={s.icon} icon={faRightToBracket} fontSize={"18px"} />
               Εγγραφή
             </button>
           }
@@ -230,4 +270,4 @@ function BabysitterSignupForm() {
   );
 }
 
-export default BabysitterSignupForm;
+export default ParentSignupForm;
