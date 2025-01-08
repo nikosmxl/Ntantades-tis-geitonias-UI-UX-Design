@@ -56,7 +56,7 @@ const FamilyProfile = () => {
   return (
     <div>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Προφίλ
+        Αρχική Σελίδα {`>`} Προφίλ
       </div>
       <div className={s.family_profile_main_content}>
         <div className={s.family_profile_top_container}>

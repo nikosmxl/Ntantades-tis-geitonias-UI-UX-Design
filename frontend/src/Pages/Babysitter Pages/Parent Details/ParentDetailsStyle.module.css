@@ -83,6 +83,7 @@
     display: flex;
     align-items: center;
     gap: 35px;
+    
 }
 
 .line_under_name {
@@ -93,4 +94,15 @@
     width: 255px;
     margin-top: 5px;
     margin-bottom: -30px;
+}
+
+.unmodified_arrays {
+    display: flex;
+    justify-content: center;
+    width: 85px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px !important;
+    font-weight: regular !important;
 }

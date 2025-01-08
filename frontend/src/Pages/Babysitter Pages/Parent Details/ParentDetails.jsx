@@ -73,6 +73,7 @@ const ParentDetails = ({}) => {
 
                         <div className={s.parent_details_info_kids}>
                             <p>Αριθμός Παιδιών :</p>
+                            <p className={s.unmodified_arrays}> 2 </p>
                         </div>
 
                         {
@@ -88,6 +89,8 @@ const ParentDetails = ({}) => {
                         }
                         <div className={s.parent_details_info_kids}>
                             <p>Κατοικίδια :</p>
+                            <p className={s.unmodified_arrays}> Ναι</p>
+
                            
 
                            
