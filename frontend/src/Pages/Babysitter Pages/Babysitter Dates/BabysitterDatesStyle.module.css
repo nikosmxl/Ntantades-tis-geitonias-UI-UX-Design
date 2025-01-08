@@ -1,0 +1,17 @@
+.babysitter_dates_main_content {
+    width: 1110px;
+    margin: auto;
+    margin-top: 27px;
+    display: flex;
+    flex-direction: column;
+}
+
+.breadcrumbs_container {
+    font-size: 13px ;
+    width: 240px;
+    margin-top: 9px;
+    margin-left: 180px;
+    margin-bottom: 32px;
+
+    cursor: pointer;
+}
