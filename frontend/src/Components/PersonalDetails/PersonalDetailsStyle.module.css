@@ -1,7 +1,6 @@
 .personal_details_container{
     display: flex;
     flex-direction: column;
-    margin: 0 320px;
 }
 
 .first_inner_title, .second_inner_title{
@@ -54,7 +53,6 @@
     flex-direction: column;
     gap: 25px;
     margin-left: 40px;
-    margin-right: 220px;
 }
 
 .form_group{

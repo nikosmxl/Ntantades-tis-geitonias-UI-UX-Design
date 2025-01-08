@@ -1,0 +1,108 @@
+.breadcrumbs_container {
+    font-size: 13px ;
+    width: 360px;
+    margin-top: 9px;
+    margin-left: 180px;
+    margin-bottom: 32px;
+
+    cursor: pointer;
+}
+
+.parent_details_main_content {
+    width: 1110px;
+    margin: auto;
+    margin-top: 27px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.parent_details_top_container {
+    display: flex;
+    justify-content: space-between;
+}
+  
+.parent_details_left_sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile_pic {
+    width: 250px;
+    height: 250px;
+    margin-top: 60px;
+}
+
+.parent_details_top_container_main {
+    padding-top: 60px;
+    width: 750px;
+    display: flex;
+    flex-direction: column;
+}
+
+.parent_details_personal_info {
+    margin-top: 60px;
+    margin-left: 30px;
+    display: grid;
+    grid-template-columns: 143px 472px;
+    column-gap: 50px;
+    row-gap: 20px;
+    align-items: center;
+}
+
+.parent_details_section_container > h3 {
+    font-size: 20px;
+}
+
+.parent_details_family_info {
+    margin-top: 25px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: 50px;
+}
+
+.family_description {
+    width: 679px;
+    min-height: 164px;
+    resize: none;
+    border-radius: 7px;
+    background-color: #D9D9D9;
+    font-family: Inter;
+    color: black;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: 300;
+}
+
+.parent_details_info_kids {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    
+}
+
+.line_under_name {
+    margin-bottom: 25px;
+}
+
+.line_under_personal_info {
+    width: 255px;
+    margin-top: 5px;
+    margin-bottom: -30px;
+}
+
+.unmodified_arrays {
+    display: flex;
+    justify-content: center;
+    width: 85px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 14px !important;
+    font-weight: regular !important;
+}

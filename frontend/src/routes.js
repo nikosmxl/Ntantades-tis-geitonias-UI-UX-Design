@@ -9,6 +9,9 @@ import ParentPartnership from "./Pages/Parent Pages/Parent Partnership/ParentPar
 import ParentDates from "./Pages/Parent Pages/ParentDates/ParentDates";
 import BabysitterPartnership from "./Pages/Babysitter Pages/Babysitter Partnership/BabysitterPartnership";
 import EditDate from "./Pages/Common Pages/EditDate/EditDate";
+import Signup from "./Pages/Common Pages/Member Signup/Signup";
+import BabysitterDates from "./Pages/Babysitter Pages/Babysitter Dates/BabysitterDates";
+import ParentDetails from "./Pages/Babysitter Pages/Parent Details/ParentDetails";
 import ParentHistory from './Pages/Common Pages/History/History';
 import ApplicationsHistory from './Pages/Common Pages/ApplicationsHistory/ApplicationsHistory';
 import PaymentsHistory from './Pages/Common Pages/PaymentsHistory/PaymentsHistory';
@@ -19,6 +22,7 @@ import ParentSignupForm from "./Pages/Parent Pages/ParentSignupForm/ParentSignup
 import ParentPartnershipForm from "./Pages/Parent Pages/ParentPartnershipForm/ParentPartnershipForm";
 import BabysitterPartnershipForm from "./Pages/Babysitter Pages/BabysitterPartnershipForm/BabysitterPartnershipForm";
 import ApplicationCreate from "./Pages/Parent Pages/ApplicationCreate/ApplicationCreate";
+import ViewPartnership from "./Pages/Common Pages/ViewPartnership/ViewPartnership";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -108,6 +112,23 @@ const routes = [
     page: <EditDate />,
   },
   {
+    context: 'loggedOut',
+    path: 'Signup',
+    page: <Signup />,
+  },
+
+  {
+    context: 'babysitter',
+    path: 'dates',
+    page: <BabysitterDates />,
+  },
+
+  {
+    context: 'babysitter',
+    path: 'parent-details',
+    page: <ParentDetails />,
+  },
+  {
     context: 'parent',
     path: 'history',
     page: <ParentHistory />,
@@ -156,6 +177,16 @@ const routes = [
     context: 'babysitter',
     path: 'sign-partnership/:id',
     page: <BabysitterPartnershipForm />,
+  },
+  {
+    context: 'parent',
+    path: 'partnership/:id',
+    page: <ViewPartnership />,
+  },
+  {
+    context: 'babysitter',
+    path: 'partnership/:id',
+    page: <ViewPartnership />,
   },
 ];
 
