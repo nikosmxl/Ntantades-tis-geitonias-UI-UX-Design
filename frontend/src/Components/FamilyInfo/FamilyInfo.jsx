@@ -4,7 +4,7 @@ import KidCard from "../KidCard/KidCard";
 import trollProf from "../../Assets/Pictures/troll_prof.jpg";
 import { useNavigate } from 'react-router-dom';
 
-function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsNumChange, onKidChange, hasPets, onHasPetsChange, MandatoryFields=false, showNote=false, showParent=false, alignLeft=false}){
+function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsNumChange, onKidChange, hasPets, onHasPetsChange, MandatoryFields=false, showNote=false, showParent=false, alignLeft=false, isForApplication=false}){
 
   const navigate = useNavigate();
 
@@ -33,17 +33,23 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
         }
 
         <div className={s.family_profile}>
-          <h3>Οικογένεια</h3>
-          {isEditable && showNote && <p>Τα πεδία με τον αστερίσκο (*) είναι υποχρεωτικά</p>}
-          <hr />
+          {!isForApplication &&
+          <>
+            <h3>Οικογένεια</h3>
+            {isEditable && showNote && <p>Τα πεδία με τον αστερίσκο (*) είναι υποχρεωτικά</p>}
+            <hr />
+          </>
+          }
 
           <div className={s.family_profile_family_info}>
-            <textarea
-              className={isEditable ? s.family_description_editable : s.family_description}
-              disabled={!isEditable}
-              value={description}
-              onChange={onDescriptionChange}
-            />
+            {!isForApplication &&
+              <textarea
+                className={isEditable ? s.family_description_editable : s.family_description}
+                disabled={!isEditable}
+                value={description}
+                onChange={onDescriptionChange}
+              />
+            }
 
             <div className={s.family_profile_info_with_dropdown_container}>
               <p>{isEditable && MandatoryFields ? "Αριθμός Παιδιών*:" : "Αριθμός Παιδιών:"}</p>

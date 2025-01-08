@@ -9,6 +9,37 @@
 .checkbox_label input {
   margin-right: 14px;
   cursor: pointer;
-  accent-color: gray;
   flex-shrink: 0;
+}
+
+.normal_input {
+  accent-color: gray;
+}
+
+.red_input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  border: 2px solid #8B0000;
+  border-radius: 3px;
+  position: relative;
+}
+
+.red_input:checked {
+  background-color: white; 
+  border-color: #8B0000; 
+}
+
+.red_input:checked::after {
+  content: '✔'; 
+  color: #BC0000;
+  font-size: 16px;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.red_input:hover:not(:disabled) {
+  border-color: #D10000; 
 }

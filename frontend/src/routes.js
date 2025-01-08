@@ -18,6 +18,7 @@ import BabysitterSignupForm from "./Pages/Babysitter Pages/BabysitterSignupForm/
 import ParentSignupForm from "./Pages/Parent Pages/ParentSignupForm/ParentSignupForm";
 import ParentPartnershipForm from "./Pages/Parent Pages/ParentPartnershipForm/ParentPartnershipForm";
 import BabysitterPartnershipForm from "./Pages/Babysitter Pages/BabysitterPartnershipForm/BabysitterPartnershipForm";
+import ApplicationCreate from "./Pages/Parent Pages/ApplicationCreate/ApplicationCreate";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -53,6 +54,11 @@ const routes = [
   },
   {
     context: 'parent',
+    path: 'babysitter-details/:babysitterId/application-create',
+    page: <ApplicationCreate />,
+  },
+  {
+    context: 'parent',
     path: 'family-profile/:id',
     page: <FamilyProfile />,
   },
@@ -60,6 +66,11 @@ const routes = [
     context: 'parent',
     path: 'applications',
     page: <ParentApplications />,
+  },
+  {
+    context: 'parent',
+    path: 'applications/application-create',
+    page: <ApplicationCreate />,
   },
   {
     context: 'parent',
