@@ -18,6 +18,7 @@ import BabysitterSignupForm from "./Pages/Babysitter Pages/BabysitterSignupForm/
 import ParentSignupForm from "./Pages/Parent Pages/ParentSignupForm/ParentSignupForm";
 import ParentPartnershipForm from "./Pages/Parent Pages/ParentPartnershipForm/ParentPartnershipForm";
 import BabysitterPartnershipForm from "./Pages/Babysitter Pages/BabysitterPartnershipForm/BabysitterPartnershipForm";
+import ViewPartnership from "./Pages/Common Pages/ViewPartnership/ViewPartnership";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -145,6 +146,16 @@ const routes = [
     context: 'babysitter',
     path: 'sign-partnership/:id',
     page: <BabysitterPartnershipForm />,
+  },
+  {
+    context: 'parent',
+    path: 'partnership/:id',
+    page: <ViewPartnership />,
+  },
+  {
+    context: 'babysitter',
+    path: 'partnership/:id',
+    page: <ViewPartnership />,
   },
 ];
 

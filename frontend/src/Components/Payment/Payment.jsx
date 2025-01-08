@@ -3,12 +3,19 @@ import s from './PaymentStyle.module.css';
 import troll_prof from "../../Assets/Pictures/troll_prof.jpg";
 import qr_code from "../../Assets/Pictures/qr_code.png";
 import ExpandButtons from '../ExpandButtons/ExpandButtons';
+import { useNavigate } from 'react-router-dom';
 
 const Payment = ({ payment, isParent = true }) => {
   const [isExpanded, setExpanded] = useState(false);
   
+  const navigate = useNavigate();
+  
   const toggleIsExpanded = () => {
     setExpanded(!isExpanded);
+  };
+
+  const handleViewPartnership = () => {
+    navigate('../partnership/1', {path: '..'});
   };
 
   return (
@@ -37,7 +44,10 @@ const Payment = ({ payment, isParent = true }) => {
           </div>
         </div>
         <div className={s.payment_details}>
-          <div className={s.view_agreement}>
+          <div
+            className={s.view_agreement}
+            onClick={handleViewPartnership}
+          >
             <h4>ΠΡΟΒΟΛΗ ΣΥΜΦΩΝΗΤΙΚΟΥ ΣΥΝΕΡΓΑΣΙΑΣ</h4>
           </div>
           <hr />

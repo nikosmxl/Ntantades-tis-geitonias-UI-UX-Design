@@ -2,7 +2,7 @@ import s from "./PersonalDetailsStyle.module.css"
 import blankProfilePic from "../../Assets/Pictures/blankProfilePic.png"
 import { useState } from "react";
 
-function PersonalDetails({ userData, onProfileChange, ShowOff = false }){
+function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMarginRight='220px', horizontalMargin='320px', }){
     const [profilePicturePreview, setProfilePicturePreview] = useState(userData?.profilePic ?? blankProfilePic);
 
     const handleImageUpload = (event) => {
@@ -11,10 +11,15 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false }){
             onProfileChange(file);
             setProfilePicturePreview(URL.createObjectURL(file));
         }
-    }
+    };
 
     return (
-        <div className={s.personal_details_container}>
+        <div
+          className={s.personal_details_container}
+          style={{
+            margin: `0 ${horizontalMargin}`,
+          }}
+        >
             <h3 className={s.first_inner_title}>Φωτογραφία Προφίλ</h3>
             <img src={profilePicturePreview} alt="Profile" />
             {!ShowOff &&
@@ -35,7 +40,9 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false }){
             <p className={s.note_red_inputs}>
                 Τα <span>κόκκινα</span> πεδία είναι αμετάβλητα
             </p>
-            <form>
+            <form
+              style={{ marginRight: formMarginRight }}
+            >
                 <div className={s.form_group}>
                     <label className={s.form_group_label} htmlFor="name">Όνομα:</label>
                     <input className={s.form_group_input} 

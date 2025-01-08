@@ -6,6 +6,7 @@ import ConfirmationPopUp from "../../PopUps/ConfirmationPopUp/ConfirmationPopUp"
 import ExpandButtons from "../ExpandButtons/ExpandButtons";
 import DateDropdowns from '../DateDropdowns/DateDropdowns';
 import StyledSelect from "../StyledSelect/StyledSelect";
+import { useNavigate } from "react-router-dom";
 
 function Partnership({isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false}){
     const perioxes = ['ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ', 'ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ'];
@@ -67,6 +68,8 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
     const isPartnershipOver = true;
     const isPayAvailable = true;
 
+    const navigate = useNavigate();
+
     const toggleIsExpanded = () => {
         setIsExpanded(!isExpanded);
     };
@@ -83,6 +86,10 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
         setIsConfirmPopupOpen(false); // Closes popup
     };
 
+    const handleViewPartnership = () => {
+      navigate('../partnership/1', {path: '..'});
+    };
+  
     return (
         <div className={s.partnership_with_buttons}>
             <div className={`${s.partnership} ${isExpanded ? s.open : ''} ${((isParent && isSent) || isHistory) ? (isPending ? s.pending : s.declined) : ''}`}>
@@ -152,7 +159,10 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                 </div>
                 {(isRunning || isHistory || isFuture) &&
                     <div className={`${s.partnership_buttons_row} ${!isExpanded ? s.collapsed : ''}`}>
-                        <button className={s.view_agreement_button}>
+                        <button
+                          className={s.view_agreement_button}
+                          onClick={handleViewPartnership}
+                        >
                             ΠΡΟΒΟΛΗ ΣΥΜΦΩΝΗΤΙΚΟΥ ΣΥΝΕΡΓΑΣΙΑΣ
                         </button>
                         {isRunning &&

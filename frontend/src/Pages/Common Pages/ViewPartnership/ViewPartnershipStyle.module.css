@@ -1,0 +1,35 @@
+.view_partnership_main_content {
+  width: 1564px;
+  margin: auto;
+  margin-top: 27px;
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+}
+
+.view_partnership_personal_details_container {
+  margin-top: 30px;
+  display: flex;
+  gap: 44px;
+  justify-content: center;
+}
+
+.sign {
+  display: flex;
+  gap: 117px;
+  align-items: center;
+  justify-content: center;
+  padding: 59px 0;
+}
+
+.parent_signature, .babysitter_signature {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 53px;
+}
+
+.parent_signature h3, .babysitter_signature h3 {
+  width: 140px;
+  font-size: 26px;
+}

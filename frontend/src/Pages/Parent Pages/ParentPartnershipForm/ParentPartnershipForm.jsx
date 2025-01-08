@@ -40,7 +40,6 @@ const ParentPartnershipForm = () => {
       "language": "Ελληνικά",
     },
     "familyDetails": {
-      "address": 'Βλαστού 2',
       "description": "Λίγα Λόγια",
       "kids": [
         {id: 1, age: 2, gender: 'boy', hasDisabilities: false, hasAllergies: false, description: ''},
@@ -48,6 +47,7 @@ const ParentPartnershipForm = () => {
       "hasPets": false,
     },
     "partnershipDetails": {
+      "address": 'Βλαστού 2',
       "dimos": 'ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ',
       "perioxh": 'Τζιτζιφιές',
       "partTime": true,
