@@ -1,8 +1,8 @@
 import React from 'react';
 import s from './DateDropdownsStyle.module.css';
-import Select from 'react-select';
+import StyledSelect from '../StyledSelect/StyledSelect';
 
-const DateDropdowns = ({ day, month, year, onChange, isEnabled=true}) => {
+const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row'}) => {
   const getDaysInMonth = (selectedMonth, selectedYear) => {
     if (!selectedMonth || !selectedYear) return Array.from({ length: 30 }, (_, i) => i + 1);
     const monthIndex = parseInt(selectedMonth, 10);
@@ -21,8 +21,15 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true}) => {
   const dayOptions = getDaysInMonth(month, year);
 
   return (
-    <div className={s.date_dropdowns_container}>
-      <Select
+    <div
+      className={s.date_dropdowns_container}
+      style={{
+        flexDirection: layout,
+        alignItems: layout === 'row' ? 'center' : 'stretch',
+      }}
+    >
+      <StyledSelect
+        placeholder={'Ημέρα'}
         options={dayOptions.map(dayOption => ({
           value: dayOption,
           label: dayOption
@@ -33,11 +40,13 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true}) => {
           month: month,
           year: year,
         })}
+        isSearchable={false}
       />
-      <Select
+      <StyledSelect
+        placeholder={'Μήνας'}
         options={monthOptions.map(monthOption => ({
-          value: monthOption-1,
-          label: months[monthOption-1]
+          value: monthOption,
+          label: monthOption
         }))}
         isDisabled={!isEnabled}
         onChange={(selectedOption) => onChange({
@@ -45,8 +54,10 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true}) => {
           month: selectedOption.value,
           year: year,
         })}
+        isSearchable={false}
       />
-      <Select
+      <StyledSelect
+        placeholder={'Έτος'}
         options={yearOptions.map(yearOption => ({
           value: yearOption,
           label: yearOption
@@ -57,6 +68,7 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true}) => {
           month: month,
           year: selectedOption.value,
         })}
+        isSearchable={false}
       />
     </div>
   );

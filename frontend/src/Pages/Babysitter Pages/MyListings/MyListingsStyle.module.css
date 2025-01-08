@@ -66,3 +66,25 @@
     margin-bottom: 45px;
     gap: 30px;
 }
+
+.create_listing{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    gap: 10px;
+    width: fit-content;
+    margin-top: 20px;
+    margin-right: 345px;
+    padding: 15px 25px;
+    background-color: #4EA60A;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.create_listing:hover{
+    background-color: #63C50C;
+}

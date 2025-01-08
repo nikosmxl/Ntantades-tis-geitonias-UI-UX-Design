@@ -12,7 +12,16 @@ import EditDate from "./Pages/Common Pages/EditDate/EditDate";
 import Signup from "./Pages/Common Pages/Member Signup/Signup";
 import BabysitterDates from "./Pages/Babysitter Pages/Babysitter Dates/BabysitterDates";
 import ParentDetails from "./Pages/Babysitter Pages/Parent Details/ParentDetails";
-
+import ParentHistory from './Pages/Common Pages/History/History';
+import ApplicationsHistory from './Pages/Common Pages/ApplicationsHistory/ApplicationsHistory';
+import PaymentsHistory from './Pages/Common Pages/PaymentsHistory/PaymentsHistory';
+import PartnershipHistory from './Pages/Common Pages/PartnershipHistory/PartnershipHistory';
+import ListingsHistory from './Pages/Babysitter Pages/ListingsHistory/ListingsHistory';
+import BabysitterSignupForm from "./Pages/Babysitter Pages/BabysitterSignupForm/BabysitterSignupForm";
+import ParentSignupForm from "./Pages/Parent Pages/ParentSignupForm/ParentSignupForm";
+import ParentPartnershipForm from "./Pages/Parent Pages/ParentPartnershipForm/ParentPartnershipForm";
+import BabysitterPartnershipForm from "./Pages/Babysitter Pages/BabysitterPartnershipForm/BabysitterPartnershipForm";
+import ViewPartnership from "./Pages/Common Pages/ViewPartnership/ViewPartnership";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -25,6 +34,16 @@ const routes = [
     context: 'loggedOut',
     path: 'babysitter-search',
     page: <BabysitterSearch />,
+  },
+  {
+    context: 'loggedOut',
+    path: 'signup/babysitter',
+    page: <BabysitterSignupForm />,
+  },
+  {
+    context: 'loggedOut',
+    path: 'signup/parent',
+    page: <ParentSignupForm />,
   },
   {
     context: 'parent',
@@ -98,8 +117,66 @@ const routes = [
     path: 'parent-details',
     page: <ParentDetails />,
   },
-
-
+  {
+    context: 'parent',
+    path: 'history',
+    page: <ParentHistory />,
+  },
+  {
+    context: 'parent',
+    path: 'history/applications',
+    page: <ApplicationsHistory />,
+  },
+  {
+    context: 'parent',
+    path: 'history/payments',
+    page: <PaymentsHistory />,
+  },
+  {
+    context: 'parent',
+    path: 'history/partnerships',
+    page: <PartnershipHistory />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history/applications',
+    page: <ApplicationsHistory />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history/payments',
+    page: <PaymentsHistory />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history/partnerships',
+    page: <PartnershipHistory />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history/listings',
+    page: <ListingsHistory />,
+  },
+  {
+    context: 'parent',
+    path: 'sign-partnership/:id',
+    page: <ParentPartnershipForm />,
+  },
+  {
+    context: 'babysitter',
+    path: 'sign-partnership/:id',
+    page: <BabysitterPartnershipForm />,
+  },
+  {
+    context: 'parent',
+    path: 'partnership/:id',
+    page: <ViewPartnership />,
+  },
+  {
+    context: 'babysitter',
+    path: 'partnership/:id',
+    page: <ViewPartnership />,
+  },
 ];
 
 export default routes;

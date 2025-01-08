@@ -6,7 +6,7 @@ import { useState } from "react";
 import ConfirmationPopUp from "../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
 import DeletionPopUp from "../../PopUps/DeletionPopUp/DeletionPopUp";
 
-function ExpandButtons({isExpanded, toggleIsExpanded, showOptionsButtons = false, showDeleteButton = false, onDelete, showEditButton = false, onEdit, showAcceptButton = false, onAccept, showDeclineButton = false, onDecline}){
+function ExpandButtons({isExpanded, toggleIsExpanded, showExpandButton = true, showOptionsButtons = false, showDeleteButton = false, onDelete, showEditButton = false, onEdit, showAcceptButton = false, onAccept, showDeclineButton = false, onDecline}){
     const [isAcceptConfirmPopupOpen, setIsAcceptConfirmPopupOpen] = useState(false);
     const [isDeclineConfirmPopupOpen, setIsDeclineConfirmPopupOpen] = useState(false);
     const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
@@ -36,15 +36,19 @@ function ExpandButtons({isExpanded, toggleIsExpanded, showOptionsButtons = false
     };
 
     return (
-        <div className={s.buttons}>
-            <button className={s.show_more_button} onClick={toggleIsExpanded}>
-                {isExpanded 
-                ?
-                    <FontAwesomeIcon icon={faEye} className={s.expanded} />
-                :
-                    <FontAwesomeIcon icon={faEyeSlash} className={s.not_expanded} />
-                }
-            </button>
+        <div className={`${s.buttons} ${showOptionsButtons && s.opened_buttons}`}>
+            {
+              showExpandButton && (
+                <button className={s.show_more_button} onClick={toggleIsExpanded}>
+                    {isExpanded 
+                    ?
+                        <FontAwesomeIcon icon={faEye} className={s.expanded} />
+                    :
+                        <FontAwesomeIcon icon={faEyeSlash} className={s.not_expanded} />
+                    }
+                </button>
+              )
+            }
             <div className={`${s.smooth_transition} ${isExpanded && showOptionsButtons ? s.open : ''}`}>
                 <div className={s.options_buttons}>
                     {showDeleteButton &&

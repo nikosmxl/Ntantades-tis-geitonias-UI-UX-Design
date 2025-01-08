@@ -21,7 +21,11 @@ const Dropdown = ({ selectedOption, placeholder, options, onChange, isEnabled=tr
         <p className={`${s.dropdown_content} ${noneSelected ? s.placeholder : ''}`}>{noneSelected ? placeholder : selectedOption}</p>
         <div
           className={s.dropdown_menu_toggle}
-          onClick={() => setMenuOpen((curr) => !curr)}
+          onClick={() => {
+            if (isEnabled) {
+              setMenuOpen((curr) => !curr);
+            }
+          }}
         >
           <FontAwesomeIcon icon={faAngleDown} />
         </div>

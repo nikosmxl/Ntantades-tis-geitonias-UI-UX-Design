@@ -1,6 +1,11 @@
 .buttons{
     display: flex;
-    gap: 38px;
+    gap: 0px;
+    transition: gap 0.3s ease-in-out;
+}
+
+.opened_buttons {
+  gap: 38px ;
 }
 
 .show_more_button, .delete_button, .decline_button, .edit_button, .accept_button{

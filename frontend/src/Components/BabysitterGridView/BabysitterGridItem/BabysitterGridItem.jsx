@@ -23,11 +23,15 @@ const BabysitterGridItem = ({ babysitter }) => {
         className={s.babysitter_grid_item_delete_button}
         onClick={handleDelete}
       />
-      <img
-        src={trollProf}
-        className={s.babysitter_grid_item_avatar}
-        onClick={handleNavigate}
-      />
+      <a
+        href={`../babysitter-details/${babysitter.id}`}
+      >
+        <img
+          src={trollProf}
+          className={s.babysitter_grid_item_avatar}
+          onClick={handleNavigate}
+        />
+      </a>
       <p>{babysitter.name ?? 'Ονοματεπώνυμο Νταντάς'}</p>
     </div>
   );

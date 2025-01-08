@@ -1,0 +1,17 @@
+.container{
+    margin: 30px 320px 0;
+}
+
+.terms_title{
+    font-size: 24px;
+    font-weight: 500;
+    margin-right: 300px;
+    margin-bottom: 60px;
+}
+
+.terms{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-right: 150px;
+}
