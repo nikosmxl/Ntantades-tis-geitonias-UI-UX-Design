@@ -102,6 +102,7 @@ function ParentSignupForm() {
         kids={kids}
         onKidsNumChange={handleKidsNumChange}
         onKidChange={handleKidChange}
+        hasPets={hasPets}
         onHasPetsChange={setHasPets}
         MandatoryFields
       />,

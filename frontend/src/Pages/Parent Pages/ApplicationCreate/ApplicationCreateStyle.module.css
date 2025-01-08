@@ -1,0 +1,223 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding: 9px 145px 0;
+}
+
+.breadcrumbs{
+    display: flex;
+    gap: 7px;
+    margin-bottom: 35px;
+    margin-left: 30px;
+    font-size: 13px;
+}
+
+.title{
+    font-size: 24px;
+}
+
+.note{
+    font-size: 10px;
+}
+
+.note span{
+    color: #DE0E0E;
+}
+
+.application_create_container{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 925px;
+    margin: 30px auto 0;
+    padding: 25px 20px;
+    background-color: #90B2EF;
+    border-radius: 17px;
+}
+
+.parent_fullname{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.parent_fullname label{
+    font-weight: 600;
+}
+
+.parent_fullname input, .place_of_residence input{
+    color: #DE0E0E;
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: 1px solid #5C5C5C;
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.place_of_residence{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.place_of_residence label{
+    font-weight: 600;
+    width: 55%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.place_of_residence input{
+    width: fit-content;
+    margin-left: 10px;
+}
+
+.address{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.address label{
+    font-weight: 600;
+    width: 55%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.address input{
+    width: fit-content;
+    margin-left: 10px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: 1px solid #5C5C5C;
+    font-size: 14px;
+}
+
+.address input:focus{
+    outline: none;
+    border: 1px solid black;
+}
+
+.family_info{
+    margin-left: -15px;
+    margin-top: -25px;
+}
+
+.working_hours{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 10px;
+}
+
+.working_hours b{
+    margin-left: -10px;
+    width: 55%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.calendar_area, .starting_date, .ending_date{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.calendar_area b{
+    width: 55%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.starting_date, .ending_date{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.starting_date b, .ending_date b{
+    width: 55%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    margin-left: -10px;
+}
+
+.starting_date .date_dropdowns_area, .ending_date .date_dropdowns_area{
+    width: 350px;
+}
+
+.checkbox_area, .few_words_area{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-left: 10px;
+}
+
+.checkbox_area b, .few_words_area b{
+    width: 55%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    margin-left: -10px;
+}
+
+.few_words{
+    width: 420px;
+    min-height: 130px;
+    resize: none;
+    border-radius: 7px;
+    background-color: #FFFFFF;
+    font-family: Inter;
+    color: black;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 300;
+    outline: none;
+}
+
+.few_words:focus{
+    border: 1px solid black;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+.button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 226px;
+    height: 36px;
+    color: white;
+    border-radius: 11px;
+    border: 1px solid white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.button.cancel{
+    background-color: #BC0000;
+}
+
+.button.save{
+    background-color: #5C5C5C;
+}
+
+.button.submit{
+    background-color: #2F72EF;
+}
+
+.button.cancel:hover{
+    background-color: #D10000;
+}
+
+.button.save:hover{
+    background-color: #707070;
+}
+
+.button.submit:hover{
+    background-color: #4689FF;
+}
