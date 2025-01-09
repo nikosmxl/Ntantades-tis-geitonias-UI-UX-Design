@@ -1,0 +1,39 @@
+.area_column{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.areas{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.neighborhoods_select{
+    margin-left: 15px;
+}
+
+.actions{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.button{
+    padding: 10px 15px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: -2px 4px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background-color: #f2f2f2;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.remove:hover{
+    background-color: #adadad;
+}
+
+.add:hover{
+    background-color: #98e4aa;
+}

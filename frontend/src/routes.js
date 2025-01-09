@@ -23,6 +23,7 @@ import ParentPartnershipForm from "./Pages/Parent Pages/ParentPartnershipForm/Pa
 import BabysitterPartnershipForm from "./Pages/Babysitter Pages/BabysitterPartnershipForm/BabysitterPartnershipForm";
 import ApplicationCreate from "./Pages/Parent Pages/ApplicationCreate/ApplicationCreate";
 import ViewPartnership from "./Pages/Common Pages/ViewPartnership/ViewPartnership";
+import ListingCreate from "./Pages/Babysitter Pages/ListingCreate/ListingCreate";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -105,6 +106,16 @@ const routes = [
     context: 'babysitter',
     path: 'listings',
     page: <MyListings />,
+  },
+  {
+    context: 'babysitter',
+    path: 'listings/listing-create',
+    page: <ListingCreate />,
+  },
+  {
+    context: 'babysitter',
+    path: 'listings/listing-create:listingId',
+    page: <ListingCreate />,
   },
   {
     context: 'babysitter',

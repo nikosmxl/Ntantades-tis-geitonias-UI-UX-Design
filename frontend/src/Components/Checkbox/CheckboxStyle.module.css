@@ -4,6 +4,7 @@
   align-items: start;
   cursor: pointer;
   position: relative;
+  width: fit-content;
 }
 
 .checkbox_label input {
