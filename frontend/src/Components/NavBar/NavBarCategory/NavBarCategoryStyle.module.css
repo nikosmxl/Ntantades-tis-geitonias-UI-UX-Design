@@ -53,11 +53,11 @@
 .dropdown_menu {
   position: absolute;
   top: 100%;
-  left: -25%;
+  left: 25%;
   height: 0;
   overflow: hidden;
   transition: height 0.3s ease-in-out;
-  z-index: 1000;
+  z-index: 998;
 }
 
 .dropdown_menu.open {
@@ -68,28 +68,31 @@
   display: flex;
   justify-content: center;
   align-items: end;
-  margin-left: auto;
-  margin-right: auto;
   width: 25px;
   height: 25px;
   background-color: rgba(0, 0, 0, 0.5);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-  z-index: 100;
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  left: 10px;
 }
 
 .inner_dropdown_triangle {
   width: 23px;
   height: 23px;
+  z-index: 1000;
   background-color: white;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
 .options_menu {
-  margin-top: -1px;
+  margin-top: 24px;
   background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.6);
-  border-radius: 6px;
+  border-radius: 5px;
+  overflow: hidden;
   z-index: 1;
 }
 
