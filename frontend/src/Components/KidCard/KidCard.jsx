@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './KidCardStyle.module.css';
-import Select from 'react-select';
 import Checkbox from '../Checkbox/Checkbox';
+import StyledSelect from '../StyledSelect/StyledSelect';
 
 const KidCard = ({ kid, onChange, isEditable=false, MandatoryFields=false }) => {
   const labelValueMapper = {
@@ -81,7 +81,7 @@ const KidCard = ({ kid, onChange, isEditable=false, MandatoryFields=false }) => 
     <div className={s.kid_card}>
       <div className={s.kid_card_info}>
         <p>{isEditable && MandatoryFields ? "Ηλικία*:" : "Ηλικία:"}</p>
-        <Select
+        <StyledSelect
           placeholder="Ηλικία..."
           value={kid.age !== null ? {label: ageLabelDictionary[kid.age], value: kid.age} : null}
           options={Object.entries(ageLabelDictionary)
@@ -94,7 +94,7 @@ const KidCard = ({ kid, onChange, isEditable=false, MandatoryFields=false }) => 
           onChange={(selectedOption) => handleAgeChange(selectedOption)}
         />
         <p>{isEditable && MandatoryFields ? "Φύλο*:" : "Φύλο:"}</p>
-        <Select
+        <StyledSelect
           placeholder="Φύλο..."
           value={kid.gender !== null ? {label: labelValueMapper[kid.gender], value: kid.gender} : null}
           options={[

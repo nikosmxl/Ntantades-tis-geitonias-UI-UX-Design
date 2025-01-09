@@ -3,6 +3,7 @@ import Select from 'react-select';
 import KidCard from "../KidCard/KidCard";
 import trollProf from "../../Assets/Pictures/troll_prof.jpg";
 import { useNavigate } from 'react-router-dom';
+import StyledSelect from "../StyledSelect/StyledSelect";
 
 function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsNumChange, onKidChange, hasPets, onHasPetsChange, MandatoryFields=false, showNote=false, showParent=false, alignLeft=false, isForApplication=false}){
 
@@ -53,7 +54,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
 
             <div className={s.family_profile_info_with_dropdown_container}>
               <p>{isEditable && MandatoryFields ? "Αριθμός Παιδιών*:" : "Αριθμός Παιδιών:"}</p>
-              <Select
+              <StyledSelect
                 defaultValue={{label: kids.length, value: kids.length}}
                 options={[
                   {label: 1, value: 1},
@@ -82,7 +83,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
 
             <div className={s.family_profile_info_with_dropdown_container}>
               <p>Κατοικίδια:</p>
-              <Select
+              <StyledSelect
                 defaultValue={{label: hasPets ? 'Ναι' : 'Οχι', value: hasPets}}
                 options={[
                   {label: 'Ναι', value: true},

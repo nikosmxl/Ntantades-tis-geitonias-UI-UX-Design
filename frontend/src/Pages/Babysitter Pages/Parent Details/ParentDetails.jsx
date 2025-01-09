@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import s from './ParentDetailsStyle.module.css';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
-import Select from 'react-select';
 import KidCard from '../../../Components/KidCard/KidCard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 const ParentDetails = ({}) => {

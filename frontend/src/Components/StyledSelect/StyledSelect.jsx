@@ -3,14 +3,15 @@ import s from './StyledSelectStyle.module.css';
 import Select from 'react-select';
 
 const StyledSelect = (props) => {
+  const disabled = props?.isDisabled ?? false;
   
   const customStyles = {
     control: (styles) => ({
       ...styles,
-      borderColor:'rgba(0, 52, 117, 0.7)',
-      outline: '1px solid rgba(0, 52, 117, 0.7)',
+      borderColor: disabled ? '#F2F2F2' : 'rgba(0, 52, 117, 0.7)',
+      outline: disabled ? '1px solid #F2F2F2' : '1px solid rgba(0, 52, 117, 0.7)',
       ':hover': {
-        borderColor: 'rgba(0, 52, 117, 0.7)',
+        borderColor: disabled ? '#F2F2F2' : 'rgba(0, 52, 117, 0.7)',
       },
       borderRadius: '5px'
     }),
@@ -25,7 +26,7 @@ const StyledSelect = (props) => {
     dropdownIndicator: (styles) => ({
       ...styles,
       cursor: 'pointer',
-      color: 'rgba(0, 0, 0, 0.7)',
+      color: '#CCCCCC',
     }),
     clearIndicator: (styles) => ({
         ...styles,
@@ -40,11 +41,11 @@ const StyledSelect = (props) => {
     }),
     indicatorsContainer: (styles) => ({
       ...styles,
-      backgroundColor: 'rgba(217, 217, 217, 0.7)',
+      backgroundColor: disabled ? '#F2F2F2' : 'rgba(217, 217, 217, 0.7)',
     }),
     indicatorSeparator: (styles) => ({
       ...styles,
-      backgroundColor: 'rgba(0, 52, 117, 0.7)',
+      backgroundColor: disabled ? '#F2F2F2' : 'rgba(0, 52, 117, 0.7)',
       margin: '0px',
     }),
     valueContainer: (styles) => ({
