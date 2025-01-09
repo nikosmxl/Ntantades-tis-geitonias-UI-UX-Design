@@ -51,6 +51,19 @@ const StyledSelect = (props) => {
       ...styles,
       width: '63px',
       textAlign: 'center',
+    }),
+    menuList: (base) => ({
+      ...base,
+      "::-webkit-scrollbar": {
+        width: "8px",
+      },
+      "::-webkit-scrollbar-thumb": {
+        background: "#888",
+        borderRadius: '4px',
+      },
+      "::-webkit-scrollbar-thumb:hover": {
+        background: "#555",
+      }
     })
   };
 

@@ -43,6 +43,21 @@
   border: 1px solid rgba(0, 0, 0, 0.6);
   border-top: none;
   z-index: 1000;
+  max-height: 100px;
+  overflow-y: scroll;
+}
+
+.dropdown_menu::-webkit-scrollbar {
+  width: 4px;
+}
+  
+.dropdown_menu::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+  
+.dropdown_menu::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .dropdown_menu_option {
