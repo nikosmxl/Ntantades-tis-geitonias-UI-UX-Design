@@ -12,7 +12,7 @@ import EditDate from "./Pages/Common Pages/EditDate/EditDate";
 import Signup from "./Pages/Common Pages/Member Signup/Signup";
 import BabysitterDates from "./Pages/Babysitter Pages/Babysitter Dates/BabysitterDates";
 import ParentDetails from "./Pages/Babysitter Pages/Parent Details/ParentDetails";
-import ParentHistory from './Pages/Common Pages/History/History';
+import History from './Pages/Common Pages/History/History';
 import ApplicationsHistory from './Pages/Common Pages/ApplicationsHistory/ApplicationsHistory';
 import PaymentsHistory from './Pages/Common Pages/PaymentsHistory/PaymentsHistory';
 import PartnershipHistory from './Pages/Common Pages/PartnershipHistory/PartnershipHistory';
@@ -146,7 +146,12 @@ const routes = [
   {
     context: 'parent',
     path: 'history',
-    page: <ParentHistory />,
+    page: <History />,
+  },
+  {
+    context: 'babysitter',
+    path: 'history',
+    page: <History />,
   },
   {
     context: 'parent',

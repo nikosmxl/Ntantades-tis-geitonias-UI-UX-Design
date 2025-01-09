@@ -8,8 +8,19 @@ import ConfirmAndSign from './ConfirmAndSign/ConfirmAndSign';
 import ErrorFields from "../../../Components/ErrorFields/ErrorFields";
 import PersonalDetails from '../../../Components/PersonalDetails/PersonalDetails';
 import { useNavigate } from 'react-router-dom';
+import PartnershipAgreementPopUp from '../../../PopUps/PartnershipAgreementPopUp/PartnershipAgreementPopUp';
 
 const BabysitterPartnershipForm = () => {
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+
+  const openConfirmPopup = () => {
+      setIsConfirmPopupOpen(true);
+  }
+
+  const handleConfirmPopupClose = () => {
+      setIsConfirmPopupOpen(false); // Κλεινει το PopUp
+  };
+
   const [partnershipData, setPartnershipData] = useState({
     "parentDetails": {
       "profilePic": trollProf,
@@ -92,7 +103,7 @@ const BabysitterPartnershipForm = () => {
   const formContainerRef = useRef(null);
 
   const errorStep2Exists = useMemo(() => (
-    step === 0 && errorStep2
+    step === 1 && errorStep2
   ), [step, errorStep2]);
 
   const navigate = useNavigate();
@@ -262,7 +273,7 @@ const BabysitterPartnershipForm = () => {
               <FontAwesomeIcon className={s.icon} icon={faCircleRight} fontSize={"24px"} />
             </button>
           :
-            <button onClick={confirmAndSend} className={s.confirm_and_send_button}>
+            <button onClick={openConfirmPopup} className={s.confirm_and_send_button}>
               <FontAwesomeIcon className={s.icon} icon={faGavel} fontSize={"18px"} />
               Οριστική υποβολή
             </button>
@@ -274,6 +285,15 @@ const BabysitterPartnershipForm = () => {
             Προσωρινή Αποθήκευση
           </button>
         </div>
+        {isConfirmPopupOpen && 
+          <PartnershipAgreementPopUp 
+            onSubmit={confirmAndSend} 
+            onClose={handleConfirmPopupClose}
+            gender={partnershipData.parentDetails.gender}
+            name={partnershipData.parentDetails.name}
+            surname={partnershipData.parentDetails.surname}
+          />
+        }
     </div>
   );
 }

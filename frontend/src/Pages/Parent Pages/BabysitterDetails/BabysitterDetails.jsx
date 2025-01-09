@@ -11,6 +11,7 @@ import Timetable from '../../../Components/Timetable/Timetable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Rating from '../../../Components/Rating/Rating';
+import CertificatesList from '../../../Components/CertificatesList/CertificatesList';
 
 const BabysitterDetails = () => {
   const [isOptionsOpen, setOptionsOpen] = useState(true);
@@ -20,6 +21,7 @@ const BabysitterDetails = () => {
     month: null,
     year: null,
   });
+  const [certificates, setCertificates] = useState([{name:'test'}, {name:'test'}]);
   const { babysitterId } = useParams();
   const babysitterHasActiveListing = true;
 
@@ -139,15 +141,10 @@ const BabysitterDetails = () => {
             </div>
           </div>
           <div className={s.babysitter_details_certification_container}>
-            <div className={s.babysitter_details_certification}>
-              <h5>Πιστοποιητικό / Βεβαίωση</h5>
-            </div>
-            <div className={s.babysitter_details_certification}>
-              <h5>Πιστοποιητικό / Βεβαίωση</h5>
-            </div>
-            <div className={s.babysitter_details_certification}>
-              <h5>Πιστοποιητικό / Βεβαίωση</h5>
-            </div>
+            <CertificatesList
+              certificates={certificates}
+              isEditable={false}
+            />
           </div>
         </div>
 
