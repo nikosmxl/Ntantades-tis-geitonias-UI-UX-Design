@@ -36,17 +36,17 @@
     border-radius: 17px;
 }
 
-.parent_fullname{
+.red_field{
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.parent_fullname label{
+.red_field label{
     font-weight: 600;
 }
 
-.parent_fullname input, .place_of_residence input{
+.red_field input{
     color: #DE0E0E;
     border-radius: 5px;
     padding: 5px 10px;
@@ -55,65 +55,27 @@
     pointer-events: none;
 }
 
-.place_of_residence{
+.years_of_experience{
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 10px;
 }
 
-.place_of_residence label{
-    font-weight: 600;
-    width: 55%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-}
-
-.place_of_residence input{
-    width: fit-content;
-    margin-left: 10px;
-}
-
-.address{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.address label{
-    font-weight: 600;
-    width: 55%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
-}
-
-.address input{
-    width: fit-content;
-    margin-left: 10px;
-    border-radius: 5px;
-    padding: 5px 10px;
-    border: 1px solid #5C5C5C;
-    font-size: 14px;
-}
-
-.address input:focus{
-    outline: none;
-    border: 1px solid black;
-}
-
-.family_info{
-    margin-left: -15px;
-    margin-top: -25px;
-}
-
-.working_hours{
+.working_places, .working_hours{
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-left: 10px;
 }
 
-.working_hours b{
+.working_places b, .working_hours b{
     margin-left: -10px;
     width: 55%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.dropdowns_area{
+    width: 40%;
 }
 
 .calendar_area, .starting_date, .ending_date{

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import s from "./ApplicationCreateStyle.module.css"
-import FamilyInfo from "../../../Components/FamilyInfo/FamilyInfo";
+import s from "./ListingCreateStyle.module.css"
+import Select from 'react-select'
 import Checkbox from "../../../Components/Checkbox/Checkbox";
 import Timetable from "../../../Components/Timetable/Timetable";
 import DateDropdowns from "../../../Components/DateDropdowns/DateDropdowns";
@@ -10,17 +10,18 @@ import { faGavel, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
 import ConfirmationPopUp from "../../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
 import { useParams } from "react-router-dom";
+import DropdownAreas from "../../../Components/DropdownAreas/DropdownAreas";
 
-function ApplicationCreate(){
+function ListingCreate(){
     const fullname = "Μπάμπης Μπαμπάκης";
-    const stateOfResidence = "ΔΗΜΟΣ ΑΧΑΡΝΕΣ";
-    const [address, setAddress] = useState("");
-    
-    const description = "";
-    const kids = [{id: 1, age: 1, gender: "boy", hasDisabilities: false, hasAllergies: false, description: ''}];
-    const hasPets = false;
+    const age = 26;
+
+    const experience = "5 έτη"
+    const experience_with_ages = ["0-6 months", "6-12 months"];
 
     const [workingHours, setWorkingHours] = useState(null);
+    
+    const [areas, setAreas] = useState([{ city: null, neighborhoods: [] }]);
 
     const [availabilityList, setAvailabilityList] = useState([]);
 
@@ -29,7 +30,7 @@ function ApplicationCreate(){
 
     const specialties = ["Disabled"];
     const [transportation, setTransportation] = useState([]);
-    const [languages, setLanguages] = useState([]);
+    const languages = ['English', 'Spanish'];
     const [services, setServices] = useState([]);
 
     const [fewWords, setFewWords] = useState("");
@@ -43,6 +44,12 @@ function ApplicationCreate(){
     const params = useParams();
 
     const dictionaries = {
+        experience_with_ages: {
+            "0-6 months": "0-6 μηνών",
+            "6-12 months": "6-12 μηνών",
+            "1-2 years": "1-2 ετών",
+            ">2 years": ">2 ετών",
+        },
         languages: {
             English: "Αγγλικά",
             French: "Γαλλικά",
@@ -92,10 +99,6 @@ function ApplicationCreate(){
         
     }
 
-    const handleAddressChange = (event) => {
-        setAddress(event.target.value);
-    };
-
     const handleCheckboxChange = (state, setState, value) => {
         if (state.includes(value)) {
             setState(state.filter(item => item !== value));
@@ -119,21 +122,27 @@ function ApplicationCreate(){
 
     useEffect(() => {
         const missingFields = new Set();
+        
+        const hasAtLeastOneCity = areas.some(area => area.city);
+        const hasCityWithoutNeighborhoods = areas.some(area => area.city && area.neighborhoods.length === 0);
 
-        if (address === null){
-            missingFields.add("Οδός και Αριθμός κατοικίας");
+        if (!hasAtLeastOneCity) {
+            missingFields.add("Περιοχές εξυπηρέτησης");
+        } else if (hasCityWithoutNeighborhoods) {
+            missingFields.add("Περιοχές εξυπηρέτησης (Συμπληρώστε τις γειτονίες σας σε κάθε πόλη)");
         }
+
         if (workingHours === null){
             missingFields.add("Χρόνος απασχόλησης");
         }
         if (availabilityList.length === 0){
-            missingFields.add("Ημερολόγιο απασχόλησης");
+            missingFields.add("Διαθεσιμότητα και ώρες");
         }
         if (Object.keys(startingDate).length === 0){
-            missingFields.add("Ημερομηνία έναρξης συνεργασίας");
+            missingFields.add("Από πότε θα είστε διαθέσιμος/η;");
         }
         if (Object.keys(endingDate).length === 0){
-            missingFields.add("Ημερομηνία λήξης συνεργασίας");
+            missingFields.add("Εώς πότε θα είστε διαθέσιμος/η;");
         }
     
         if (missingFields.size === 0) {
@@ -142,53 +151,72 @@ function ApplicationCreate(){
             const errorMessage = `Κάποια από τα υποχρεωτικά πεδία δεν συμπληρώθηκαν: ${Array.from(missingFields).join(", ")}`;
             setError(errorMessage);
         }
-    }, [address, workingHours, availabilityList, startingDate, endingDate]);
+    }, [workingHours, availabilityList, startingDate, endingDate, areas]);
     
     return (
         <div className={s.container}>
             <div className={s.breadcrumbs}>
                 <p>Αρχική</p>
                 <p>{">"}</p>
-                <p>Βρείτε Νταντά</p>
+                <p>Αγγελίες</p>
                 <p>{">"}</p>
-                <p>Δημιουργία νέας Αίτησης</p>
+                <p>Δημιουργία νέας Αγγελίας</p>
             </div>
 
-            <h3 className={s.title}>Δημιουργία νέας Αίτησης</h3>
+            <h3 className={s.title}>Δημιουργία νέας Αγγελίας</h3>
             <p className={s.note}>Τα πεδία με <span>Κόκκινο</span> είναι αμετάβλητα. Επεξεργαστείτε το Προφίλ για να τα αλλάξετε.</p>
             <p className={s.note}>Τα πεδία με αστερίσκο (*) είναι υποχρεωτικά.</p>
             <hr/>
 
             <div className={s.application_create_container}>
-                <div className={s.parent_fullname}>
-                    <label htmlFor="fullname">Ονοματεπώνυμο Κηδεμόνα:</label>
+                <div className={s.red_field}>
+                    <label htmlFor="fullname">Ονοματεπώνυμο:</label>
                     <input type="text" id="fullname" value={fullname} readOnly />
                 </div>
 
-                <div className={s.place_of_residence}>
-                    <label htmlFor="state">Νομός κατοικίας:</label>
-                    <input type="text" id="state" value={stateOfResidence} readOnly />
+                <div className={s.red_field}>
+                    <label htmlFor="age">Ηλικία:</label>
+                    <input type="text" id="age" value={age} readOnly />
                 </div>
 
-                <div className={s.address}>
-                    <label htmlFor="address">Οδός και Αριθμός Διαμονής*:</label>
-                    <input
-                        type="text"
-                        id="address"
-                        value={address}
-                        onChange={handleAddressChange}
-                        placeholder="Η διεύθυνσή σας..."
+                <div className={s.years_of_experience}>
+                    <b>Προϋπηρεσία*:</b>
+                    <Select
+                        placeholder={experience}
+                        isDisabled={true}
+                        styles={{
+                            container: (provided) => ({
+                                ...provided,
+                                width: '230px',
+                            }),
+                            placeholder: (provided) => ({
+                                ...provided,
+                                color: 'rgba(255, 0, 0, 0.8)',
+                            }),
+                        }}
                     />
                 </div>
 
-                <div className={s.family_info}>
-                    <FamilyInfo
-                        isEditable={false}
-                        description={description}
-                        kids={kids}
-                        hasPets={hasPets}
-                        isForApplication
-                    />
+                <div className={s.checkbox_area}>
+                    <b>Εμπειρία με παιδιά ηλικίας</b>
+                    {Object.entries(dictionaries.experience_with_ages).map(([xp, translation]) => (
+                        <Checkbox
+                            key={xp}
+                            name="experienceWithAge"
+                            isChecked={experience_with_ages.includes(xp)}
+                            readOnly
+                            isEnabled={false}
+                            isRed
+                            label={translation}
+                        />
+                    ))}
+                </div>
+
+                <div className={s.working_places}>
+                    <b>Περιοχές  εξυπηρέτησης*</b>
+                    <div className={s.dropdowns_area}>
+                        <DropdownAreas areas={areas} setAreas={setAreas} />
+                    </div>
                 </div>
 
                 <div className={s.working_hours}>
@@ -205,12 +233,12 @@ function ApplicationCreate(){
                 </div>
 
                 <div className={s.calendar_area}>
-                    <b>Ημερολόγιο απασχόλησης*</b>
+                    <b>Διαθεσιμότητα και ώρες*</b>
                     <Timetable width="400px" height="220px" onChange={setAvailabilityList} checkedSlots={availabilityList} />
                 </div>
 
                 <div className={s.starting_date}>
-                    <b>Ημερομηνία Έναρξης Συνεργασίας*</b>
+                    <b>Από πότε θα είστε διαθέσιμος/η;*</b>
                     <Checkbox 
                         name={"startingDate"}
                         isChecked={startingDate === "Anytime"}
@@ -237,7 +265,7 @@ function ApplicationCreate(){
                 </div>
 
                 <div className={s.ending_date}>
-                    <b>Ημερομηνία Λήξης Συνεργασίας*</b>
+                    <b>Εώς πότε θα είστε διαθέσιμος/η;*</b>
                     <Checkbox 
                         name={"endingDate"}
                         isChecked={endingDate === "Anytime"}
@@ -296,9 +324,10 @@ function ApplicationCreate(){
                     {Object.entries(dictionaries.languages).map(([language, translation]) => (
                         <Checkbox
                             key={language}
-                            name={"language"}
+                            name="language"
                             isChecked={languages.includes(language)}
-                            onChange={() => handleCheckboxChange(languages, setLanguages, language)}
+                            isEnabled={false}
+                            isRed
                             label={translation}
                         />
                     ))}
@@ -309,13 +338,14 @@ function ApplicationCreate(){
                     {Object.entries(dictionaries.services).map(([service, translation]) => (
                         <Checkbox
                             key={service}
-                            name={"services"}
+                            name="services"
                             isChecked={services.includes(service)}
                             onChange={() => handleCheckboxChange(services, setServices, service)}
                             label={translation}
                         />
                     ))}
                 </div>
+
                 <div className={s.few_words_area}>
                     <b>Λίγα λόγια</b>
                     <textarea
@@ -358,18 +388,18 @@ function ApplicationCreate(){
             </div>
             {isConfirmPopupOpen && 
                 <ConfirmationPopUp 
-                    context={"Είστε σίγουρος ότι θέλετε να υποβάλετε οριστικά την αίτηση;"} 
+                    context={"Είστε σίγουρος ότι θέλετε να υποβάλετε οριστικά την αγγελία;"} 
                     onConfirm={onConfirm} 
                     onClose={handleConfirmPopupClose} 
                 />
             }
             {isCancelPopupOpen && 
                 <ConfirmationPopUp
-                    context={params.appId == null
+                    context={params.listingId == null
                             ? 
-                            "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την δημιουργία της αίτησης; Η αίτηση δεν θα αποθηκευτεί." 
+                            "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την δημιουργία της αγγελίας; Η αγγελία δεν θα αποθηκευτεί." 
                             : 
-                            "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την επεξεργασία της αίτησης;"
+                            "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την επεξεργασία της αγγελίας;"
                         } 
                     onCancel={onCancel} 
                     onClose={handleCancelPopupClose} 
@@ -379,4 +409,4 @@ function ApplicationCreate(){
     )
 }
 
-export default ApplicationCreate;
+export default ListingCreate;
