@@ -3,6 +3,7 @@ import s from "./EducationExperienceStyle.module.css"
 import MultiDropdownMenu from "../../../../Components/MultiDropdownMenu/MultiDropdownMenu";
 import Checkbox from "../../../../Components/Checkbox/Checkbox";
 import CertificatesList from "../../../../Components/CertificatesList/CertificatesList";
+import Select from 'react-select'
 
 function EducationExperience({ 
     fixHeight, handleErrorChange,
@@ -50,9 +51,21 @@ function EducationExperience({
         ],
     };     
 
-    const educationLevels = Object.keys(educationSpecialties);
+    const educationLevels = Object.keys(educationSpecialties).map((level) => ({
+        value: level,
+        label: level,
+    }));
 
-    const experienceOptions = ["Καμία προϋπηρεσία", "1 έτος", "2 έτη", "3 έτη", "4 έτη", "5 έτη", "5-10 έτη", "10+ έτη"];
+    const experienceOptions = [
+        { value: "Καμία προϋπηρεσία", label: "Καμία προϋπηρεσία" },
+        { value: "1 έτος", label: "1 έτος" },
+        { value: "2 έτη", label: "2 έτη" },
+        { value: "3 έτη", label: "3 έτη" },
+        { value: "4 έτη", label: "4 έτη" },
+        { value: "5 έτη", label: "5 έτη" },
+        { value: "5-10 έτη", label: "5-10 έτη" },
+        { value: "10+ έτη", label: "10+ έτη" },
+    ];
 
     const handleCheckboxChange = (value, type) => {
         if (type === 'experience') {
@@ -66,10 +79,10 @@ function EducationExperience({
         }
     };
 
-    const handleLevelChange = (e) => {
-        setSelectedLevel(e.target.value);
-        setSelectedSpecialty(""); // Reset οταν αλλάζει level
-    };
+    const handleLevelChange = (selectedOption) => {
+        setSelectedLevel(selectedOption ? selectedOption.value : "");
+        setSelectedSpecialty(""); // Reset όταν αλλάζει το level
+      };
     
     const handleSpecialtyChange = (e) => {
         setSelectedSpecialty(e.target.value);
@@ -89,8 +102,8 @@ function EducationExperience({
         );
     };
     
-    const handleExperienceChange = (e) => {
-        setSelectedExperience(e.target.value);
+    const handleExperienceChange = (selectedOption) => {
+        setSelectedExperience(selectedOption ? selectedOption.value : "");
     };
 
     useEffect(() => {
@@ -126,20 +139,19 @@ function EducationExperience({
             <h3 className={s.inner_title}>Εκπαίδευση</h3>
             <div className={s.educational_level}>
                 <h3>Επίπεδο σπουδών*:</h3>
-                <select
-                    value={selectedLevel}
+                <Select
+                    value={educationLevels.find((option) => option.value === selectedLevel)}
                     onChange={handleLevelChange}
-                    disabled={ShowOff}
-                >
-                    <option value="" disabled>
-                        Επιλέξτε Επίπεδο Εκπαίδευσης
-                    </option>
-                    {educationLevels.map((level) => (
-                        <option key={level} value={level}>
-                            {level}
-                        </option>
-                    ))}
-                </select>
+                    options={educationLevels}
+                    isDisabled={ShowOff}
+                    placeholder="Επιλέξτε Επίπεδο Εκπαίδευσης"
+                    styles={{
+                        container: (provided) => ({
+                            ...provided,
+                            width: '480px',
+                        })
+                    }}
+                />
             </div>
 
             {selectedLevel && (
@@ -193,20 +205,19 @@ function EducationExperience({
             <h3 className={s.inner_title}>Εμπειρία</h3>
             <div className={s.years_of_experience}>
                 <h3>Προϋπηρεσία*:</h3>
-                <select
-                    value={selectedExperience}
+                <Select
+                    value={experienceOptions.find((option) => option.value === selectedExperience)}
                     onChange={handleExperienceChange}
-                    disabled={ShowOff}
-                >
-                    <option value="" disabled>
-                        Επιλέξτε Έτη Προϋπηρεσία
-                    </option>
-                    {experienceOptions.map((option) => (
-                        <option key={option} value={option}>
-                            {option}
-                        </option>
-                    ))}
-                </select>
+                    options={experienceOptions}
+                    isDisabled={ShowOff}
+                    placeholder="Επιλέξτε Έτη Προϋπηρεσία"
+                    styles={{
+                        container: (provided) => ({
+                            ...provided,
+                            width: '230px',
+                        })
+                    }}
+                />
             </div>
 
             <div className={s.checkbox_category}>

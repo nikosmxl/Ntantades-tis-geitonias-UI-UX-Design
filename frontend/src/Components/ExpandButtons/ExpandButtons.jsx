@@ -4,7 +4,6 @@ import { faCheck, faEye, faPencil, faTrashCan, faXmark } from "@fortawesome/free
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { useState } from "react";
 import ConfirmationPopUp from "../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
-import DeletionPopUp from "../../PopUps/DeletionPopUp/DeletionPopUp";
 
 function ExpandButtons({isExpanded, toggleIsExpanded, showExpandButton = true, showOptionsButtons = false, showDeleteButton = false, onDelete, showEditButton = false, onEdit, showAcceptButton = false, onAccept, showDeclineButton = false, onDecline}){
     const [isAcceptConfirmPopupOpen, setIsAcceptConfirmPopupOpen] = useState(false);
@@ -74,13 +73,25 @@ function ExpandButtons({isExpanded, toggleIsExpanded, showExpandButton = true, s
                 </div>
             </div>
             {isAcceptConfirmPopupOpen && 
-                <ConfirmationPopUp onConfirm={onAccept} onClose={handleAcceptConfirmPopupClose}/>
+                <ConfirmationPopUp 
+                    context={"Είστε σίγουρος/η ότι θέλετε να αποδεχτείτε την αίτηση;"}
+                    onConfirm={onAccept} 
+                    onClose={handleAcceptConfirmPopupClose}
+                />
             }
             {isDeclineConfirmPopupOpen && 
-                <ConfirmationPopUp onConfirm={onDecline} onClose={handleDeclineConfirmPopupClose}/>
+                <ConfirmationPopUp 
+                context={"Είστε σίγουρος/η ότι θέλετε να απορρίψετε την αίτηση;"}
+                onConfirm={onDecline} 
+                onClose={handleDeclineConfirmPopupClose}
+            />
             }
             {isDeletePopupOpen && 
-                <DeletionPopUp onDelete={onDelete} onClose={handleDeletePopupClose} />
+                <ConfirmationPopUp 
+                    context={"Είστε σίγουρος/η ότι θέλετε να διαγράψετε την αίτηση;"}
+                    onDelete={onDelete} 
+                    onClose={handleDeletePopupClose} 
+                />
             }
         </div>
     )

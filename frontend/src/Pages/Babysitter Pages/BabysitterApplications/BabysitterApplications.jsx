@@ -37,7 +37,7 @@ function BabysitterApplications(){
                 />
             </div>
             <div className={s.column}>
-                <Notification context={"Η Γεωργία Χατζηχρήστου κατέθεσε μία νέα αίτηση στις 16/12/2024 και ώρα 16:24."} />
+                <Notification context={"Η Γεωργία Χατζηχρήστου κατέθεσε μία νέα αίτηση στις 16/12/2024 και ώρα 16:24."} width={'950px'} />
                 <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />
                 <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />
                 <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />

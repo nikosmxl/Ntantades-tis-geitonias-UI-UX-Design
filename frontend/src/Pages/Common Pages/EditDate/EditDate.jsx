@@ -6,10 +6,9 @@ import { faShare, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
 import AvailabilityCalendar from '../../../Components/AvailabilityCalendar/AvailabilityCalendar';
 import ConfirmationPopUp from '../../../PopUps/ConfirmationPopUp/ConfirmationPopUp';
-import CancelationPopUp from '../../../PopUps/CancelationPopUp/CancelationPopUp';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const EditDate = ({}) => {
+const EditDate = () => {
   const labelHelper = {
     'online': 'Διαδικτυακά',
     'inPerson': 'Δια ζώσης',
@@ -24,6 +23,8 @@ const EditDate = ({}) => {
   const [isCancelPopupOpen, setCancelPopupOpen] = useState(false);
 
   const navigate = useNavigate();
+
+  const params = useParams();
 
   const handleChangePlace = (selectedOption) => {
     setPlace(selectedOption.value);
@@ -53,6 +54,7 @@ const EditDate = ({}) => {
             <img
               src={trollProf}
               className={s.date_info_user_avatar}
+              alt='Profile'
             />
             <h3>Ονοματεπώνυμο</h3>
           </div>
@@ -130,10 +132,26 @@ const EditDate = ({}) => {
         </div>
       </div>
       {isCancelPopupOpen && 
-        <CancelationPopUp onCancel={handleCancelChanges} onClose={() => setCancelPopupOpen(false)}/>
+        <ConfirmationPopUp 
+          context={params.id == null ? 
+            "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε τον προγραμματισμό του ραντεβού; Το ραντεβού δεν θα αποθηκευτεί."
+            :
+            "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την επεξεργασία του ραντεβού;"
+          }
+          onCancel={handleCancelChanges} 
+          onClose={() => setCancelPopupOpen(false)}
+        />
       }
       {isConfirmPopupOpen && 
-        <ConfirmationPopUp onConfirm={handleConfirmChanges} onClose={() => setConfirmPopupOpen(false)}/>
+        <ConfirmationPopUp 
+          context={params.id == null ? 
+            "Είστε σίγουρος/η ότι θέλετε να προγραμματίσετε το ραντεβού;"
+            :
+            "Είστε σίγουρος/η ότι θέλετε να αλλάξετε τα στοιχεία του ραντεβού;"
+          }
+          onConfirm={handleConfirmChanges} 
+          onClose={() => setConfirmPopupOpen(false)}
+        />
       }
     </div>
   );

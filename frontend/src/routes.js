@@ -78,6 +78,11 @@ const routes = [
   },
   {
     context: 'parent',
+    path: 'applications/application-create:appId',
+    page: <ApplicationCreate />,
+  },
+  {
+    context: 'parent',
     path: 'partnership',
     page: <ParentPartnership />,
   },
@@ -109,6 +114,16 @@ const routes = [
   {
     context: 'babysitter',
     path: 'edit-date/:id',
+    page: <EditDate />,
+  },
+  {
+    context: 'parent',
+    path: 'edit-date',
+    page: <EditDate />,
+  },
+  {
+    context: 'babysitter',
+    path: 'edit-date',
     page: <EditDate />,
   },
   {
