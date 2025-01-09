@@ -3,7 +3,7 @@ import s from "./ConfirmationPopUpStyle.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
-function ConfirmationPopUp({ onConfirm, onClose }) {
+function ConfirmationPopUp({ context, onConfirm, onClose }) {
     const [isLoading, setIsLoading] = useState(false); // Όταν θα επιβεβαιώνει θα κάνει asyncronous tasks λογικά (θα θέλει λιγο χρονο για ενεργειες στο backend)
     const [isClosing, setIsClosing] = useState(false); // Για το animation
 
@@ -26,7 +26,7 @@ function ConfirmationPopUp({ onConfirm, onClose }) {
     return (
         <div className={s.popup_overlay}>
             <div className={`${s.popup_content} ${isClosing ? s.closed : s.open}`}>
-                <h3>Επιθυμείτε να προχωρήσετε με την ενέργεια;</h3>
+                <h3>{context}</h3>
                 <div className={s.options}>
                     <button disabled={isLoading} className={s.cancel_button} onClick={handleClosePopup}>
                         <FontAwesomeIcon icon={faXmark} className={s.icon} />

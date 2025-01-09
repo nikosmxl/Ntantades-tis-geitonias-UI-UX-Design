@@ -11,6 +11,7 @@
 
 .educational_level{
     display: flex;
+    align-items: center;
     gap: 10px;
     margin: 20px 0 30px 15px;
 }
@@ -115,6 +116,7 @@
 
 .years_of_experience{
     display: flex;
+    align-items: center;
     gap: 10px;
     margin: 20px 0 30px 15px;
 }

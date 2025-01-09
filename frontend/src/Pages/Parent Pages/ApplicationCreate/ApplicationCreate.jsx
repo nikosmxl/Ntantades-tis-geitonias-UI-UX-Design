@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGavel, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
 import ConfirmationPopUp from "../../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
-import CancelationPopUp from "../../../PopUps/CancelationPopUp/CancelationPopUp"
+import { useParams } from "react-router-dom";
 
 function ApplicationCreate(){
     const fullname = "Μπάμπης Μπαμπάκης";
@@ -39,6 +39,8 @@ function ApplicationCreate(){
     
     const [isCancelPopupOpen, setIsCancelPopupOpen] = useState(false);
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+
+    const params = useParams();
 
     const openConfirmPopup = () => {
         setIsConfirmPopupOpen(true);
@@ -450,10 +452,23 @@ function ApplicationCreate(){
                 </div>
             </div>
             {isConfirmPopupOpen && 
-                <ConfirmationPopUp onConfirm={onConfirm} onClose={handleConfirmPopupClose} />
+                <ConfirmationPopUp 
+                    context={"Είστε σίγουρος ότι θέλετε να υποβάλετε οριστικά την αίτηση;"} 
+                    onConfirm={onConfirm} 
+                    onClose={handleConfirmPopupClose} 
+                />
             }
             {isCancelPopupOpen && 
-                <CancelationPopUp onCancel={onCancel} onClose={handleCancelPopupClose} />
+                <ConfirmationPopUp
+                    context={params.appId == null
+                            ? 
+                            "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την δημιουργία της αίτησης; Η αίτηση δεν θα αποθηκευτεί." 
+                            : 
+                            "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την επεξεργασία της αίτησης;"
+                        } 
+                    onCancel={onCancel} 
+                    onClose={handleCancelPopupClose} 
+                />
             }
         </div>
     )
