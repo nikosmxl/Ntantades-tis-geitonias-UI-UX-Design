@@ -10,8 +10,19 @@ import PartnershipAgreement from '../../../Components/PartnershipAgreement/Partn
 import ErrorFields from "../../../Components/ErrorFields/ErrorFields";
 import PersonalDetails from '../../../Components/PersonalDetails/PersonalDetails';
 import { useNavigate } from 'react-router-dom';
+import PartnershipAgreementPopUp from '../../../PopUps/PartnershipAgreementPopUp/PartnershipAgreementPopUp';
 
 const ParentPartnershipForm = () => {
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+
+  const openConfirmPopup = () => {
+      setIsConfirmPopupOpen(true);
+  }
+
+  const handleConfirmPopupClose = () => {
+      setIsConfirmPopupOpen(false); // Κλεινει το PopUp
+  };
+
   const [partnershipData, setPartnershipData] = useState({
     "parentDetails": {
       "profilePic": trollProf,
@@ -323,7 +334,7 @@ const ParentPartnershipForm = () => {
               <FontAwesomeIcon className={s.icon} icon={faCircleRight} fontSize={"24px"} />
             </button>
           :
-            <button onClick={confirmAndSend} className={s.confirm_and_send_button}>
+            <button onClick={openConfirmPopup} className={s.confirm_and_send_button}>
               <FontAwesomeIcon className={s.icon} icon={faGavel} fontSize={"18px"} />
               Οριστική υποβολή
             </button>
@@ -336,6 +347,15 @@ const ParentPartnershipForm = () => {
             Προσωρινή Αποθήκευση
           </button>
         </div>
+        {isConfirmPopupOpen && 
+          <PartnershipAgreementPopUp 
+            onSubmit={confirmAndSend} 
+            onClose={handleConfirmPopupClose}
+            gender={partnershipData.babysitterDetails.gender}
+            name={partnershipData.babysitterDetails.name}
+            surname={partnershipData.babysitterDetails.surname}
+          />
+        }
     </div>
   );
 }
