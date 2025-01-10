@@ -10,7 +10,7 @@ function NavBarCategory({ header, toRoute }) {
     const isActive = useMemo(() => location.pathname.startsWith(`/${toRoute}`), [location.pathname, toRoute]);
 
     const handleClick = () =>{
-      toRoute === location.pathname ? window.location.reload() : navigate(`../${toRoute}`, {path: '..'})
+      location.pathname === `/${toRoute}` ? window.location.reload() : navigate(`../${toRoute}`, {path: '..'})
     };
 
     return (
