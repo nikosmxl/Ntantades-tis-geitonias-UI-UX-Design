@@ -1,0 +1,13 @@
+.instructions_page_container{
+    margin: 9px 135px 0;
+}
+
+.breadcrumbs{
+    display: flex;
+    gap: 7px;
+    font-size: 13px;
+}
+
+.instructions{
+    margin-left: 50px;
+}
