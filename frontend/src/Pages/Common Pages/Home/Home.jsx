@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faSearch } from "@fortawesome/free-solid-svg-icons";
 import FamousSearches from "./FamousSearches/FamousSearches";
 import BabysitterList from "../../../Components/BabysitterList/BabysitterList";
-import Instructions from "../Instructions/Instructions";
+import Instructions from "../../../Components/Instructions/Instructions";
 
 function Home(){
     return (
