@@ -6,6 +6,7 @@ import ListHeader from "../../../Components/ListHeader/ListHeader";
 import { useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
 import BabysitterGridView from '../../../Components/BabysitterGridView/BabysitterGridView';
+import CreateRatingPopup from "../../../PopUps/CreateRatingPopup/CreateRatingPopup";
 
 function ParentPartnership(){
     const [futurePartnershipsPageSize, setFuturePartnershipsPageSize] = useState(3);
@@ -31,6 +32,8 @@ function ParentPartnership(){
     const editablePartnershipsSortingOptions = ["most recent", "least recent", "alphabetically"];
     const editablePartnershipsPages = 5;
     const [editablePartnershipsCurrentPage, setEditablePartnershipsCurrentPage] = useState(1);
+
+    const [showCreateRatingPopup, setShowCreateRatingPopup] = useState(false);
     
     const [babysitters, setBabysitters] = useState([
       { id: 1, name: 'Δήμητρα Χατζή'},
@@ -58,7 +61,7 @@ function ParentPartnership(){
             
             <b className={s.running_partnership_title}>Τρέχουσα συνεργασία</b>
             <div className={s.running_partnership}>
-                <Partnership isParent={true} isRunning={true} isFuture={false} isSent={false} isPending={false} isEditable={false} isHistory={false}/>
+                <Partnership isParent={true} isRunning={true} isFuture={false} isSent={false} isPending={false} isEditable={false} isHistory={false} onCreateRating={() => setShowCreateRatingPopup(true)}/>
             </div>
 
             <div className={s.list_header}>
@@ -125,6 +128,19 @@ function ParentPartnership(){
             <Pagination pages={editablePartnershipsPages} currentPage={editablePartnershipsCurrentPage}
                 onChange={setEditablePartnershipsCurrentPage} width="620px"
             />
+
+            {
+              showCreateRatingPopup && (
+                <CreateRatingPopup
+                  babysitter={{ name: 'Γεωργία' }}
+                  onCreate={() => {
+                    // api call to create rating
+                    setShowCreateRatingPopup(false);
+                  }}
+                  onClose={() => setShowCreateRatingPopup(false)}
+                />
+              )
+            }
         </div>
     )
 }

@@ -8,7 +8,7 @@ import DateDropdowns from '../DateDropdowns/DateDropdowns';
 import StyledSelect from "../StyledSelect/StyledSelect";
 import { useNavigate } from "react-router-dom";
 
-function Partnership({isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false}){
+function Partnership({isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false, onCreateRating}){
     const perioxes = ['ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ', 'ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ'];
     const [perioxh, setPerioxh] = useState('ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ');
     const [availabilityList, setAvailabilityList] = useState([ [0, 1], [2, 3], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4] ]);
@@ -189,7 +189,7 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                 }
                 {isParent && isPartnershipOver && isRunning &&
                     <div className={`${s.rate_button_area} ${!isExpanded ? s.collapsed : ''}`}>
-                        <button className={s.rate_button} onClick={() => {}}>
+                        <button className={s.rate_button} onClick={onCreateRating}>
                             ΑΞΙΟΛΟΓΗΣΗ
                         </button>
                     </div>
