@@ -2,28 +2,40 @@ import React, { useState } from "react";
 import s from "./UserProfileDropdownStyle.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
-import { faCaretDown, faCaretUp, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faCaretUp, faRightFromBracket, faStar } from '@fortawesome/free-solid-svg-icons';
 import DropdownMenu from "../Dropdown Menu/DropdownMenu";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function UserProfileDropdown() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const dummyfunc = () => {
-    return;
-  }
+  const navigate = useNavigate();
+  const location = useLocation();
+  const userId = '1'; //hard coded for now
 
-  const options = [
+  const contextIsParent = location.pathname.includes('parent')
+
+  let options = [
     {
       "label" : "Προφίλ",
       "icon": faUser,
-      "onClick": dummyfunc
+      "onClick": () => navigate(contextIsParent ? `family-profile/${userId}` : 'profile', {path: '../'})
     },
-    {
-      "label" : "Έξοδος",
-      "icon": faRightFromBracket,
-      "onClick": dummyfunc
-    }
-  ]
+  ];
+
+  if (!contextIsParent) {
+    options.push({
+      "label" : "Οι αξιολογήσεις μου",
+      "icon": faStar,
+      "onClick": () => navigate('../ratings', {path: '../'})
+    });
+  }
+
+  options.push({
+    "label" : "Έξοδος",
+    "icon": faRightFromBracket,
+    "onClick": () => navigate('../', {path: '../..'})
+  });
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
