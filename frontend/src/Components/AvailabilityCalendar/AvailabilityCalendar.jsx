@@ -3,25 +3,8 @@ import s from './AvailabilityCalendarStyle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
-const AvailabilityCalendar = ({}) => {
+const AvailabilityCalendar = ({availability, selectedTimeslot, onAvailabilityChange, onTimeslotChange, editableAvailability=false, showWeeks=true, isEditable=true, width='100%'}) => {
   const [weekIndex, setWeekIndex] = useState(0);
-  const [availableTimeslots, setAvailableTimeslots] = useState([
-    {day: 0, time: 0},
-    {day: 0, time: 1},
-    {day: 0, time: 2},
-    {day: 0, time: 3},
-    {day: 1, time: 0},
-    {day: 1, time: 1},
-    {day: 1, time: 2},
-    {day: 1, time: 3},
-    {day: 1, time: 4},
-    {day: 1, time: 5},
-    {day: 1, time: 6},
-  ]);
-  const [selectedTimeslot, setSelectedTimeslot] = useState({
-    day: 1,
-    time: 1,
-  });
 
   const days = ["Δευτέρα", "Tρίτη", "Tετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"];
   const months = [
@@ -64,14 +47,14 @@ const AvailabilityCalendar = ({}) => {
   }
 
   const getStyleForCell = (dayIndex, timeIndex) => {
-    if (selectedTimeslot.day === dayIndex && selectedTimeslot.time === timeIndex) {
+    if (selectedTimeslot?.day === dayIndex && selectedTimeslot?.time === timeIndex) {
       return {
         'backgroundColor': 'rgba(47, 114, 239, 0.8)',
         'cursor': 'pointer',
       };
     }
 
-    const timeslot = availableTimeslots.find(timeslot => {
+    const timeslot = availability.find(timeslot => {
       return timeslot.day === dayIndex && timeslot.time === timeIndex;
     });
 
@@ -85,44 +68,66 @@ const AvailabilityCalendar = ({}) => {
   };
 
   const handleTimeslotClick = (dayIndex ,timeIndex) => {
-    if (selectedTimeslot.day === dayIndex && selectedTimeslot.time === timeIndex) {
-      setSelectedTimeslot({day: null, time: null});
-      return;
-    }
+    if (!isEditable) return;
 
-    const timeslot = availableTimeslots.find(timeslot => {
+    const timeslotAvailable = availability.find(timeslot => {
       return timeslot.day === dayIndex && timeslot.time === timeIndex;
     });
 
-    if (!timeslot) {
+    if (editableAvailability) {
+      if (timeslotAvailable) {
+        onAvailabilityChange(availability.filter(timeslot => {
+          return timeslot.day !== dayIndex || timeslot.time !== timeIndex;
+        }));
+      } else {
+        onAvailabilityChange([...availability, {day: dayIndex, time: timeIndex}]);
+      }
       return;
     }
 
-    setSelectedTimeslot({ day: dayIndex, time: timeIndex });
+    if (selectedTimeslot?.day === dayIndex && selectedTimeslot?.time === timeIndex) {
+      onTimeslotChange({day: null, time: null});
+      return;
+    }
+
+    if (!timeslotAvailable) {
+      return;
+    }
+
+    onTimeslotChange({ day: dayIndex, time: timeIndex });
   };
 
   return (
-    <div className={s.availability_calendar_container}>
-      <div className={s.availability_calendar_header_container}>
-        <div
-          className={weekIndex > 0 ? s.change_week_button : s.change_week_button_disabled}
-          onClick={() => {
-            if (weekIndex <= 0) return;
-            setWeekIndex((prevWeekIndex) => prevWeekIndex-1)
-          }}
-        >
-          <FontAwesomeIcon icon={faAngleLeft} color='rgba(0, 0, 0, 0.65)'/>
-        </div>
-        
-        <p>{week[0].headerLabel} - {week[week.length-1].headerLabel}</p>
-
-        <div
-          className={s.change_week_button}
-          onClick={() => setWeekIndex((prevWeekIndex) => prevWeekIndex+1)}
-        >
-          <FontAwesomeIcon icon={faAngleRight} color='rgba(0, 0, 0, 0.65)'/>
-        </div>
-      </div>
+    <div
+      className={s.availability_calendar_container}
+      style={{
+        width: width,
+      }}
+    >
+      {
+        showWeeks && (
+          <div className={s.availability_calendar_header_container}>
+            <div
+              className={weekIndex > 0 ? s.change_week_button : s.change_week_button_disabled}
+              onClick={() => {
+                if (weekIndex <= 0) return;
+                setWeekIndex((prevWeekIndex) => prevWeekIndex-1)
+              }}
+            >
+              <FontAwesomeIcon icon={faAngleLeft} color='rgba(0, 0, 0, 0.65)'/>
+            </div>
+            
+            <p>{week[0].headerLabel} - {week[week.length-1].headerLabel}</p>
+    
+            <div
+              className={s.change_week_button}
+              onClick={() => setWeekIndex((prevWeekIndex) => prevWeekIndex+1)}
+            >
+              <FontAwesomeIcon icon={faAngleRight} color='rgba(0, 0, 0, 0.65)'/>
+            </div>
+          </div>
+        )
+      }
       <table className={s.availability_calendar}>
         <thead>
           <tr>
