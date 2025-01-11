@@ -1,15 +1,6 @@
-import React from 'react'
-import Select from 'react-select'
-
-const languageOptions = [
-  { value: 'english', label: 'Αγγλικά' },
-  { value: 'french', label: 'Γαλλικά' },
-  { value: 'italian', label: 'Ιταλικά' },
-  { value: 'spanish', label: 'Ισπανικά' },
-  { value: 'german', label: 'Γερμανικά' },
-  { value: 'russian', label: 'Ρώσικα' },
-  { value: 'arabic', label: 'Αραβικά' },
-]
+import React from 'react';
+import Select from 'react-select';
+import { languageOptions } from '../../utils/options';
 
 const MultiDropdownMenu = ({ options = languageOptions, placeholder = "Διαλέξτε τις γλώσσες σας...", selectedOptions, setSelectedOptions, isDisabled = false }) => {
 

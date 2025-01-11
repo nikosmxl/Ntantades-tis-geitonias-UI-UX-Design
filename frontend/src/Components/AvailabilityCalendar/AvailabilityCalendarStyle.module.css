@@ -5,6 +5,8 @@
   align-items: stretch;
   overflow: hidden;
   gap: 14px;
+  align-self: center;
+  margin-top: 10px;
 }
 
 .availability_calendar_header_container {

@@ -21,6 +21,23 @@ const EditDate = () => {
   const [comments, setComments] = useState('');
   const [isConfirmPopupOpen, setConfirmPopupOpen] = useState(false);
   const [isCancelPopupOpen, setCancelPopupOpen] = useState(false);
+  const [availability, setAvailableTimeslots] = useState([
+    {day: 0, time: 0},
+    {day: 0, time: 1},
+    {day: 0, time: 2},
+    {day: 0, time: 3},
+    {day: 1, time: 0},
+    {day: 1, time: 1},
+    {day: 1, time: 2},
+    {day: 1, time: 3},
+    {day: 1, time: 4},
+    {day: 1, time: 5},
+    {day: 1, time: 6},
+  ]);
+  const [selectedTimeslot, setSelectedTimeslot] = useState({
+    day: 1,
+    time: 1,
+  });
 
   const navigate = useNavigate();
 
@@ -113,7 +130,11 @@ const EditDate = () => {
         
         <div className={s.date_scheduler_container}>
           <p>Δήλωση Ώρας*:</p>
-          <AvailabilityCalendar />
+          <AvailabilityCalendar
+            availability={availability}
+            selectedTimeslot={selectedTimeslot}
+            onTimeslotChange={setSelectedTimeslot}
+          />
         </div>
 
         <div className={s.edit_date_actions_container}>
