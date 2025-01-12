@@ -27,7 +27,7 @@ function UserProfileDropdown() {
     options.push({
       "label" : "Οι αξιολογήσεις μου",
       "icon": faStar,
-      "onClick": () => navigate('../ratings', {path: '../'})
+      "onClick": () => navigate('ratings', {path: '../'})
     });
   }
 

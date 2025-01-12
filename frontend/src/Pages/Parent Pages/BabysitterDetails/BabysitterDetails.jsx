@@ -22,6 +22,7 @@ const BabysitterDetails = () => {
     year: null,
   });
   const [certificates, setCertificates] = useState([{name:'test'}, {name:'test'}]);
+  const [ratings, setRatings] = useState([]);
   const { babysitterId } = useParams();
   const babysitterHasActiveListing = true;
 
@@ -300,10 +301,16 @@ const BabysitterDetails = () => {
           <div className={s.babysitter_ratings_container}>
 
             <div className={s.babysitter_ratings_list}>
-              <Rating />
-              <Rating />
-              <Rating />
-              <Rating />
+              {
+                ratings.map(rating => {
+                  return (
+                    <Rating
+                      key={rating}
+                      rating={rating}
+                    />
+                  );
+                })
+              }
             </div>
 
             <Pagination

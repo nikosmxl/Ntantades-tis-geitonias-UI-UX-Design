@@ -4,7 +4,7 @@ import s from './RatingStyle.module.css';
 import Stars from '../Stars/Stars';
 import { useNavigate } from 'react-router-dom';
 
-const Rating = ({}) => {
+const Rating = ({ rating }) => {
   const hasText = false;
 
   const navigate = useNavigate();
@@ -25,16 +25,16 @@ const Rating = ({}) => {
           <div className={s.rating_stars_container}>
             <p>Βαθμολογία :</p>
             <Stars
-              rating={4}
+              rating={rating.rating}
               color='#E9BA00'
             />
           </div>
         </div>
         {
-          hasText && (
+          rating.text != null && (
             <textarea
               disabled
-              value='Πολύ καλή γυναίκα και εξυπηρετική! Συνεργαστήκαμε για ενα 6μηνο, έμεινα ικανοποιημένη και θα ξανασυνεργαζόμουν!'
+              value={rating.text}
             />
           )
         }
