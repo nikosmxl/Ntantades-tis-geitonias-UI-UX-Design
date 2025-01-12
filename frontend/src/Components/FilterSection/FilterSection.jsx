@@ -4,6 +4,7 @@ import Checkbox from '../Checkbox/Checkbox';
 import Timetable from '../Timetable/Timetable';
 import Select from 'react-select';
 import FilterSectionInput from '../Input/Input';
+import Stars from '../Stars/Stars';
 import { Input } from 'reactstrap';
 
 const FilterSection = ({ sectionLabel, fields=[] }) => {
@@ -86,6 +87,22 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
                     border: '1px solid rgba(0, 0, 0, 0.5)',
                   }}
                 />
+              )
+            } else if (field.type === 'stars') {
+              return (
+                <div
+                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}
+                >
+                  <p>{field.label}:</p>
+                  <Stars
+                    key={field.name}
+                    rating={field.rating}
+                    showRating={false}
+                    onChange={field.onChange}
+                    isEnabled={true}
+                    color='#E9BA00'
+                  />
+                </div>
               )
             }
           })

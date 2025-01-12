@@ -26,6 +26,7 @@ import ViewPartnership from "./Pages/Common Pages/ViewPartnership/ViewPartnershi
 import ListingCreate from "./Pages/Babysitter Pages/ListingCreate/ListingCreate";
 import InstructionsPage from "./Pages/Common Pages/InstructionsPage/InstructionsPage";
 import BabysitterProfile from "./Pages/Babysitter Pages/BabysitterProfile/BabysitterProfile";
+import MyRatings from "./Pages/Babysitter Pages/MyRatings/MyRatings";
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -73,6 +74,11 @@ const routes = [
     context: 'babysitter',
     path: 'profile',
     page: <BabysitterProfile />,
+  },
+  {
+    context: 'babysitter',
+    path: 'ratings',
+    page: <MyRatings />,
   },
   {
     context: 'parent',

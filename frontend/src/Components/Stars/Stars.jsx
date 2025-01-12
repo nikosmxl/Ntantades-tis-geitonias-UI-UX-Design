@@ -59,7 +59,7 @@ function Stars({ rating, showRating, onChange, color='#E1E900', size='small', is
             />
         ))}
         {showRating && (
-            <p className={size === 'small' ? s.rating : s.rating_big}>{`(${rating})`}</p>
+            <p className={size === 'small' ? s.rating : s.rating_big}>{`(${Math.round(rating * 10) / 10})`}</p>
         )}
     </div>
   );
