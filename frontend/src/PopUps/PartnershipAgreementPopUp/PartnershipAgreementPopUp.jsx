@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import s from "./PartnershipAgreementPopUpStyle.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 function PartnershipAgreementPopUp({ onSubmit, onClose, gender, name, surname }) {
     const [isLoading, setIsLoading] = useState(false); // Όταν θα επιβεβαιώνει θα κάνει asyncronous tasks λογικά (θα θέλει λιγο χρονο για ενεργειες στο backend)

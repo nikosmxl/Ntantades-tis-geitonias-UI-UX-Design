@@ -3,9 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // τα  ει�
 import { faLocationDot, faSearch } from "@fortawesome/free-solid-svg-icons"; // Αναζητήστε με βάση περιοχή (δεν το θέλουμε εδω)
 import babysitter_icon from "../../../Assets/Icons/babysitter_icon.png";
 import family_icon from "../../../Assets/Icons/family_icon.png";
+import { useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
+    const navigate = useNavigate();
     return (
         <div className={s.container}>
             <div className={s.breadcrumbs_container}>
@@ -19,14 +21,14 @@ const Signup = () => {
                 <div className={s.pics}>
                 
                     <div className = {s.button_section}>
-                        <button className={s.butts}>Είμαι Κηδεμόνας</button>
+                        <button className={s.butts} onClick={() => navigate('/signup/parent')}>Είμαι Κηδεμόνας</button>
                         <img src={family_icon} alt="Family" />
                     </div>
                     
                     <hr className={s.vert}/>
                     
                     <div className = {s.button_section}>
-                        <button className={s.butts}>Είμαι Nταντά</button>
+                        <button className={s.butts} onClick={() => navigate('/signup/babysitter')}>Είμαι Nταντά</button>
                         <img src={babysitter_icon} alt="Babysitter" />
                     </div>
                 </div>

@@ -33,6 +33,7 @@
 .date_info_user_avatar {
   width: 120px;
   height: 120px;
+  cursor: pointer;
 }
 
 .date_info {

@@ -159,7 +159,7 @@ const EditDate = () => {
             :
             "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την επεξεργασία του ραντεβού;"
           }
-          onCancel={handleCancelChanges} 
+          onConfirm={handleCancelChanges} 
           onClose={() => setCancelPopupOpen(false)}
         />
       }

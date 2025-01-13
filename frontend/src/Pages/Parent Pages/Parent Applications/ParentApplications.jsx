@@ -5,6 +5,7 @@ import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Pagination from "../../../Components/Pagination/Pagination";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ParentApplications(){
     const [submittedApplicationsPageSize, setSubmittedApplicationsPageSize] = useState(3);
@@ -19,6 +20,12 @@ function ParentApplications(){
     const editableApplicationsPages = 5;
     const [editableApplicationsCurrentPage, setEditableApplicationsCurrentPage] = useState(1);
     
+    const navigate = useNavigate();
+
+    const handleApplicationDelete = (applicationId) => {
+      // api call to delete
+    };
+
     return (
         <div className={s.applications_page}>
             <div className={s.breadcrumbs}>
@@ -28,7 +35,7 @@ function ParentApplications(){
             </div>
             <div className={s.title_history_row}>
                 <h3>Οι αιτήσεις μου</h3>
-                <button className={s.history_button}>
+                <button className={s.history_button} onClick={() => navigate('/parent/history/applications')}>
                     <FontAwesomeIcon icon={faClockRotateLeft} />
                     Ιστορικό αιτήσεων
                 </button>
@@ -42,9 +49,9 @@ function ParentApplications(){
                 />
             </div>
             <div className={s.column}>
-                <Application isParent={true} application_state={1} isHistory={false} isEditable={false} />
-                <Application isParent={true} application_state={0} isHistory={false} isEditable={false} />
-                <Application isParent={true} application_state={2} isHistory={false} isEditable={false} />
+                <Application isParent={true} application_state={1} isHistory={false} isEditable={false} onDelete={handleApplicationDelete}/>
+                <Application isParent={true} application_state={0} isHistory={false} isEditable={false} onDelete={handleApplicationDelete}/>
+                <Application isParent={true} application_state={2} isHistory={false} isEditable={false} onDelete={handleApplicationDelete}/>
             </div>
             <Pagination pages={submittedApplicationsPages} currentPage={submittedApplicationsCurrentPage}
                 onChange={setSubmittedApplicationsCurrentPage} width="620px"
@@ -58,9 +65,9 @@ function ParentApplications(){
                 />
             </div>
             <div className={s.column}>
-                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} />
-                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} />
-                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} />
+                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} onDelete={handleApplicationDelete}/>
+                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} onDelete={handleApplicationDelete}/>
+                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} onDelete={handleApplicationDelete}/>
             </div>
             <Pagination pages={editableApplicationsPages} currentPage={editableApplicationsCurrentPage}
                 onChange={setEditableApplicationsCurrentPage} width="620px"

@@ -18,6 +18,12 @@ const Payment = ({ payment, isParent = true }) => {
     navigate('../partnership/1', {path: '..'});
   };
 
+  const handleUserClick = () => {
+    if (isParent) return navigate('/parent/babysitter-details/1');
+
+    navigate('/parent/family-profile/1');
+  };
+
   return (
     <div className={s.payment_container}>
 
@@ -29,7 +35,7 @@ const Payment = ({ payment, isParent = true }) => {
       >
         <div className={s.payment_top_row}>
           <div className={s.payment_general_info}>
-            <img src={troll_prof} alt="Profile" />
+            <img src={troll_prof} alt="Profile" onClick={handleUserClick}/>
             <b className={s.name}>Δήμητρα Χατζή</b>
             <p>•</p>
             {payment.status === 'redeemed'

@@ -3,11 +3,13 @@ import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
 import { useState } from "react";
 import ExpandButtons from "../ExpandButtons/ExpandButtons";
+import { useNavigate } from "react-router-dom";
 
-function Listing({ isHistory = false, isEditable = false }){
+function Listing({ isHistory = false, isEditable = false, onDelete }){
     const [availabilityList, setAvailabilityList] = useState([ [0, 1], [2, 3], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4] ]);
     
     const sample = {
+        "id": 1,
         "name": "Γεωργία Χατζηνικολάου",
         "age": "27 ετών",
         "working_xp": "5 έτη",
@@ -60,6 +62,8 @@ function Listing({ isHistory = false, isEditable = false }){
         toggleIsExpanded2();
         toggleIsExpanded();
     }
+
+    const navigate = useNavigate();
 
     return (
         <div className={s.listing_with_buttons}>
@@ -117,6 +121,8 @@ function Listing({ isHistory = false, isEditable = false }){
             <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={isExpanded ? setVariables : setVariables2}
                 showOptionsButtons={!isHistory} showDeleteButton={true}
                 showEditButton={isEditable} 
+                onDelete={() => onDelete(sample["id"])}
+                onEdit={() => navigate(`/babysitter/listings/listing-create/${sample["id"]}`)}
             />
         </div>
     )

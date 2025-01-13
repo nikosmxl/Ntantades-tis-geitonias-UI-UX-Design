@@ -1,9 +1,35 @@
 import s from "./PersonalDetailsStyle.module.css"
 import blankProfilePic from "../../Assets/Pictures/blankProfilePic.png"
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMarginRight='220px', horizontalMargin='320px', }){
     const [profilePicturePreview, setProfilePicturePreview] = useState(userData?.profilePic ?? blankProfilePic);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const context = location.pathname.split('/')[1];
+
+    const handleParentClick = () => {
+      if (context === 'parent') return navigate('/parent/family-profile/1');
+
+      console.log('babysitter contxe')
+      navigate('/babysitter/family-profile/1');
+    };
+
+    const handleBabysitterClick = () => {
+      if (context === 'parent') return navigate('/parent/babysitter-details/1');
+
+      console.log('babysitter contxe')
+      navigate('/babysitter/profile');
+    }
+
+    const handleProfilePictureClick = () => {
+      const isParent = userData?.role === 'parent';
+
+      if (isParent) return handleParentClick();
+
+      handleBabysitterClick();
+    };
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -21,7 +47,7 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
           }}
         >
             <h3 className={s.first_inner_title}>Φωτογραφία Προφίλ</h3>
-            <img src={profilePicturePreview} alt="Profile" />
+            <img src={profilePicturePreview} alt="Profile" onClick={() => handleProfilePictureClick()}/>
             {!ShowOff &&
                 <>
                     <label className={s.add_image} htmlFor="imageInput">Προσθέστε φωτογραφία +</label>

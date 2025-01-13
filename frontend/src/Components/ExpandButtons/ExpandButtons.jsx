@@ -89,7 +89,7 @@ function ExpandButtons({isExpanded, toggleIsExpanded, showExpandButton = true, s
             {isDeletePopupOpen && 
                 <ConfirmationPopUp 
                     context={"Είστε σίγουρος/η ότι θέλετε να διαγράψετε την αίτηση;"}
-                    onDelete={onDelete} 
+                    onConfirm={onDelete} 
                     onClose={handleDeletePopupClose} 
                 />
             }

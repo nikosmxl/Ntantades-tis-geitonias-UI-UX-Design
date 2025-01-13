@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGavel, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
 import ConfirmationPopUp from "../../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ApplicationCreate(){
     const fullname = "Μπάμπης Μπαμπάκης";
@@ -68,6 +68,8 @@ function ApplicationCreate(){
         }
     };
 
+    const navigate = useNavigate();
+
     const openConfirmPopup = () => {
         setIsConfirmPopupOpen(true);
     }
@@ -77,7 +79,7 @@ function ApplicationCreate(){
     };
 
     const onConfirm = () => {
-
+      navigate('/applications', { state: { status: 'sent' }});
     }
 
     const openCancelPopup = () => {
@@ -89,8 +91,12 @@ function ApplicationCreate(){
     };
 
     const onCancel = () => {
-        
-    }
+      navigate('/babysitter-details/1');
+    };
+
+    const handleSave = () => {
+      navigate('/applications', { state: { status: 'saved' }});
+    };
 
     const handleAddressChange = (event) => {
         setAddress(event.target.value);
@@ -341,7 +347,7 @@ function ApplicationCreate(){
                     
                     <button
                         className={`${s.button} ${s.save}`}
-                        onClick={() => {}}
+                        onClick={handleSave}
                     >
                         <FontAwesomeIcon icon={faFloppyDisk} fontSize={'18px'} />
                         Προσωρινή Αποθήκευση

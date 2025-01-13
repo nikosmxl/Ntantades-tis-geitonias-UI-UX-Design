@@ -8,13 +8,14 @@ import DateDropdowns from '../DateDropdowns/DateDropdowns';
 import StyledSelect from "../StyledSelect/StyledSelect";
 import { useNavigate } from "react-router-dom";
 
-function Partnership({isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false, onCreateRating}){
+function Partnership({isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false, onCreateRating, onDelete}){
     const perioxes = ['ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ', 'ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ'];
     const [perioxh, setPerioxh] = useState('ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ');
     const [availabilityList, setAvailabilityList] = useState([ [0, 1], [2, 3], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4] ]);
     const [partnershipDate, setPartnershipDate] = useState({});
     
     const sample = {
+        "id": 1,
         "signedBy": [],
         "isSentTo": 123,
         "answer": null,
@@ -89,6 +90,24 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
     const handleViewPartnership = () => {
       navigate('../partnership/1', {path: '..'});
     };
+
+    const handleUserClick = () => {
+      if (!isParent) return navigate('/babysitter/family-profile/1');
+
+      navigate('/parent/babysitter-details/1');
+    };
+
+    const handleMonthCompletion = () => {
+      // api call to complete month
+      if (isParent) return;
+
+      navigate('/babysitter/history/payments');
+    };
+
+    const handleRenew = () => {
+
+      navigate(`../sign-partnership/${sample['id']}`, {relative: 'path'});
+    }
   
     return (
         <div className={s.partnership_with_buttons}>
@@ -97,7 +116,7 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                     <span className={`${s.partnership_dot} ${!isParent || isExpanded || !isPayAvailable ? s.disabled : ''}`}></span>
                 }
                 <div className={s.partnership_row}>
-                    <img src={troll_prof} alt="Profile" />
+                    <img src={troll_prof} alt="Profile" onClick={handleUserClick}/>
                     <div className={s.second_column}>
                         <p><span>Ονοματεπώνυμο:</span>{sample.babysitterName}</p>
                         <p><span>Χρόνος απασχόλησης:</span>{sample.workingHours}</p>
@@ -174,11 +193,11 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                                 }
                                 {isPartnershipOver && !isPayAvailable
                                 ?
-                                    <button className={s.renew_button}>
+                                    <button className={s.renew_button} onClick={handleRenew}>
                                         ΑΝΑΝΕΩΣΗ ΣΥΝΕΡΓΑΣΙΑΣ
                                     </button>
                                 :
-                                    <button className={`${s.complete_month_button} ${!isPayAvailable ? s.disabled : ''}`}>
+                                    <button className={`${s.complete_month_button} ${!isPayAvailable ? s.disabled : ''}`} onClick={handleMonthCompletion}>
                                         ΟΛΟΚΛΗΡΩΣΗ ΜΗΝΑ
                                         <span className={s.dot}></span>
                                     </button>
@@ -197,7 +216,7 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
             </div>
             <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={toggleIsExpanded} 
                 showOptionsButtons={isEditable} showDeleteButton={isParent} 
-                showEditButton={true}
+                showEditButton={true} onDelete={onDelete} onEdit={() => navigate('../sign-partnership/1', {relative: 'path'})}
             />
             {isConfirmPopupOpen && 
                 <ConfirmationPopUp onConfirm={handleConfirm} onClose={handleConfirmPopupClose}/>

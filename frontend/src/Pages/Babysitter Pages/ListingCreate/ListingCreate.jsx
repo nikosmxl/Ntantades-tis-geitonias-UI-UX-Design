@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGavel, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
 import ConfirmationPopUp from "../../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import DropdownAreas from "../../../Components/DropdownAreas/DropdownAreas";
 
 function ListingCreate(){
@@ -42,6 +42,7 @@ function ListingCreate(){
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
     const params = useParams();
+    const navigate = useNavigate();
 
     const dictionaries = {
         experience_with_ages: {
@@ -84,7 +85,9 @@ function ListingCreate(){
     };
 
     const onConfirm = () => {
-
+      // api call to save
+      // check status
+      navigate('/babysitter/listings', {state: {status: 'publish'}});
     }
 
     const openCancelPopup = () => {
@@ -96,8 +99,12 @@ function ListingCreate(){
     };
 
     const onCancel = () => {
-        
-    }
+      navigate('/babysitter/listings');
+    };
+
+    const handleTemporarySave = () => {
+      navigate('/babysitter/listings', {state: {status: 'publish'}});
+    };
 
     const handleCheckboxChange = (state, setState, value) => {
         if (state.includes(value)) {
@@ -371,7 +378,7 @@ function ListingCreate(){
                     
                     <button
                         className={`${s.button} ${s.save}`}
-                        onClick={() => {}}
+                        onClick={handleTemporarySave}
                     >
                         <FontAwesomeIcon icon={faFloppyDisk} fontSize={'18px'} />
                         Προσωρινή Αποθήκευση
@@ -401,7 +408,7 @@ function ListingCreate(){
                             : 
                             "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την επεξεργασία της αγγελίας;"
                         } 
-                    onCancel={onCancel} 
+                    onConfirm={onCancel} 
                     onClose={handleCancelPopupClose} 
                 />
             }

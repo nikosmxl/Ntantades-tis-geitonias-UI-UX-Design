@@ -21,7 +21,7 @@ function NavBar({ context }){
       { header: 'Αιτήσεις', toRoute: 'babysitter/applications' },
       { header: 'Ραντεβού Γνωριμίας', toRoute: 'babysitter/dates' },
       { header: 'Ιστορικό', toRoute: 'babysitter/history' },
-      { header: 'Οδηγίες', toRoute: 'parent/help' },
+      { header: 'Οδηγίες', toRoute: 'babysitter/help' },
     ];
 
     const handleLogoClick = () => {

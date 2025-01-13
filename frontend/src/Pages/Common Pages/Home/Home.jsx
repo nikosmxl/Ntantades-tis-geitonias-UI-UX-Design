@@ -4,8 +4,11 @@ import { faLocationDot, faSearch } from "@fortawesome/free-solid-svg-icons";
 import FamousSearches from "./FamousSearches/FamousSearches";
 import BabysitterList from "../../../Components/BabysitterList/BabysitterList";
 import Instructions from "../../../Components/Instructions/Instructions";
+import { useNavigate } from "react-router-dom";
 
-function Home(){
+function Home() {
+    const navigate = useNavigate();
+
     return (
         <div className={s.home_page}>
             <div className={s.background_pic}>
@@ -17,7 +20,7 @@ function Home(){
                                 <FontAwesomeIcon icon={faLocationDot} className={s.location_icon} />
                                 <input type="text" placeholder="Γλυφάδα, Αττική"/>
                                 <div className={s.location_search_button}>
-                                    <FontAwesomeIcon icon={faSearch} className={s.search_icon} />    
+                                    <FontAwesomeIcon icon={faSearch} className={s.search_icon} onClick={() => navigate('./babysitter-search')}/>    
                                 </div>
                             </div>
                         </div>
