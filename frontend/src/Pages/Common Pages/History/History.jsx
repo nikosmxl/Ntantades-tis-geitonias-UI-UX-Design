@@ -2,10 +2,12 @@ import React from 'react';
 import s from './HistoryStyle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const History = ({}) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const context = location.pathname.split('/')[1];
 
   const handleNavigateToPartnerships = () => {
     navigate('../history/partnerships');
@@ -60,7 +62,7 @@ const History = ({}) => {
             />
           </div>
           {
-            false && (
+            context === 'babysitter' && (
               <div className={s.history_category}>
                 <h2 onClick={handleNavigateToListings}>Ιστορικό Αγγελιών</h2>
                 <FontAwesomeIcon

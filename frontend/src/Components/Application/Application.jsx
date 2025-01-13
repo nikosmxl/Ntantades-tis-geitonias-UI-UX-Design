@@ -3,13 +3,23 @@ import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
 import { useState } from "react";
 import ExpandButtons from "../ExpandButtons/ExpandButtons";
+import { useNavigate } from "react-router-dom";
 
-function Application({isParent = true, application_state = null, isHistory = false, isEditable = false}){
+function Application({isParent = true, application_state = null, isHistory = false, isEditable = false, onDelete, onDecline, onAccept}){
     const [isExpanded, setIsExpanded] = useState(false);
-    const exeiKleiseiRantebou = true; // Θα διαγραφεί αυτή η μεταβλητή στο μέλλον. Είναι προσωρινή.
-
+    const exeiKleiseiRantebou = false; // Θα διαγραφεί αυτή η μεταβλητή στο μέλλον. Είναι προσωρινή.
+    const applicationId = 1;
+  
     const toggleIsExpanded = () => {
         setIsExpanded(!isExpanded);
+    };
+
+    const navigate = useNavigate();
+
+    const handleUserClick = () => {
+      if (!isParent) return navigate('/babysitter/family-profile/1');
+
+      navigate('/parent/babysitter-details/1');
     };
 
     return (
@@ -17,8 +27,8 @@ function Application({isParent = true, application_state = null, isHistory = fal
             <div className={`${s.application} ${isExpanded ? s.open : ''} ${!isParent ? s.babysitter : ''} ${(isParent || (!isParent && isHistory)) && ( !isEditable && (application_state === 0 ? s.declined : application_state === 1 ? s.accepted : s.pending))} ${isHistory ? s.history : ''}`}>
                 <div className={s.first_row}>
                     <div className={s.first_row_left_side}>
-                        <img src={troll_prof} alt="Profile" />
-                        <b className={s.name}>Δήμητρα Χατζή</b>
+                        <img src={troll_prof} alt="Profile" onClick={handleUserClick}/>
+                        <b className={s.name} onClick={handleUserClick}>Δήμητρα Χατζή</b>
                         {application_state !== null &&
                             <p>•</p>
                         }
@@ -58,14 +68,23 @@ function Application({isParent = true, application_state = null, isHistory = fal
                 {isParent && application_state === 1 && !isHistory &&
                     <div className={s.third_row}>
                         <p className={`${!isExpanded ? s.not_expanded : ''}`}>Η νταντά άλλαξε τα στοιχεία του ραντεβού</p>
-                        <button>{exeiKleiseiRantebou ? "Προβολή Ραντεβού" : "Αίτημα Ραντεβού"}</button>
+                        <button
+                          onClick={() => {
+                            exeiKleiseiRantebou ? 
+                            navigate('../dates/', {relative: 'path'}) :
+                            navigate('../edit-date/', {relative: 'path'})
+                          }}
+                        >{exeiKleiseiRantebou ? "Προβολή Ραντεβού" : "Αίτημα Ραντεβού"}</button>
                     </div>
                 }
             </div>
             <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={toggleIsExpanded}
                 showOptionsButtons={!isHistory} showDeleteButton={isParent} 
                 showDeclineButton={!isParent} showEditButton={isParent && isEditable}
-                showAcceptButton={!isParent} 
+                showAcceptButton={!isParent} onDelete={onDelete}
+                onEdit={() => navigate(`/parent/applications/application-create/${applicationId}`)}
+                onAccept={onAccept}
+                onDecline={onDecline}
             />
         </div>
     )

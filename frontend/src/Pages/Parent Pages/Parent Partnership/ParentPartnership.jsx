@@ -7,6 +7,7 @@ import { useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
 import BabysitterGridView from '../../../Components/BabysitterGridView/BabysitterGridView';
 import CreateRatingPopup from "../../../PopUps/CreateRatingPopup/CreateRatingPopup";
+import { useNavigate } from "react-router-dom";
 
 function ParentPartnership(){
     const [futurePartnershipsPageSize, setFuturePartnershipsPageSize] = useState(3);
@@ -44,6 +45,12 @@ function ParentPartnership(){
       { id: 6, name: 'Δήμητρα Χατζή'},
     ]);
 
+    const navigate = useNavigate();
+
+    const handlePartnershipDelete = (partnershipId) => {
+      // api call to delete
+    };
+
     return (
         <div className={s.partnership_page}>
             <div className={s.breadcrumbs}>
@@ -53,7 +60,7 @@ function ParentPartnership(){
             </div>
             <div className={s.title_history_row}>
                 <h3>Οι συνεργασίες μου</h3>
-                <button className={s.history_button}>
+                <button className={s.history_button} onClick={() => navigate('/parent/history/partnerships')}>
                     <FontAwesomeIcon icon={faClockRotateLeft} />
                     Ιστορικό συνεργασιών
                 </button>
@@ -121,9 +128,9 @@ function ParentPartnership(){
                 />
             </div>
             <div className={s.column}>
-                <Partnership isParent={true} isRunning={false} isFuture={false} isSent={false} isPending={false} isEditable={true} isHistory={false}/>
-                <Partnership isParent={true} isRunning={false} isFuture={false} isSent={false} isPending={false} isEditable={true} isHistory={false}/>
-                <Partnership isParent={true} isRunning={false} isFuture={false} isSent={false} isPending={false} isEditable={true} isHistory={false}/>
+                <Partnership isParent={true} isRunning={false} isFuture={false} isSent={false} isPending={false} isEditable={true} isHistory={false} onDelete={handlePartnershipDelete}/>
+                <Partnership isParent={true} isRunning={false} isFuture={false} isSent={false} isPending={false} isEditable={true} isHistory={false} onDelete={handlePartnershipDelete}/>
+                <Partnership isParent={true} isRunning={false} isFuture={false} isSent={false} isPending={false} isEditable={true} isHistory={false} onDelete={handlePartnershipDelete}/>
             </div>
             <Pagination pages={editablePartnershipsPages} currentPage={editablePartnershipsCurrentPage}
                 onChange={setEditablePartnershipsCurrentPage} width="620px"

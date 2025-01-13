@@ -2,20 +2,20 @@ import React from 'react';
 import trollProf from '../../Assets/Pictures/troll_prof.jpg';
 import s from './RatingStyle.module.css';
 import Stars from '../Stars/Stars';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Rating = ({ rating }) => {
-  const hasText = false;
 
   const navigate = useNavigate();
-  
+  const location = useLocation();
+  const context = location.pathname.split('/')[1];
 
   return (
     <div className={s.rating_container}>
       <div className={s.family_avatar_container}>
         <img
           src={trollProf}
-          onClick={() => navigate('../family-profile/1', {path: '..'})}
+          onClick={() => navigate(`/${context}/family-profile/1`)}
         />
       </div>
 

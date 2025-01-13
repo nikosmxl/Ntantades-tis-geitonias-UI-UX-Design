@@ -5,6 +5,7 @@ import Listing from "../../../Components/Listing/Listing";
 import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Pagination from "../../../Components/Pagination/Pagination";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function MyListings(){
     const [editableListingsPageSize, setEditableListingsPageSize] = useState(3);
@@ -12,7 +13,13 @@ function MyListings(){
     const editableListingsSortingOptions = ["most recent", "least recent", "alphabetically"];
     const editableListingsPages = 5;
     const [editableListingsCurrentPage, setEditableListingsCurrentPage] = useState(1);
-    
+        
+    const navigate = useNavigate();
+
+    const handleListingDelete = (listingId) => {
+      // api call to delete
+    };
+
     return (
         <div className={s.applications_page}>
             <div className={s.breadcrumbs}>
@@ -22,7 +29,7 @@ function MyListings(){
             </div>
             <div className={s.title_history_row}>
                 <h3>Οι αγγελίες μου</h3>
-                <button className={s.history_button}>
+                <button className={s.history_button} onClick={() => navigate('/babysitter/history/listings')}>
                     <FontAwesomeIcon icon={faClockRotateLeft} />
                     Ιστορικό αγγελιών
                 </button>
@@ -41,15 +48,15 @@ function MyListings(){
                 />
             </div>
 
-            <button className={s.create_listing}>
+            <button className={s.create_listing} onClick={() => navigate('/babysitter/listings/listing-create')}>
                 Δημιουργία αγγελίας
                 <FontAwesomeIcon icon={faPlus} />
             </button>
 
             <div className={s.column}>
-                <Listing isHistory={false} isEditable={true} />
-                <Listing isHistory={false} isEditable={true} />
-                <Listing isHistory={false} isEditable={true} />
+                <Listing isHistory={false} isEditable={true} onDelete={handleListingDelete}/>
+                <Listing isHistory={false} isEditable={true} onDelete={handleListingDelete}/>
+                <Listing isHistory={false} isEditable={true} onDelete={handleListingDelete}/>
             </div>
             <Pagination pages={editableListingsPages} currentPage={editableListingsCurrentPage}
                 onChange={setEditableListingsCurrentPage} width="620px"

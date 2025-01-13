@@ -69,6 +69,11 @@
     object-fit: cover;
     border-radius: 50%;
     margin-right: 8px;
+    cursor: pointer;
+}
+
+.first_row_left_side b {
+  cursor: pointer;
 }
 
 .first_row_right_side{

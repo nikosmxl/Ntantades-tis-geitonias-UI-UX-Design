@@ -15,6 +15,8 @@ import PartnershipAgreementPopUp from '../../../PopUps/PartnershipAgreementPopUp
 const ParentPartnershipForm = () => {
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const openConfirmPopup = () => {
       setIsConfirmPopupOpen(true);
   }
@@ -112,8 +114,6 @@ const ParentPartnershipForm = () => {
   const errorStep4Exists = useMemo(() => (
     step === 3 && errorStep4
   ), [step, errorStep4]);
-
-  const navigate = useNavigate();
   
   const fixHeight = useCallback(() => {
     if (formContainerRef.current) {
@@ -273,7 +273,7 @@ const ParentPartnershipForm = () => {
 
   const handleTemporarySave = () => {
     // api call to save partnershipDetails
-    navigate('../partnership', {path: '..'});
+    navigate('../partnership', {state: {status: 'saved'}});
   };
 
   const confirmAndSend = () => {
@@ -284,7 +284,7 @@ const ParentPartnershipForm = () => {
     }
     setIsErrorVisible(false);
     // api call to save partnershipDetails
-    navigate('../partnership', {path: '..'});
+    navigate('../partnership');
   };
 
   return (

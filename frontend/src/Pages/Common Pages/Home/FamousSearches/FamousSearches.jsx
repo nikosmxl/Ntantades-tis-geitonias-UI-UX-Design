@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import s from "./FamousSearchesStyle.module.css"
 import { useState } from "react";
 
@@ -17,6 +18,8 @@ function FamousSearches(){
             [name]: checked,
         }));
     };
+
+    const navigate = useNavigate();
 
     return (
         <div className={s.famous_searches}>
@@ -71,7 +74,7 @@ function FamousSearches(){
                 <span className={s.checkmark}></span>
                 English Native Speaker
             </label>
-            <div className={s.famous_searches_search_button}>
+            <div className={s.famous_searches_search_button} onClick={() => navigate('./babysitter-search')}>
                 <p>Αναζήτηση</p>
             </div>
         </div>

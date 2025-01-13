@@ -13,9 +13,11 @@ import PartnershipAgreementPopUp from '../../../PopUps/PartnershipAgreementPopUp
 const BabysitterPartnershipForm = () => {
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const openConfirmPopup = () => {
       setIsConfirmPopupOpen(true);
-  }
+  };
 
   const handleConfirmPopupClose = () => {
       setIsConfirmPopupOpen(false); // Κλεινει το PopUp
@@ -105,8 +107,6 @@ const BabysitterPartnershipForm = () => {
   const errorStep2Exists = useMemo(() => (
     step === 1 && errorStep2
   ), [step, errorStep2]);
-
-  const navigate = useNavigate();
   
   const fixHeight = useCallback(() => {
     if (formContainerRef.current) {
@@ -207,7 +207,7 @@ const BabysitterPartnershipForm = () => {
 
   const handleTemporarySave = () => {
     // api call to save partnershipDetails
-    navigate('../partnership', {path: '..'});
+    navigate('../partnership', {state: {status: 'saved'}});
   };
 
   const confirmAndSend = () => {
@@ -223,7 +223,7 @@ const BabysitterPartnershipForm = () => {
     }
     setIsErrorVisible(false);
     // api call to save partnershipDetails
-    navigate('../partnership', {path: '..'});
+    navigate('../partnership');
   };
 
   return (

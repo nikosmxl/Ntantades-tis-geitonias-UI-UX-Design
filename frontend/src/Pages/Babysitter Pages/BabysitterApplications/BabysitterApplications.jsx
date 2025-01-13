@@ -6,6 +6,7 @@ import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Pagination from "../../../Components/Pagination/Pagination";
 import { useState } from "react";
 import Notification from "../../../Components/Notification/Notification";
+import { useNavigate } from "react-router-dom";
 
 function BabysitterApplications(){
     const [incomingApplicationsPageSize, setIncomingApplicationsPageSize] = useState(3);
@@ -13,6 +14,16 @@ function BabysitterApplications(){
     const incomingApplicationsSortingOptions = ["most recent", "least recent", "alphabetically"];
     const incomingApplicationsPages = 5;
     const [incomingApplicationsCurrentPage, setIncomingApplicationsCurrentPage] = useState(1);
+    
+    const navigate = useNavigate();
+
+    const handleApplicationDecline = (applicationId) => {
+      // api call to decline
+    };
+
+    const handleApplicationAccept = (applicationId) => {
+      // api call to accept
+    };
     
     return (
         <div className={s.applications_page}>
@@ -23,7 +34,7 @@ function BabysitterApplications(){
             </div>
             <div className={s.title_history_row}>
                 <h3>Οι αιτήσεις μου</h3>
-                <button className={s.history_button}>
+                <button className={s.history_button} onClick={() => navigate('/babysitter/history/applications')}>
                     <FontAwesomeIcon icon={faClockRotateLeft} />
                     Ιστορικό αιτήσεων
                 </button>
@@ -38,9 +49,9 @@ function BabysitterApplications(){
             </div>
             <div className={s.column}>
                 <Notification context={"Η Γεωργία Χατζηχρήστου κατέθεσε μία νέα αίτηση στις 16/12/2024 και ώρα 16:24."} width={'950px'} />
-                <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />
-                <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />
-                <Application isParent={false} application_state={0} isHistory={false} isEditable={true} />
+                <Application isParent={false} application_state={0} isHistory={false} isEditable={true} onDecline={handleApplicationDecline} onAccept={handleApplicationAccept}/>
+                <Application isParent={false} application_state={0} isHistory={false} isEditable={true} onDecline={handleApplicationDecline} onAccept={handleApplicationAccept}/>
+                <Application isParent={false} application_state={0} isHistory={false} isEditable={true} onDecline={handleApplicationDecline} onAccept={handleApplicationAccept}/>
             </div>
             <Pagination pages={incomingApplicationsPages} currentPage={incomingApplicationsCurrentPage}
                 onChange={setIncomingApplicationsCurrentPage} width="620px"

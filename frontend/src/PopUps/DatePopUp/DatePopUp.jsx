@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const DatePopUp = ({ date, onClose }) => {
   const [isLoading, setIsLoading] = useState(false); // Όταν θα επιβεβαιώνει θα κάνει asyncronous tasks λογικά (θα θέλει λιγο χρονο για ενεργειες στο backend)
   const [isClosing, setIsClosing] = useState(false); // Για το animation
+  const userRole = date?.user?.role ?? 'parent';
 
   const navigate = useNavigate();
 
@@ -36,6 +37,12 @@ const DatePopUp = ({ date, onClose }) => {
     navigate('../edit-date/1', {path: '..'});
   };
 
+  const handleUserClick = () => {
+    if (userRole === 'parent') return navigate('/babysitter/family-profile/1');
+
+    navigate('/parent/babysitter-details/1');
+  };
+
   return (
     <div
       className={s.popup_overlay}
@@ -54,9 +61,10 @@ const DatePopUp = ({ date, onClose }) => {
           <img
             src={trollProf}
             className={s.date_info_user_avatar}
+            onClick={handleUserClick}
           />
           <div className={s.date_info}>
-            <h3>Ονοματεπώνυμο</h3>
+            <h3 onClick={handleUserClick}>Ονοματεπώνυμο</h3>
             <h3>Στοιχεία Ραντεβού</h3>
             <div className={s.date_details_flex}>
               <p>Μέσο:</p>

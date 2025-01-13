@@ -1,11 +1,17 @@
 import React from 'react';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import s from './DateStyle.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const Date = ({ date, onClick }) => {
-  
-  const handleNavigate = () => {
-    // TODO: depends on displayed user's role, the url is different each time
+  const userRole = date?.user?.role ?? 'parent';
+
+  const navigate = useNavigate();
+
+  const handleUserClick = () => {
+    if (userRole === 'parent') return navigate('/babysitter/family-profile/1');
+
+    navigate('/parent/babysitter-details/1');
   };
 
   const handleAction = () => {
@@ -96,7 +102,7 @@ const Date = ({ date, onClick }) => {
       }
       <img
         src={trollProf}
-        onClick={handleNavigate}
+        onClick={handleUserClick}
       />
       <p>Ονοματεπώνυμο</p>
       <div className={s.date_info_container}>
