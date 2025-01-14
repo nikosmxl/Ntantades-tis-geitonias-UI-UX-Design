@@ -12,14 +12,12 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
     const handleParentClick = () => {
       if (context === 'parent') return navigate('/parent/family-profile/1');
 
-      console.log('babysitter contxe')
-      navigate('/babysitter/family-profile/1');
+      navigate('/babysitter/parent-details/1');
     };
 
     const handleBabysitterClick = () => {
       if (context === 'parent') return navigate('/parent/babysitter-details/1');
 
-      console.log('babysitter contxe')
       navigate('/babysitter/profile');
     }
 

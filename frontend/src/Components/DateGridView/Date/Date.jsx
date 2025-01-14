@@ -9,7 +9,7 @@ const Date = ({ date, onClick }) => {
   const navigate = useNavigate();
 
   const handleUserClick = () => {
-    if (userRole === 'parent') return navigate('/babysitter/family-profile/1');
+    if (userRole === 'parent') return navigate('/babysitter/parent-details/1');
 
     navigate('/parent/babysitter-details/1');
   };

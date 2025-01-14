@@ -6,6 +6,7 @@ import ListHeader from "../../../Components/ListHeader/ListHeader";
 import { useState } from "react";
 import Pagination from "../../../Components/Pagination/Pagination";
 import { useNavigate } from "react-router-dom";
+import Breadcrumbs from "../../../Components/Breadcrumbs/Breadcrumbs";
 
 function BabysitterPartnership(){
     const [futurePartnershipsPageSize, setFuturePartnershipsPageSize] = useState(3);
@@ -29,9 +30,12 @@ function BabysitterPartnership(){
     return (
         <div className={s.partnership_page}>
             <div className={s.breadcrumbs}>
-                <p>Αρχική</p>
-                <p>{">"}</p>
-                <p>Συνεργασία</p>
+                <Breadcrumbs
+                  breadcrumbItems={[
+                    { label: 'Αρχική Σελίδα', route: '' },
+                    { label: 'Συνεργασία', route: '.' },
+                  ]}
+                />
             </div>
             <div className={s.title_history_row}>
                 <h3>Οι συνεργασίες μου</h3>

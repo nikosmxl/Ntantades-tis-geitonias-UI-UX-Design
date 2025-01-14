@@ -10,6 +10,7 @@ import { faGavel, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
 import ConfirmationPopUp from "../../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
 import { useNavigate, useParams } from "react-router-dom";
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 function ApplicationCreate(){
     const fullname = "Μπάμπης Μπαμπάκης";
@@ -153,6 +154,13 @@ function ApplicationCreate(){
     return (
         <div className={s.container}>
             <div className={s.breadcrumbs}>
+              <Breadcrumbs
+                breadcrumbItems={[
+                  { label: 'Αρχική Σελίδα', route: ''},
+                  { label: 'Βρείτε νταντά', route: 'babysitter-search'},
+                  { label: 'Δημιουργία νέας Αίτησης', route: '.'},
+                ]}
+              />
                 <p>Αρχική</p>
                 <p>{">"}</p>
                 <p>Βρείτε Νταντά</p>

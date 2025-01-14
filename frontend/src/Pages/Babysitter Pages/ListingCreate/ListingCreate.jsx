@@ -11,6 +11,7 @@ import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
 import ConfirmationPopUp from "../../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
 import { useNavigate, useParams } from "react-router-dom";
 import DropdownAreas from "../../../Components/DropdownAreas/DropdownAreas";
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 function ListingCreate(){
     const fullname = "Μπάμπης Μπαμπάκης";
@@ -163,11 +164,13 @@ function ListingCreate(){
     return (
         <div className={s.container}>
             <div className={s.breadcrumbs}>
-                <p>Αρχική</p>
-                <p>{">"}</p>
-                <p>Αγγελίες</p>
-                <p>{">"}</p>
-                <p>Δημιουργία νέας Αγγελίας</p>
+                <Breadcrumbs
+                  breadcrumbItems={[
+                    { label: 'Αρχική Σελίδα', route: ''},
+                    { label: 'Αγγελίες', route: 'listings'},
+                    { label: 'Δημιουργία νέας Αγγελίας', route: '.'},
+                  ]}
+                />
             </div>
 
             <h3 className={s.title}>Δημιουργία νέας Αγγελίας</h3>

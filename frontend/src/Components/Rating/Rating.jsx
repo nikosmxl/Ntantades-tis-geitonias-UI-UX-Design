@@ -15,7 +15,7 @@ const Rating = ({ rating }) => {
       <div className={s.family_avatar_container}>
         <img
           src={trollProf}
-          onClick={() => navigate(`/${context}/family-profile/1`)}
+          onClick={() => context === 'parent' ? navigate(`/${context}/family-profile/1`) : navigate(`/${context}/parent-details/1`)}
         />
       </div>
 

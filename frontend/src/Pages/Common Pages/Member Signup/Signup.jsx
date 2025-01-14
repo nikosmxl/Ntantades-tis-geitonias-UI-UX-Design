@@ -1,9 +1,8 @@
 import s from "./SignupStyle.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // τα  εικονίδια από fontawesome
-import { faLocationDot, faSearch } from "@fortawesome/free-solid-svg-icons"; // Αναζητήστε με βάση περιοχή (δεν το θέλουμε εδω)
 import babysitter_icon from "../../../Assets/Icons/babysitter_icon.png";
 import family_icon from "../../../Assets/Icons/family_icon.png";
 import { useNavigate } from "react-router-dom";
+import Breadcrumbs from "../../../Components/Breadcrumbs/Breadcrumbs";
 
 
 const Signup = () => {
@@ -11,7 +10,12 @@ const Signup = () => {
     return (
         <div className={s.container}>
             <div className={s.breadcrumbs_container}>
-                Αρχική Σελίδα {`>`} Εγγραφή με Taxis 
+                <Breadcrumbs
+                  breadcrumbItems={[
+                    { label: 'Αρχική Σελίδα', route: ''},
+                    { label: 'Εγγραφή με Taxis', route: '.'},
+                  ]}
+                />
             </div>
             
             <div className={s.step}>

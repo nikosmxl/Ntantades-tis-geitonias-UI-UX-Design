@@ -3,8 +3,8 @@ import s from './BabysitterDatesStyle.module.css';
 import ListHeader from '../../../Components/ListHeader/ListHeader';
 import Pagination from '../../../Components/Pagination/Pagination';
 import DateGridView from '../../../Components/DateGridView/DateGridView';
-import BabysitterGridView from '../../../Components/BabysitterGridView/BabysitterGridView';
 import DatePopUp from '../../../PopUps/DatePopUp/DatePopUp';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const BabysitterDates = ({}) => {
     const [isDatePopupOpen, setDatePopupOpen] = useState(false);
@@ -36,7 +36,12 @@ const BabysitterDates = ({}) => {
     return (
         <div className='s.babysitter_dates_container'>
             <div className={s.breadcrumbs_container}>
-                Αρχική Σελίδα {`>`} Ραντεβού Γνωριμίας
+              <Breadcrumbs
+                breadcrumbItems={[
+                  { label: 'Αρχική Σελίδα', route: '' },
+                  { label: 'Ραντεβού Γνωριμίας', route: '.' },
+                ]}
+              />
             </div>
             <div className={s.babysitter_dates_main_content}>
                 <h2>Τα ραντεβού μου</h2>

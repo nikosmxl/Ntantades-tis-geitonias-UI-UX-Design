@@ -17,7 +17,7 @@ function Application({isParent = true, application_state = null, isHistory = fal
     const navigate = useNavigate();
 
     const handleUserClick = () => {
-      if (!isParent) return navigate('/babysitter/family-profile/1');
+      if (!isParent) return navigate('/babysitter/parent-details/1');
 
       navigate('/parent/babysitter-details/1');
     };

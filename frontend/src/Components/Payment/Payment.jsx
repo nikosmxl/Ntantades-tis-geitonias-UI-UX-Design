@@ -21,7 +21,7 @@ const Payment = ({ payment, isParent = true }) => {
   const handleUserClick = () => {
     if (isParent) return navigate('/parent/babysitter-details/1');
 
-    navigate('/parent/family-profile/1');
+    navigate('/babysitter/parent-details/1');
   };
 
   return (

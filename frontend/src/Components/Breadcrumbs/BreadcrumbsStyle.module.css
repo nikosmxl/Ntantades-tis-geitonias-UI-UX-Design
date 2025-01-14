@@ -1,0 +1,15 @@
+
+.breadcrumbs_container {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.breadcrumb_item {
+  cursor: pointer;
+}
+
+.breadcrumb_item:hover {
+  text-decoration: underline;
+}

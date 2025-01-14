@@ -6,6 +6,7 @@ import Pagination from '../../../Components/Pagination/Pagination';
 import Filters from './Filters/Filters';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import Stars from '../../../Components/Stars/Stars';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const MyRatings = ({}) => {
   const [ratings, setRatings] = useState([
@@ -26,9 +27,12 @@ const MyRatings = ({}) => {
   return (
     <div className={s.my_ratings_page}>
       <div className={s.breadcrumbs}>
-        <p>Αρχική</p>
-        <p>{">"}</p>
-        <p>Οι αξιολογήσεις μου</p>
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Οι αξιολογήσεις μου', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.my_ratings_main_content}>
         <div className={s.ratings_sidebar}>

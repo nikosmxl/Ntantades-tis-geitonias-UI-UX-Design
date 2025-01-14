@@ -6,6 +6,7 @@ import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Pagination from "../../../Components/Pagination/Pagination";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 function MyListings(){
     const [editableListingsPageSize, setEditableListingsPageSize] = useState(3);
@@ -23,9 +24,12 @@ function MyListings(){
     return (
         <div className={s.applications_page}>
             <div className={s.breadcrumbs}>
-                <p>Αρχική</p>
-                <p>{">"}</p>
-                <p>Αιτήσεις</p>
+                <Breadcrumbs
+                  breadcrumbItems={[
+                    { label: 'Αρχική Σελίδα', route: ''},
+                    { label: 'Αγγελίες', route: '.'},
+                  ]}
+                />
             </div>
             <div className={s.title_history_row}>
                 <h3>Οι αγγελίες μου</h3>
