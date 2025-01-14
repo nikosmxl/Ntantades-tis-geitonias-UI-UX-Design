@@ -4,6 +4,7 @@ import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Filters from './Filters/Filters';
 import Pagination from "../../../Components/Pagination/Pagination";
 import Listing from '../../../Components/Listing/Listing';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const ListingsHistory = ({}) => {
   const [page, setPage] = useState(1);
@@ -14,7 +15,13 @@ const ListingsHistory = ({}) => {
   return (
     <div className={s.listings_history_container}>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Ιστορικό > Ιστορικό Αγγελιών
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Ιστορικό', route: 'history'},
+            { label: 'Ιστορικό Αγγελιών', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.listings_history_main_content}>
         <ListHeader

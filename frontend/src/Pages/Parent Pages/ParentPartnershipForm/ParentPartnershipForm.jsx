@@ -11,6 +11,7 @@ import ErrorFields from "../../../Components/ErrorFields/ErrorFields";
 import PersonalDetails from '../../../Components/PersonalDetails/PersonalDetails';
 import { useNavigate } from 'react-router-dom';
 import PartnershipAgreementPopUp from '../../../PopUps/PartnershipAgreementPopUp/PartnershipAgreementPopUp';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const ParentPartnershipForm = () => {
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
@@ -290,11 +291,12 @@ const ParentPartnershipForm = () => {
   return (
     <div className={s.container}>
       <div className={s.breadcrumbs_return_row}>
-          <div className={s.breadcrumbs}>
-              <p>Αρχική</p>
-              <p>{">"}</p>
-              <p>Υπογραφή Συμφωνητικού Συνεργασίας</p>
-          </div>
+          <Breadcrumbs
+            breadcrumbItems={[
+              { label: 'Αρχική Σελίδα', route: '' },
+              { label: 'Υπογραφή Συμφωνητικού Συνεργασίας', route: '.' },
+            ]}
+          />
           <button className={s.return_button}>
               <FontAwesomeIcon icon={faRotateLeft} />
               Επιστροφή

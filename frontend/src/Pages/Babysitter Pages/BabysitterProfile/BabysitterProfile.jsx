@@ -10,6 +10,8 @@ import { ageExperienceOptions, specializationOptions, educationSpecialties, educ
 import MultiDropdownMenu from '../../../Components/MultiDropdownMenu/MultiDropdownMenu';
 import Select from 'react-select';
 import AvailabilityCalendar from '../../../Components/AvailabilityCalendar/AvailabilityCalendar';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { useLocation } from 'react-router-dom';
 
 const BabysitterProfile = ({}) => {
   const [babysitter, setBabysitter] = useState({
@@ -97,9 +99,12 @@ const BabysitterProfile = ({}) => {
   return (
     <div className={s.babysitter_profile_page}>
       <div className={s.breadcrumbs}>
-        <p>Αρχική</p>
-        <p>{">"}</p>
-        <p>Προφίλ</p>
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Προφίλ', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.babysitter_profile_main_content}>
         <div className={s.babysitter_profile_top_container}>

@@ -3,9 +3,8 @@
 }
 
 .breadcrumbs{
-    display: flex;
-    gap: 7px;
-    font-size: 13px;
+  margin-bottom: 35px;
+  margin-left: 30px;
 }
 
 .instructions{

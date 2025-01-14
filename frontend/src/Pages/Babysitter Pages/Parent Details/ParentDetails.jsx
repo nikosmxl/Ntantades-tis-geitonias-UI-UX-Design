@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import s from './ParentDetailsStyle.module.css';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import KidCard from '../../../Components/KidCard/KidCard';
-
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const ParentDetails = ({}) => {
     const kids = [
@@ -23,7 +23,11 @@ const ParentDetails = ({}) => {
             hasAllergies: false,
             description: '',
         }
-    ]
+    ];
+    const parent = {
+      name: 'Μάριος',
+      surname: 'Οικονόμου',
+    };
 
     const [description] = useState('Λίγα λόγια για την Οικογένεια...');
     const [hasPets, setHasPets] = useState(false);
@@ -31,7 +35,13 @@ const ParentDetails = ({}) => {
     return (
         <div>
             <div className={s.breadcrumbs_container}>
-                Αρχική Σελίδα {'>'} Αιτήσεις {'>'} Ονοματεπώνυμο Κηδεμόνα
+              <Breadcrumbs
+                breadcrumbItems={[
+                  { label: 'Αρχική Σελίδα', route: ''},
+                  { label: 'Αιτήσεις', route: 'applications'},
+                  { label: `${parent?.name} ${parent?.surname}`, route: '.'},
+                ]}
+              />
             </div>
 
             <div className= {s.parent_details_main_content}>

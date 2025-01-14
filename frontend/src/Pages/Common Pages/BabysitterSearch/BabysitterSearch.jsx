@@ -4,6 +4,7 @@ import BabysitterListingCard from '../../../Components/BabysitterListingCard/Bab
 import Pagination from '../../../Components/Pagination/Pagination';
 import Filters from './Filters/Filters';
 import ListHeader from '../../../Components/ListHeader/ListHeader';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const BabysitterSearch = () => {
   const [page, setPage] = useState(1);
@@ -23,7 +24,12 @@ const BabysitterSearch = () => {
   return (
     <div>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Βρείτε νταντά
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Βρείτε νταντά', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.babysitter_search_main_content}>
         <h2>Βρείτε νταντά</h2>

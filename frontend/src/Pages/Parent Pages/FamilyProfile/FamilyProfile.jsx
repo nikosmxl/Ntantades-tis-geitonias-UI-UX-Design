@@ -4,6 +4,7 @@ import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
 import FamilyInfo from '../../../Components/FamilyInfo/FamilyInfo';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const FamilyProfile = () => {
   const [isEditOpen, setEditOpen] = useState(false);
@@ -56,7 +57,12 @@ const FamilyProfile = () => {
   return (
     <div>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα {`>`} Προφίλ
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Προφίλ', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.family_profile_main_content}>
         <div className={s.family_profile_top_container}>

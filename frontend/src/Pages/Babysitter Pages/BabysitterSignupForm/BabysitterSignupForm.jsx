@@ -8,6 +8,7 @@ import EducationExperience from "./EducationExperience/EducationExperience";
 import AcceptBabysitterTerms from "./AcceptBabysitterTerms/AcceptBabysitterTerms";
 import ErrorFields from "../../../Components/ErrorFields/ErrorFields";
 import BabysitterConfirmAndSignup from "./BabysitterConfirmAndSignup/BabysitterConfirmAndSignup";
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 function BabysitterSignupForm() {
   const data_sample = {
@@ -175,11 +176,12 @@ function BabysitterSignupForm() {
   return (
     <div className={s.container}>
       <div className={s.breadcrumbs_return_row}>
-          <div className={s.breadcrumbs}>
-              <p>Αρχική</p>
-              <p>{">"}</p>
-              <p>Εγγραφή με taxis</p>
-          </div>
+          <Breadcrumbs
+            breadcrumbItems={[
+              { label: 'Αρχική Σελίδα', route: ''},
+              { label: 'Εγγραφή με taxis', route: '.'},
+            ]}
+          />
           <button className={s.return_button}>
               <FontAwesomeIcon icon={faRotateLeft} />
               Επιστροφή

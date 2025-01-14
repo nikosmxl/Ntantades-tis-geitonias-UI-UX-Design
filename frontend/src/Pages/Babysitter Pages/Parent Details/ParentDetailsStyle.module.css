@@ -1,11 +1,7 @@
 .breadcrumbs_container {
-    font-size: 13px ;
-    width: 360px;
     margin-top: 9px;
     margin-left: 180px;
     margin-bottom: 32px;
-
-    cursor: pointer;
 }
 
 .parent_details_main_content {

@@ -1,3 +1,9 @@
+.breadcrumbs_container {
+  margin-bottom: 35px;
+  margin-left: 30px;
+  margin-top: 9px;
+}
+
 .history_main_content {
   width: 1110px;
   margin: auto;

@@ -5,6 +5,7 @@ import FamilyInfo from '../../../Components/FamilyInfo/FamilyInfo';
 import PartnershipAgreement from '../../../Components/PartnershipAgreement/PartnershipAgreement';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import Checkbox from '../../../Components/Checkbox/Checkbox';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const ViewPartnership = ({}) => {
   const [partnershipData, setPartnershipData] = useState({
@@ -85,7 +86,13 @@ const ViewPartnership = ({}) => {
   return (
     <div className={s.view_partnership_container}>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Συνεργασία > Προβολή Συμφωνητικού Συνεργασίας
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Συνεργασία', route: 'partnership'},
+            { label: 'Προβολή Συμφωνητικού Συνεργασίας', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.view_partnership_main_content}>
         <div>

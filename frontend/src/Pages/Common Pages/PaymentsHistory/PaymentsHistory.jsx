@@ -5,6 +5,7 @@ import Filters from './Filters/Filters';
 import Pagination from "../../../Components/Pagination/Pagination";
 import Payment from '../../../Components/Payment/Payment';
 import { useLocation } from 'react-router-dom';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const PaymentsHistory = ({}) => {
   const [page, setPage] = useState(1);
@@ -24,7 +25,13 @@ const PaymentsHistory = ({}) => {
   return (
     <div className={s.payments_history_container}>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Ιστορικό > Ιστορικό Συνεργασιών
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Ιστορικό', route: 'history'},
+            { label: 'Ιστορικό Πληρωμών', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.payments_history_main_content}>
         <ListHeader

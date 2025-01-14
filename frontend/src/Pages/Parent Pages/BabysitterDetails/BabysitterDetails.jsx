@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Rating from '../../../Components/Rating/Rating';
 import CertificatesList from '../../../Components/CertificatesList/CertificatesList';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const BabysitterDetails = () => {
   const [isOptionsOpen, setOptionsOpen] = useState(true);
@@ -24,12 +25,26 @@ const BabysitterDetails = () => {
   const [certificates, setCertificates] = useState([{name:'test'}, {name:'test'}]);
   const [ratings, setRatings] = useState([]);
   const { babysitterId } = useParams();
+  const [babysitter, setBabysitter] = useState({
+    educationLevel: 'Τίτλοι ανώτατης Εκπαίδευσης',
+    specialty: 'Διαδικτυακή εκπαίδευση',
+    references: [{},{},],
+    availability: [],
+    name: 'Μαρία',
+    surname: 'Οικονόμου',
+  });
   const babysitterHasActiveListing = true;
 
   return (
     <div>
-      <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Βρείτε νταντά > Ονοματεπώνυμο
+      <div className={s.breadcrumbs}>
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Βρείτε νταντά', route: 'babysitter-search'},
+            { label: `${babysitter?.name} ${babysitter?.surname}`, route: '.'},
+          ]}
+        />
       </div>
       <div className={s.babysitter_details_main_content}>
         <div className={s.babysitter_details_top_container}>

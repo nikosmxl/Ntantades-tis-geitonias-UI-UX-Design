@@ -7,6 +7,7 @@ import Select from 'react-select';
 import AvailabilityCalendar from '../../../Components/AvailabilityCalendar/AvailabilityCalendar';
 import ConfirmationPopUp from '../../../PopUps/ConfirmationPopUp/ConfirmationPopUp';
 import { useNavigate, useParams } from 'react-router-dom';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const EditDate = () => {
   const labelHelper = {
@@ -60,7 +61,13 @@ const EditDate = () => {
   return (
     <div className={s.edit_date_container}>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Ραντεβού Γνωριμίας > Επεξεργασία Ραντεβού
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Ραντεβού Γνωριμίας', route: 'dates'},
+            { label: 'Επεξεργασία Ραντεβού', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.edit_date_main_content}>
         <h2>Επεξεργασία Ραντεβού</h2>

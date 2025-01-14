@@ -3,6 +3,7 @@ import s from './HistoryStyle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 const History = ({}) => {
   const navigate = useNavigate();
@@ -28,7 +29,12 @@ const History = ({}) => {
   return (
     <div className={s.history_container}>
       <div className={s.breadcrumbs_container}>
-        Αρχική Σελίδα > Ιστορικό
+        <Breadcrumbs
+          breadcrumbItems={[
+            { label: 'Αρχική Σελίδα', route: ''},
+            { label: 'Ιστορικό', route: '.'},
+          ]}
+        />
       </div>
       <div className={s.history_main_content}>
         <h2>Ιστορικό</h2>

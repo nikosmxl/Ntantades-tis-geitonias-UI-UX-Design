@@ -72,11 +72,6 @@ const routes = [
   },
   {
     context: 'babysitter',
-    path: 'family-profile/:id',
-    page: <FamilyProfile />,
-  },
-  {
-    context: 'babysitter',
     path: 'profile',
     page: <BabysitterProfile />,
   },
@@ -169,7 +164,7 @@ const routes = [
 
   {
     context: 'babysitter',
-    path: 'parent-details',
+    path: 'parent-details/:id',
     page: <ParentDetails />,
   },
   {

@@ -11,12 +11,6 @@
   margin-bottom: 35px;
 }
 
-.breadcrumbs{
-  display: flex;
-  gap: 7px;
-  font-size: 13px;
-}
-
 .return_button{
   display: flex;
   gap: 7px;

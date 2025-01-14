@@ -7,6 +7,7 @@ import Pagination from "../../../Components/Pagination/Pagination";
 import { useState } from "react";
 import Notification from "../../../Components/Notification/Notification";
 import { useNavigate } from "react-router-dom";
+import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 function BabysitterApplications(){
     const [incomingApplicationsPageSize, setIncomingApplicationsPageSize] = useState(3);
@@ -28,9 +29,12 @@ function BabysitterApplications(){
     return (
         <div className={s.applications_page}>
             <div className={s.breadcrumbs}>
-                <p>Αρχική</p>
-                <p>{">"}</p>
-                <p>Αιτήσεις</p>
+                <Breadcrumbs
+                  breadcrumbItems={[
+                    { label: 'Αρχική Σελίδα', route: '' },
+                    { label: 'Αιτήσεις', route: '.' },
+                  ]}
+                />
             </div>
             <div className={s.title_history_row}>
                 <h3>Οι αιτήσεις μου</h3>

@@ -8,11 +8,8 @@
 }
 
 .breadcrumbs{
-  display: flex;
-  gap: 7px;
   margin-bottom: 35px;
   margin-left: 30px;
-  font-size: 13px;
 }
 
 .babysitter_profile_top_container {
