@@ -37,7 +37,7 @@ const Signup = () => {
                     </div>
                 </div>
 
-                <h3 className={s.alrsign}>Έχετε ήδη εγγραφεί? <span className={s.log}>Συνδεθείτε</span> </h3>
+                <h3 className={s.alrsign}>Έχετε ήδη εγγραφεί? <span className={s.log} onClick={() => navigate('/login')}>Συνδεθείτε</span> </h3>
 
 
             </div>

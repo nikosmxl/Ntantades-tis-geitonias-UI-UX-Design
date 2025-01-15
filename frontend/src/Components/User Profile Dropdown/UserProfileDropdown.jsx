@@ -34,7 +34,10 @@ function UserProfileDropdown() {
   options.push({
     "label" : "Έξοδος",
     "icon": faRightFromBracket,
-    "onClick": () => navigate('../', {path: '../..'})
+    "onClick": () => {
+      localStorage.clear();
+      navigate('../', {path: '../..'});
+    }
   });
 
   const toggleMenu = () => {

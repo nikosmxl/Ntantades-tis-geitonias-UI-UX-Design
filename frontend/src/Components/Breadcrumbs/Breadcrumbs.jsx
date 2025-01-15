@@ -18,6 +18,7 @@ const Breadcrumbs = ({ breadcrumbItems }) => {
             navigate(location.pathname) :
             navigate(`/${context}/${breadcrumbItem.route}`);
           }}
+          key={breadcrumbItem}
         >
           {breadcrumbItem.label}
         </div> {index !== (breadcrumbItems.length - 1) ? '>' : ''} 

@@ -27,6 +27,7 @@ import ListingCreate from "./Pages/Babysitter Pages/ListingCreate/ListingCreate"
 import InstructionsPage from "./Pages/Common Pages/InstructionsPage/InstructionsPage";
 import BabysitterProfile from "./Pages/Babysitter Pages/BabysitterProfile/BabysitterProfile";
 import MyRatings from "./Pages/Babysitter Pages/MyRatings/MyRatings";
+import Login from './Pages/Common Pages/Login/Login';
 
 /*
   Εδώ ορίζουμε όλα τα routes.
@@ -241,6 +242,11 @@ const routes = [
     context: 'babysitter',
     path: 'help',
     page: <InstructionsPage />,
+  },
+  {
+    context: 'loggedOut',
+    path: 'login',
+    page: <Login />,
   },
 ];
 
