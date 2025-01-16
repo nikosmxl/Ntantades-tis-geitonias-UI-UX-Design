@@ -63,12 +63,7 @@ const routes = [
   },
   {
     context: 'parent',
-    path: 'babysitter-details/:babysitterId/application-create',
-    page: <ApplicationCreate />,
-  },
-  {
-    context: 'parent',
-    path: 'family-profile/:id',
+    path: 'family-profile',
     page: <FamilyProfile />,
   },
   {
@@ -165,7 +160,7 @@ const routes = [
 
   {
     context: 'babysitter',
-    path: 'parent-details/:id',
+    path: 'parent-details/:parentId',
     page: <ParentDetails />,
   },
   {

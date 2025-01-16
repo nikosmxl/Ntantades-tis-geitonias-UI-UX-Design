@@ -10,7 +10,7 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
     const context = location.pathname.split('/')[1];
 
     const handleParentClick = () => {
-      if (context === 'parent') return navigate('/parent/family-profile/1');
+      if (context === 'parent') return;
 
       navigate('/babysitter/parent-details/1');
     };

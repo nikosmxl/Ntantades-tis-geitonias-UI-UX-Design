@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import s from './BabysitterDetailsStyle.module.css';
-import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import Stars from '../../../Components/Stars/Stars';
 import Reference from '../../../Components/Reference/Reference';
 import Pagination from '../../../Components/Pagination/Pagination';
@@ -13,6 +12,11 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import Rating from '../../../Components/Rating/Rating';
 import CertificatesList from '../../../Components/CertificatesList/CertificatesList';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db, storage } from '../../../firebase';
+import { getDoc, doc, collection, getDocs, query, where } from 'firebase/firestore';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { languageOptions, servicesMapper } from '../../../utils/options';
+import { getAverageRating } from '../../../utils/calc';
 
 const BabysitterDetails = () => {
   const [isOptionsOpen, setOptionsOpen] = useState(true);
@@ -22,18 +26,42 @@ const BabysitterDetails = () => {
     month: null,
     year: null,
   });
-  const [certificates, setCertificates] = useState([{name:'test'}, {name:'test'}]);
-  const [ratings, setRatings] = useState([]);
+
   const { babysitterId } = useParams();
-  const [babysitter, setBabysitter] = useState({
-    educationLevel: 'Τίτλοι ανώτατης Εκπαίδευσης',
-    specialty: 'Διαδικτυακή εκπαίδευση',
-    references: [{},{},],
-    availability: [],
-    name: 'Μαρία',
-    surname: 'Οικονόμου',
-  });
-  const babysitterHasActiveListing = true;
+  const [babysitter, setBabysitter] = useState({});
+  const [listing, setListing] = useState(null);
+
+  const fetchData = async () => {
+    const babysitterDocRef = doc(db, 'Users', babysitterId);
+    const babysitterSnap = await getDoc(babysitterDocRef);
+
+    const fetchedData = babysitterSnap.data();
+    const profilePictureRef = ref(storage, `profilePictures/${babysitterId}.${fetchedData?.profilePictureType}`);
+    const profilePictureUrl = await getDownloadURL(profilePictureRef);
+    setBabysitter({ ...fetchedData, profilePicture: profilePictureUrl});
+
+    const q = query(
+      collection(db, 'Listings'),
+      where("status", "==", "publish"),
+      where("babysitter", "==", babysitterDocRef),
+    );
+    const listingSnaps = await getDocs(q);
+
+    if (listingSnaps.docs.length > 0) setListing(listingSnaps.docs[0].data());
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const ratingsByPage = useMemo(() => {
+    return (babysitter?.ratings ?? []).slice((ratingsPage-1)*4, ratingsPage*4);
+  }, [ratingsPage, babysitter.ratings]);
+
+  const averageRating = useMemo(() => {
+    const avg = getAverageRating();
+    return avg;
+  }, [babysitter]);
 
   return (
     <div>
@@ -49,33 +77,37 @@ const BabysitterDetails = () => {
       <div className={s.babysitter_details_main_content}>
         <div className={s.babysitter_details_top_container}>
           <div className={s.babysitter_details_left_sidebar}>
-            <img src={trollProf} className={s.profile_pic}/>
+            <img src={babysitter?.profilePicture} className={s.profile_pic}/>
             <div className={s.babysitter_details_rating}>
-              <Stars rating={4.1} showRating={true} color={'#E9BA00'}/>
+              <Stars
+                rating={averageRating}
+                showRating={true}
+                color={'#E9BA00'}
+              />
               <p>•</p>
-              <p>18 αξιολογήσεις</p>
+              <p>{(babysitter?.ratings ?? []).length} {(babysitter?.ratings ?? []).length === 1 ? 'αξιολόγηση' : 'αξιολογήσεις'}</p>
             </div>
             {
-              babysitterHasActiveListing && (
+              listing && (
                 <div>
                   <h3>Προσωπικά στοιχεία</h3>
                   <hr />
                   <div className={s.babysitter_details_personal_info}>
                     <div className={s.personal_info_content}>
                       <p className={s.info_label}>Φύλο:</p>
-                      <p>Γυναίκα</p>
+                      <p>{babysitter?.gender === 'male' ? 'Άντρας' : 'Γυναίκα'}</p>
                     </div>
                     <div className={s.personal_info_content}>
                       <p className={s.info_label}>Ηλικία:</p>
-                      <p>27</p>
+                      <p>{babysitter?.age}</p>
                     </div>
                     <div className={s.personal_info_content}>
                       <p className={s.info_label}>Εθνικότητα:</p>
-                      <p>Ελληνική</p>
+                      <p>{babysitter?.nationality}</p>
                     </div>
                     <div className={s.personal_info_content}>
                       <p className={s.info_label}>Μητρική Γλώσσα:</p>
-                      <p>Ελληνικά</p>
+                      <p>{babysitter?.language}</p>
                     </div>
                   </div>
                 </div>
@@ -85,7 +117,7 @@ const BabysitterDetails = () => {
 
           <div className={s.babysitter_details_top_container_main}>
             <div className={s.babysitter_details_top_bar}>
-              <h2>Ονοματεπώνυμο</h2>
+              <h2>{babysitter?.name} {babysitter?.surname}</h2>
               <div
                 className={s.babysitter_details_options_button}
                 onClick={() => setOptionsOpen(!isOptionsOpen)}
@@ -95,12 +127,12 @@ const BabysitterDetails = () => {
             </div>
             <hr />
             {
-              babysitterHasActiveListing ? (
+              listing ? (
                 <>
                   <p>Λίγα λόγια:</p>
                   <textarea
                     disabled
-                    value='Είμαι ευγενική, υπομονετική, σεβαστική και πολύ αγαπημένη με τα παιδιά! Μου αρέσει αυτό που κάνω για αυτό το κάνω με όρεξη και μεράκι. Σπούδασα στο Πανεπιστήμιο της Πάτρας Βρεφονηπειοκόμος και έχω κάνει και ενα μεταπτυχιακό με τίτλο “Επιστήμες της Αγωγής”, μαζί με σεμινάρια σύνολο 900 ωρών. Θα χαρώ πολύ να συνεργαστούμε και να μπορέσω να φανώ χρήσιμη και να προσφέρω!'
+                    value={listing?.fewWords}
                   />
                 </>
               )
@@ -109,19 +141,19 @@ const BabysitterDetails = () => {
                   <div className={s.babysitter_details_personal_info}>
                     <div className={s.personal_info_content}>
                       <p className={s.info_label}>Φύλο:</p>
-                      <p>Γυναίκα</p>
+                      <p>{babysitter?.gender === 'male' ? 'Άντρας' : 'Γυναίκα'}</p>
                     </div>
                     <div className={s.personal_info_content}>
                       <p className={s.info_label}>Ηλικία:</p>
-                      <p>27</p>
+                      <p>{babysitter?.age}</p>
                     </div>
                     <div className={s.personal_info_content}>
                       <p className={s.info_label}>Εθνικότητα:</p>
-                      <p>Ελληνική</p>
+                      <p>{babysitter?.nationality}</p>
                     </div>
                     <div className={s.personal_info_content}>
                       <p className={s.info_label}>Μητρική Γλώσσα:</p>
-                      <p>Ελληνικά</p>
+                      <p>{babysitter?.language}</p>
                     </div>
                   </div>
                 </div>
@@ -134,12 +166,32 @@ const BabysitterDetails = () => {
           <h3>Πληροφορίες</h3>
           <hr />
           <div className={s.babysitter_details_general_info}>
-              <p>Περιοχή Απασχόλησης :</p>
-              <p>Καλλιθέα</p>
+              {
+                listing && (
+                  <>
+                    <p>Περιοχές Απασχόλησης: </p>
+                    <p>{(listing?.areas ?? []).map(area => area.city.label).join(', ')}</p>
+                  </>
+                )
+              }
               <p>Γνώσεις Ξένων Γλωσσών :</p>
-              <p>Αγγλικά, Γαλλικά</p>
-              <p>Μετακίνηση παιδιών :</p>
-              <p>Με Ι.Χ. Οικογένειας</p>
+              <p>
+                {
+                  (babysitter?.languages ?? []).map(language => {
+                    return languageOptions.find(langOption => {
+                      return langOption.value === language;
+                    })?.label;
+                  }).join(', ')
+                }
+              </p>
+              {
+                listing && (
+                  <>
+                    <p>Μετακίνηση παιδιών: </p>
+                    <p>{listing?.transportation === 'babysitterCar' ? 'Με Ι.Χ. Νταντάς' : 'Με Ι.Χ. Οικογένειας'}</p>
+                  </>
+                )
+              }
           </div>
         </div>
 
@@ -149,16 +201,17 @@ const BabysitterDetails = () => {
           <div className={s.babysitter_details_education}>
             <h3>Επίπεδο Σπουδών :</h3>
             <div className={s.babysitter_details_education_field}>
-              <p>Δευτεροβάθμια Εκπαίδευση</p>
+              <p>{babysitter?.educationLevel}</p>
             </div>
             <h3>Ειδικότητα :</h3>
             <div className={s.babysitter_details_education_field}>
-              <p>Πτυχίο ΕΠΑΛ της ειδικότητας «Βοηθός Βρεφονηπιοκόμων» επίπεδο 4 ΕΠΠ ή ισότιμος τίτλος</p>
+              <p>{babysitter?.specialty}</p>
             </div>
           </div>
           <div className={s.babysitter_details_certification_container}>
             <CertificatesList
-              certificates={certificates}
+              babysitterId={babysitterId}
+              certificates={babysitter?.certificates ?? []}
               isEditable={false}
             />
           </div>
@@ -168,34 +221,49 @@ const BabysitterDetails = () => {
           <h3>Εμπειρία</h3>
           <hr />
           <div className={s.babysitter_details_experience}>
-            <p><span>Προϋπηρεσία:</span> 3 έτη</p>
+            <p><span>Προϋπηρεσία:</span> {babysitter?.experience}</p>
             <div>
               <p><span>Εμπειρία με παιδιά ηλικίας:</span></p>
               <ul>
-                <li><p>6 - 12 μηνών</p></li>
-                <li><p>1 - 2 ετών</p></li>
+                {
+                  (babysitter?.ageExperience ?? []).map(age => (
+                    <li key={age}><p>{age}</p></li>
+                  ))
+                }
               </ul>
             </div>
             <div>
               <p><span>Ειδίκευση σε:</span></p>
               <ul>
-                <li><p>ΑμεΑ</p></li>
+                {
+                  (babysitter?.specialization?.specialNeeds ?? false) && (
+                    <li><p>ΑμεΑ</p></li>
+                  )
+                }
+                {
+                  (babysitter?.specialization?.asl ?? false) && (
+                    <li><p>Νοηματική</p></li>
+                  )
+                }
               </ul>
             </div>
           </div>
         </div>
 
         {
-          babysitterHasActiveListing && (
+          listing && (
             <div className={s.babysitter_details_section_container}>
               <h3>Υπηρεσίες</h3>
               <hr />
               <div className={s.babysitter_details_services}>
                 <ul>
-                  <li><p>Μαγείρεμα</p></li>
-                  <li><p>Καθαρισμός Σπιτιού</p></li>
-                  <li><p>Βοήθεια με Μαθήματα</p></li>
-                  <li><p>Δραστηριότητες Εξωτερικού Χώρου</p></li>
+                  {
+                    (listing?.services ?? []).map(service => {
+                      return (
+                        <li key={service}><p>{servicesMapper[service]}</p></li>
+                      );
+                    })
+                  }
                 </ul>
               </div>
             </div>
@@ -203,7 +271,7 @@ const BabysitterDetails = () => {
         }
 
         {
-          babysitterHasActiveListing && (
+          listing && (
 
             <div className={s.babysitter_details_section_container}>
               <h3>Διαθεσιμότητα</h3>
@@ -214,7 +282,7 @@ const BabysitterDetails = () => {
                   <Checkbox
                     name='partTime'
                     label='Μερική'
-                    isChecked={true}
+                    isChecked={listing?.workingHours === 'Μερική απασχόληση'}
                     onChange={() => {}}
                     isEnabled={false}
                     width='20px'
@@ -223,7 +291,7 @@ const BabysitterDetails = () => {
                   <Checkbox
                     name='fullTime'
                     label='Πλήρης'
-                    isChecked={false}
+                    isChecked={listing?.workingHours === 'Πλήρης απασχόληση'}
                     onChange={() => {}}
                     isEnabled={false}
                     width='20px'
@@ -234,7 +302,7 @@ const BabysitterDetails = () => {
                   <Checkbox
                     name='availableNow'
                     label='Άμεσα διαθέσιμος/η'
-                    isChecked={true}
+                    isChecked={listing?.startingDate === 'Anytime'}
                     onChange={() => {}}
                     isEnabled={false}
                     width='20px'
@@ -243,7 +311,7 @@ const BabysitterDetails = () => {
                   <Checkbox
                     name='availableFrom'
                     label='Διαθέσιμος/η από :'
-                    isChecked={false}
+                    isChecked={listing?.startingDate !== 'Anytime'}
                     onChange={() => {}}
                     isEnabled={false}
                     width='20px'
@@ -251,9 +319,12 @@ const BabysitterDetails = () => {
                   />
                   <div>
                     {
-                      false && (
+                      listing?.startingDate !== 'Anytime' && (
                         <DateDropdowns
                           isEnabled={false}
+                          day={listing?.startingDate?.day ?? null}
+                          month={listing?.startingDate?.month ?? null}
+                          year={listing?.startingDate?.year ?? null}
                         />
                       )
                     }
@@ -261,7 +332,7 @@ const BabysitterDetails = () => {
                   <Checkbox
                     name='availabilityUndefined'
                     label='Αόριστη Συνεργασία'
-                    isChecked={false}
+                    isChecked={listing?.endingDate === 'Anytime'}
                     onChange={() => {}}
                     isEnabled={false}
                     width='20px'
@@ -270,7 +341,7 @@ const BabysitterDetails = () => {
                   <Checkbox
                     name='availableTo'
                     label='Διαθέσιμος/η έως :'
-                    isChecked={true}
+                    isChecked={listing?.endingDate !== 'Anytime'}
                     onChange={() => {}}
                     isEnabled={false}
                     width='20px'
@@ -278,13 +349,12 @@ const BabysitterDetails = () => {
                   />
                   <div>
                     {
-                      true && (
+                      listing?.endingDate !== 'Anytime' && (
                         <DateDropdowns
-                          isEnabled={true}
-                          day={date.day}
-                          month={date.month}
-                          year={date.year}
-                          onChange={(newDate) => setDate(newDate)}
+                          isEnabled={false}
+                          day={listing?.endingData?.day ?? null}
+                          month={listing?.endingData?.month ?? null}
+                          year={listing?.endingData?.year ?? null}
                         />
                       )
                     }
@@ -294,6 +364,7 @@ const BabysitterDetails = () => {
                   width='414px'
                   height='330px'
                   isEnabled={false}
+                  checkedSlots={listing?.availability ?? []}
                 />
               </div>
             </div>
@@ -304,9 +375,15 @@ const BabysitterDetails = () => {
           <h3>Συστατικές Επιστολές</h3>
           <hr />
           <div className={s.babysitter_details_references_container}>
-            <Reference />
-            <Reference />
-            <Reference />
+            {
+              (babysitter?.references ?? []).length > 0 && babysitter?.references.map(reference => {
+                return <Reference
+                  key={`${reference}`}
+                  babysitterId={babysitterId}
+                  reference={reference}
+                />
+              })
+            }
           </div>
         </div>
 
@@ -317,7 +394,7 @@ const BabysitterDetails = () => {
 
             <div className={s.babysitter_ratings_list}>
               {
-                ratings.map(rating => {
+                ratingsByPage.map(rating => {
                   return (
                     <Rating
                       key={rating}
@@ -329,7 +406,7 @@ const BabysitterDetails = () => {
             </div>
 
             <Pagination
-              pages={3}
+              pages={Math.ceil((babysitter?.ratings ?? []).length / 4)}
               currentPage={ratingsPage}
               onChange={setRatingsPage}
               width={'500px'}

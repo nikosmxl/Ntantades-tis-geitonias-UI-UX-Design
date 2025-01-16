@@ -74,7 +74,7 @@ function FamousSearches(){
                 <span className={s.checkmark}></span>
                 English Native Speaker
             </label>
-            <div className={s.famous_searches_search_button} onClick={() => navigate('./babysitter-search')}>
+            <div className={s.famous_searches_search_button} onClick={() => navigate('./babysitter-search', { state: { filters: checkedItems } })}>
                 <p>Αναζήτηση</p>
             </div>
         </div>

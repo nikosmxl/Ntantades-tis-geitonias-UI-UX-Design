@@ -1,25 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import s from "./UserProfileDropdownStyle.module.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faCaretDown, faCaretUp, faRightFromBracket, faStar } from '@fortawesome/free-solid-svg-icons';
 import DropdownMenu from "../Dropdown Menu/DropdownMenu";
 import { useLocation, useNavigate } from "react-router-dom";
+import { storage } from '../../firebase';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 function UserProfileDropdown() {
   const [isOpen, setIsOpen] = useState(false);
+  const [profilePicture, setProfilePicture] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
-  const userId = '1'; //hard coded for now
 
-  const contextIsParent = location.pathname.includes('parent')
+  const contextIsParent = location.pathname.includes('parent');
+
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const fetchUserProfilePicture = async () => {
+    const profilePictureRef = ref(storage, `profilePictures/${user['id']}.${user['profilePictureType']}`);
+    const profilePictureUrl = await getDownloadURL(profilePictureRef);
+    setProfilePicture(profilePictureUrl);
+  };
+
+  useEffect(() => {
+    fetchUserProfilePicture();
+  }, [user['id']]);
 
   let options = [
     {
       "label" : "Προφίλ",
       "icon": faUser,
-      "onClick": () => navigate(contextIsParent ? `family-profile/${userId}` : 'profile', {path: '../'})
+      "onClick": () => navigate(contextIsParent ? 'family-profile/' : 'profile', {path: '../'})
     },
   ];
 
@@ -48,7 +62,7 @@ function UserProfileDropdown() {
     <div className={s.user_profile}>
       <button className={s.user_profile_button} onClick={toggleMenu}>
         <div className={s.user_circle}>
-          <FontAwesomeIcon icon={faUser} className={s.user_icon} />
+          <img src={profilePicture}/>
         </div>
         {isOpen ?
           <FontAwesomeIcon icon={faCaretUp} className={s.dropdown_arrow} />

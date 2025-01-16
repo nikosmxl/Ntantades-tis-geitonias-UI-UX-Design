@@ -3,7 +3,7 @@ import s from './LoginStyle.module.css';
 import Breadcrumbs from "../../../Components/Breadcrumbs/Breadcrumbs";
 import { db } from '../../../firebase';
 import { useNavigate } from 'react-router-dom';
-import { getDoc, doc } from 'firebase/firestore';
+import { getDocs, where, query, collection } from 'firebase/firestore';
 import ErrorFields from '../../../Components/ErrorFields/ErrorFields';
 
 const Login = ({}) => {
@@ -13,23 +13,25 @@ const Login = ({}) => {
 
   const navigate = useNavigate();
 
+  const usersCollectionRef = useMemo(() => collection(db, 'Users'), []);
+
   const handleLogin = async () => {
     try {
-      const userRef = doc(db, 'Users', email);
-      const userSnap = await getDoc(userRef);
+      const q = query(usersCollectionRef, where("email", "==", email));
+      const userSnaps = await getDocs(q);
 
-      if (!userSnap.exists()) {
+      if (userSnaps.docs.length === 0) {
         setErrorMessage('Ο χρήστης δεν βρέθηκε!');
         return;
       }
-      const userData = userSnap.data();
+      const userData = userSnaps.docs[0].data();
       const isPasswordCorrect = userData.password === password;
 
       if (!isPasswordCorrect) {
         setErrorMessage('Λανθασμένος κωδικός!');
         return;
       }
-      localStorage.setItem('user', JSON.stringify(userSnap.data()));
+      localStorage.setItem('user', JSON.stringify({...userData, id: userSnaps.docs[0].id}));
       navigate(`/${userData.role}/`);
     } catch (err) {
       console.error(err);
@@ -74,6 +76,7 @@ const Login = ({}) => {
             <label>Κωδικός</label>
             <input
               placeholder='Κωδικός'
+              type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value.trim())}
             />

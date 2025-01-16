@@ -25,14 +25,19 @@
   gap: 10px;
 }
 
-.family_profile_left_sidebar p {
+.family_profile_left_sidebar label {
   color: #00AEEF;
   font-size: 16px;
   font-weight: 800;
+  cursor: pointer;
 }
 
-.family_profile_left_sidebar p:hover {
-  cursor: pointer;
+.family_profile_left_sidebar label:hover {
+  text-decoration: underline;
+}
+
+.family_profile_left_sidebar input {
+  display: none;
 }
 
 .profile_pic {

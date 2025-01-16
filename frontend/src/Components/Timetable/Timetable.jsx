@@ -19,9 +19,8 @@ function Timetable({ width = "400px", height = "200px", isEnabled = true, checke
   };
 
   const isChecked = (dayIndex, timeIndex) => {
-    return checkedSlots.some(
-      ([checkedDay, checkedTime]) =>
-        checkedDay === dayIndex && checkedTime === timeIndex
+    return checkedSlots.some(checkedSlot =>
+      checkedSlot.dayIndex === dayIndex && checkedSlot.timeIndex === timeIndex
     );
   };
 
@@ -50,13 +49,13 @@ function Timetable({ width = "400px", height = "200px", isEnabled = true, checke
                     onChange={() => {
                       if (isChecked(colIndex, rowIndex)) {
                         onChange(checkedSlots.filter((slot) => {
-                          return (slot[0] !== colIndex || slot[1] !== rowIndex);
+                          return (slot.dayIndex !== colIndex || slot.timeIndex !== rowIndex);
                         }));
                         return;
                       }
                       onChange([
                         ...checkedSlots,
-                        [colIndex, rowIndex],
+                        {dayIndex: colIndex, timeIndex: rowIndex},
                       ]);
                     }}
                     className={s.checkbox}

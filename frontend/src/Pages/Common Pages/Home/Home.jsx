@@ -5,9 +5,12 @@ import FamousSearches from "./FamousSearches/FamousSearches";
 import BabysitterList from "../../../Components/BabysitterList/BabysitterList";
 import Instructions from "../../../Components/Instructions/Instructions";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Home() {
     const navigate = useNavigate();
+
+    const [area, setArea] = useState('');
 
     return (
         <div className={s.home_page}>
@@ -18,9 +21,13 @@ function Home() {
                             <p>Αναζήτηση με βάση την περιοχή</p>
                             <div className={s.search_area}>
                                 <FontAwesomeIcon icon={faLocationDot} className={s.location_icon} />
-                                <input type="text" placeholder="Γλυφάδα, Αττική"/>
+                                <input
+                                  type="text"
+                                  placeholder="Πόλη"
+                                  onChange={(e) => setArea(e.target.value)}
+                                />
                                 <div className={s.location_search_button}>
-                                    <FontAwesomeIcon icon={faSearch} className={s.search_icon} onClick={() => navigate('./babysitter-search')}/>    
+                                    <FontAwesomeIcon icon={faSearch} className={s.search_icon} onClick={() => navigate('./babysitter-search', { state: {filters: { area: area }}})}/>    
                                 </div>
                             </div>
                         </div>

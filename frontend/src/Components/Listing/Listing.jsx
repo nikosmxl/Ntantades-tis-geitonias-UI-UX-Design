@@ -1,44 +1,26 @@
 import s from "./ListingStyle.module.css"
 import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ExpandButtons from "../ExpandButtons/ExpandButtons";
 import { useNavigate } from "react-router-dom";
+import { getDoc } from "firebase/firestore";
+import { languageOptions, servicesMapper, specializationOptions } from "../../utils/options";
+import { getDateFromMs, getFormattedDate } from "../../utils/date";
 
-function Listing({ isHistory = false, isEditable = false, onDelete }){
-    const [availabilityList, setAvailabilityList] = useState([ [0, 1], [2, 3], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4] ]);
-    
-    const sample = {
-        "id": 1,
-        "name": "Γεωργία Χατζηνικολάου",
-        "age": "27 ετών",
-        "working_xp": "5 έτη",
-        "experience_with_kids_age_of": [
-            "6-12 μηνών",
-            "1-2 ετών"
-        ],
-        "places_of_service": {
-            "ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ": ["Τζιτζιφιές", "Αγία Ελεούσα"],
-            "ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ": ["Καλλίπολη", "Καστέλλα", "Καμίνια"]
-        },
-        "languages_knowledge": [
-            "Αγγλικά",
-            "Γαλλικά"
-        ],
-        "specialties": ["Νοηματική"],
-        "children_transportation": "Με Ι.Χ. Οικογένειας",
-        "services": [
-            "Μαγειρέμα",
-            "Καθαρισμός Σπιτιού",
-            "Βοήθεια με μαθήματα",
-            "Δραστηριότητες Εξωτερικού Χώρου"
-        ],
-        "working_hours": "Πλήρης απασχόληση",
-        "availability": availabilityList,
-        "available_from": "Άμεσα διαθέσιμος/η",
-        "available_until": "Αόριστο",
-        "few_words": "Είμαι ευγενική, υπομονετική, σεβαστική και πολύ αγαπημένη με τα παιδιά! Μου αρέσει αυτό που κάνω για αυτό το κάνω με όρεξη και μεράκι. Σπούδασα στο Πανεπιστήμιο της Πάτρας Βρεφονηπιοκομία και έχω κάνει και σεμινάρια με τίτλο 'Επιστήμη της Υγείας', μαζί με σεμινάρια φωνηού φροντίδας. Θα χαρώ πολύ να συνεργαστούμε και να μπορέσω να είμαι χρήσιμη και να προσφέρω!"
+function Listing({ isHistory = false, isEditable = false, onDelete, listing }){
+    const [babysitter, setBabysitter] = useState({})
+
+    const fetchData = async () => {
+      const babysitterSnap = await getDoc(listing.babysitter);
+
+      const fetchedData = babysitterSnap.data();
+      setBabysitter(fetchedData);
     };
+
+    useEffect(() => {
+      fetchData();
+    }, [listing]);
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [isExpanded2, setIsExpanded2] = useState(false);
@@ -68,14 +50,14 @@ function Listing({ isHistory = false, isEditable = false, onDelete }){
     return (
         <div className={s.listing_with_buttons}>
             <div className={`${s.listing} ${isExpanded2 ? s.open : ''}`}>
-                <img src={troll_prof} alt="Profile" />
+                <img src={babysitter?.profilePicture} alt="Profile" />
                 <div className={`${s.second_column} ${!isExpanded ? s.collapsed : ''}`}>
-                    <p><span>Ονοματεπώνυμο:</span>{sample.name}</p>
-                    <p><span>Ηλικία:</span>{sample.age}</p>
-                    <p><span>Προϋπηρεσία:</span>{sample.working_xp}</p>
+                    <p><span>Ονοματεπώνυμο:</span>{babysitter?.name} {babysitter?.surname}</p>
+                    <p><span>Ηλικία:</span>{babysitter?.age}</p>
+                    <p><span>Προϋπηρεσία:</span>{babysitter?.experience}</p>
                     <p><span>Εμπειρία με παιδιά ηλικίας:</span></p>
                     <ul>
-                        {sample.experience_with_kids_age_of.map((experience, index) => (
+                        {(babysitter?.ageExperience ?? []).map((experience, index) => (
                             <li key={index}>
                                 <p>{experience}</p>
                             </li>
@@ -83,46 +65,70 @@ function Listing({ isHistory = false, isEditable = false, onDelete }){
                     </ul>
                     <p className={s.always_show}><span className={s.always_show}>Περιοχές εξυπηρέτησης:</span></p>
                     <ul className={s.always_show}>
-                        {Object.entries(sample.places_of_service).map(([region, areas], index) => (
+                        {listing.areas.map((area, index) => (
                             <li key={index} className={s.region_areas_list}>
-                                <p className={s.always_show}>{region}:</p>
+                                <p className={s.always_show}>{area.city.label}:</p>
                                 <div className={s.areas_list}>
-                                    {areas.join(", ")}
+                                    {area.neighborhoods.map(neighborhood => neighborhood.label).join(", ")}
                                 </div>
                             </li>
                         ))}
                     </ul>
-                    <p><span>Γνώσεις ξένων γλωσσών:</span>{sample.languages_knowledge.join(", ")}</p>
-                    <p><span>Ειδίκευση σε:</span>{sample.specialties.join(", ")}</p>
-                    <p><span>Μετακίνηση παιδιών:</span>{sample.children_transportation}</p>
+                    <p>
+                      <span>Γνώσεις ξένων γλωσσών:</span>
+                      {
+                        (babysitter?.languages ?? []).map(language => {
+                          return languageOptions.find(languageOption => languageOption.value === language).label;
+                        }).join(", ")
+                      }
+                    </p>
+                    <p><span>Ειδίκευση σε:</span>
+                      {
+                        babysitter?.specialization && Object.keys(babysitter.specialization).filter((key) => babysitter.specialization[key]).map(specialization => {
+                          return specializationOptions.find(specializationOption => specializationOption.name === specialization).label;
+                        }).join(', ')
+                      }
+                    </p>
+                    <p><span>Μετακίνηση παιδιών:</span>{listing.transportation === 'babysitterCar' ? 'Με Ι.Χ. Νταντάς' : 'Με Ι.Χ. Οικογένειας'}</p>
                     <p><span>Υπηρεσίες:</span></p>
                     <ul>
-                        {sample.services.map((experience, index) => (
+                        {(listing?.services ?? []).map((service, index) => (
                             <li key={index}>
-                                <p>{experience}</p>
+                                <p>{servicesMapper[service]}</p>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <div className={`${s.third_column} ${!isExpanded ? s.collapsed : ''}`}>
-                    <p className={s.always_show}><span className={s.always_show}>Χρόνος απασχόλησης:</span>{sample.working_hours}</p>
+                    <p className={s.always_show}><span className={s.always_show}>Χρόνος απασχόλησης:</span>{listing.workingHours}</p>
                     <p><span>Διαθεσιμότητα και ώρες:</span></p>
                     <div className={s.timetable}>
-                        <Timetable width="360px" height="200px" isEnabled={false} checkedSlots={sample.availability} onChange={setAvailabilityList} />
+                        <Timetable width="360px" height="200px" isEnabled={false} checkedSlots={listing.availability} />
                     </div>
-                    <p><span>Διαθέσιμος/η από:</span>{sample.available_from}</p>
-                    <p><span>Διαθέσιμος/η εώς:</span>{sample.available_until}</p>
+                    <p><span>Διαθέσιμος/η από:</span>
+                      {
+                        listing.startingDate?.day ?
+                        `${listing.startingDate.day}/${listing.startingDate.month}/${listing.startingDate.year}` :
+                        'Άμεσα διαθέσιμος/η'
+                      }
+                    </p>
+                    <p><span>Διαθέσιμος/η εώς:</span>
+                      {
+                        listing.endingDate?.day ?
+                        `${listing.endingDate.day}/${listing.endingDate.month}/${listing.endingDate.year}` :
+                        'Αόριστο'
+                      }
+                    </p>
                     <p><span>Λίγα λόγια:</span></p>
-                    {/* <div className={s.rect}></div> */}
-                    <p className={s.few_words}>{sample.few_words}</p>
+                    <p className={s.few_words}>{listing?.few_words ?? '-'}</p>
                 </div>
-                <p className={`${s.listing_date} ${!isExpanded ? s.collapsed : ''}`}>25/12/2024</p>
+                <p className={`${s.listing_date} ${!isExpanded ? s.collapsed : ''}`}>{getFormattedDate(getDateFromMs(listing.date))}</p>
             </div>
             <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={isExpanded ? setVariables : setVariables2}
                 showOptionsButtons={!isHistory} showDeleteButton={true}
                 showEditButton={isEditable} 
-                onDelete={() => onDelete(sample["id"])}
-                onEdit={() => navigate(`/babysitter/listings/listing-create/${sample["id"]}`)}
+                onDelete={() => onDelete()}
+                onEdit={() => navigate(`/babysitter/listings/listing-create/${listing.id}`)}
             />
         </div>
     )

@@ -19,7 +19,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
               <div
                 className={s.partnered_parent}
                 onClick={() => {
-                  navigate('../family-profile/1', {path: '..'});
+                  navigate('../parent-details/1', {path: '..'});
                 }}
                 style={{
                   alignSelf: alignLeft ? 'left' : 'center',
@@ -55,7 +55,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
             <div className={s.family_profile_info_with_dropdown_container}>
               <p>{isEditable && MandatoryFields ? "Αριθμός Παιδιών*:" : "Αριθμός Παιδιών:"}</p>
               <StyledSelect
-                defaultValue={{label: kids.length, value: kids.length}}
+                value={{label: kids.length, value: kids.length}}
                 options={[
                   {label: 1, value: 1},
                   {label: 2, value: 2},
@@ -84,7 +84,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
             <div className={s.family_profile_info_with_dropdown_container}>
               <p>Κατοικίδια:</p>
               <StyledSelect
-                defaultValue={{label: hasPets ? 'Ναι' : 'Οχι', value: hasPets}}
+                value={{label: hasPets ? 'Ναι' : 'Οχι', value: hasPets}}
                 options={[
                   {label: 'Ναι', value: true},
                   {label: 'Οχι', value: false},

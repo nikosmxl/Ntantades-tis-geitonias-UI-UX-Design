@@ -146,7 +146,10 @@ const AvailabilityCalendar = ({availability, selectedTimeslot, onAvailabilityCha
                 return(
                   <td
                     key={colIndex}
-                    style={cellStyle}
+                    style={{
+                      ...cellStyle,
+                      'transition': '0.1s all ease-in',
+                    }}
                     onClick={() => handleTimeslotClick(colIndex, rowIndex)}
                   />
                 );

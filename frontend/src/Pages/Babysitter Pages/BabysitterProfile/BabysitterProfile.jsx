@@ -1,25 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import s from './BabysitterProfileStyle.module.css';
-import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import Reference from '../../../Components/Reference/Reference';
 import Checkbox from '../../../Components/Checkbox/Checkbox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faFloppyDisk, faPencil } from '@fortawesome/free-solid-svg-icons';
 import CertificatesList from '../../../Components/CertificatesList/CertificatesList';
-import { ageExperienceOptions, specializationOptions, educationSpecialties, educationLevels, experienceOptions } from '../../../utils/options';
+import { ageExperienceOptions, specializationOptions, educationSpecialties, educationLevels, experienceOptions, languageOptions } from '../../../utils/options';
 import MultiDropdownMenu from '../../../Components/MultiDropdownMenu/MultiDropdownMenu';
 import Select from 'react-select';
 import AvailabilityCalendar from '../../../Components/AvailabilityCalendar/AvailabilityCalendar';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
-import { useLocation } from 'react-router-dom';
+import { db, storage } from '../../../firebase';
+import { getDoc, setDoc, doc } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 const BabysitterProfile = ({}) => {
-  const [babysitter, setBabysitter] = useState({
-    educationLevel: 'Τίτλοι ανώτατης Εκπαίδευσης',
-    specialty: 'Διαδικτυακή εκπαίδευση',
-    references: [{},{},],
-    availability: [],
-  });
+  const [babysitter, setBabysitter] = useState({});
   const [editableSections, setEditableSections] = useState({
     'contactDetails': false,
     'education': false,
@@ -28,16 +24,77 @@ const BabysitterProfile = ({}) => {
     'availability': false,
   });
 
-  const handleImageUpload = (event) => {
+  const babysitterId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
+
+  const fetchData = async () => {
+    const babysitterDocRef = doc(db, 'Users', babysitterId);
+    const babysitterSnap = await getDoc(babysitterDocRef);
+
+    const fetchedData = babysitterSnap.data();
+    const profilePictureRef = ref(storage, `profilePictures/${babysitterId}.${fetchedData.profilePictureType}`);
+    const profilePictureUrl = await getDownloadURL(profilePictureRef);
+    setBabysitter({ ...fetchedData, profilePicture: profilePictureUrl});
+  };
+
+  const saveData = async (newBabysitterInfo) => {
+    const certificates = newBabysitterInfo?.certificates ?? [];
+    const references = newBabysitterInfo?.references ?? [];
+
+    const babysitterDocRef = doc(db, 'Users', babysitterId);
+    const newCertificates = await Promise.all(certificates.map(async (certificate) => {
+      if (!(certificate?.size ?? false)) return certificate;
+
+      const certificateRef = ref(storage, `certificates/${babysitterId}/${certificate.name}`)
+      await uploadBytes(certificateRef, certificate);
+      return { name: certificate.name, date: Date.now() };
+    }));
+
+    const newReferences = await Promise.all(references.map(async (reference) => {
+      if (!(reference?.size ?? false)) return reference;
+
+      const referenceRef = ref(storage, `references/${babysitterId}/${reference.name}`)
+      await uploadBytes(referenceRef, reference);
+      return { name: reference.name, date: Date.now() };
+    }));
+
+    const dataToBeSaved = {
+      ...newBabysitterInfo,
+      certificates: newCertificates,
+      references: newReferences,
+    };
+    await setDoc(babysitterDocRef, dataToBeSaved);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
+  const handleImageUpload = async (event) => {
       const file = event.target.files[0];
+      const fileType = file.name.split('.')[1];
       if (file){
-        setBabysitter((prevBabysitter) => {
-          return {
-            ...prevBabysitter,
-            profilePic: URL.createObjectURL(file),
-          };
-        });
+        const filesFolderRef = ref(storage, `profilePictures/${babysitterId}.${fileType}`);
+        try {
+          const result = await uploadBytes(filesFolderRef, file);
+          await saveData({
+            ...babysitter,
+            profilePictureType: result.metadata.contentType.split('/')[1],
+          });
+          await fetchData();
+        } catch (err) {
+          console.error(err);
+        }
       }
+      event.target.value = '';
+  };
+
+  const handleFileUpload = async (event, fileType) => {
+    const files = Array.from(event.target.files);
+    setBabysitter({
+      ...babysitter,
+      [fileType]: [...babysitter[fileType], ...files],
+    });
+    event.target.value = '';
   };
 
   const handleEdit = (section) => {
@@ -48,16 +105,15 @@ const BabysitterProfile = ({}) => {
   };
 
   const handleCancel = (section) => {
-    // refetch data from api
+    fetchData();
     setEditableSections({
       ...editableSections,
       [section]: false,
     });
   };
 
-  const handleSave = (section) => {
-    // check for fields
-    // post request to api
+  const handleSave = async (section) => {
+    await saveData(babysitter);
     setEditableSections({
       ...editableSections,
       [section]: false,
@@ -109,7 +165,7 @@ const BabysitterProfile = ({}) => {
       <div className={s.babysitter_profile_main_content}>
         <div className={s.babysitter_profile_top_container}>
           <div className={s.babysitter_profile_left_sidebar}>
-            <img src={babysitter?.profilePic ?? trollProf} className={s.profile_pic}/>
+            <img src={babysitter?.profilePicture} className={s.profile_pic}/>
             <label className={s.add_image} htmlFor="imageInput">Προσθέστε φωτογραφία +</label>
             <input
                 type="file"
@@ -134,7 +190,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="text" 
                     id="name"
-                    value={babysitter.name}
+                    value={babysitter?.name}
                     disabled={true}
                   />
                 </div>
@@ -143,7 +199,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="text"
                     id="surname"
-                    value={babysitter.surname}
+                    value={babysitter?.surname}
                     disabled={true}
                   />
                 </div>
@@ -152,7 +208,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="number"
                     id="age"
-                    value={babysitter.age}
+                    value={babysitter?.age}
                     disabled={true}
                   />
                 </div>
@@ -161,7 +217,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="email"
                     id="email" 
-                    value={babysitter.email}
+                    value={babysitter?.email}
                     disabled={true}
                   />
                 </div>
@@ -170,7 +226,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="text"
                     id="gender"
-                    value={babysitter.gender}
+                    value={babysitter?.gender === 'male' ? 'Άντρας' : 'Γυναίκα'}
                     disabled={true}
                   />
                 </div>
@@ -179,7 +235,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="tel"
                     id="mobile"
-                    value={babysitter.mobile}
+                    value={babysitter?.cellNumber}
                     disabled={true}
                   />
                 </div>
@@ -188,7 +244,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="tel"
                     id="phone"
-                    value={babysitter.phone}
+                    value={babysitter?.phoneNumber}
                     disabled={true}
                   />
                 </div>
@@ -197,7 +253,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="text"
                     id="ethnicity"
-                    value={babysitter.ethnicity}
+                    value={babysitter?.nationality}
                     disabled={true}
                   />
                 </div>
@@ -206,7 +262,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="text"
                     id="residence"
-                    value={babysitter.residence}
+                    value={babysitter?.area}
                     disabled={true}
                   />
                 </div>
@@ -215,7 +271,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input}
                     type="text"
                     id="language"
-                    value={babysitter.language}
+                    value={babysitter?.language}
                     disabled={true}
                   />
                 </div>
@@ -231,7 +287,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input} 
                     type="text"
                     id="skypeId"
-                    value={babysitter.skypeId}
+                    value={babysitter?.skypeId}
                     disabled={!editableSections['contactDetails']}
                   />
                 </div>
@@ -240,7 +296,7 @@ const BabysitterProfile = ({}) => {
                   <input className={s.form_group_input} 
                     type="text"
                     id="zoomLink"
-                    value={babysitter.zoomLink}
+                    value={babysitter?.zoomLink}
                     disabled={!editableSections['contactDetails']}
                   />
                 </div>
@@ -277,7 +333,7 @@ const BabysitterProfile = ({}) => {
           <form>
             <h3 className={s.specialty}>Ειδικότητα*:</h3>
             <div className={s.specialty_options}>
-              {educationSpecialties[babysitter?.educationLevel].map((option) => (
+              {(educationSpecialties[babysitter?.educationLevel ?? null] ?? []).map((option) => (
                 <div
                   className={s.specialty_option}
                   key={option}
@@ -319,14 +375,7 @@ const BabysitterProfile = ({}) => {
                 accept=".pdf, .doc, .docx"
                 className={s.certificate_input}
                 name="Upload Certificate"
-                onChange={(e) => {
-                  const files = Array.from(e.target.files);
-                  setBabysitter({
-                    ...babysitter,
-                    certificates: [...babysitter.certificates, ...files],
-                  });
-                  e.target.value = '';
-                }}
+                onChange={(e) => handleFileUpload(e, 'certificates')}
                 multiple
               />
             </>
@@ -335,7 +384,8 @@ const BabysitterProfile = ({}) => {
           {(babysitter?.certificates ?? []).length > 0 && (
             <div className={s.certificates_list}>
                 <CertificatesList
-                  certificates={babysitter.certificates}
+                  babysitterId={babysitterId}
+                  certificates={babysitter?.certificates}
                   isEditable={editableSections['education']}
                   handleCertificateRemove={(newCertificates) => setBabysitter({
                     ...babysitter, certificates: newCertificates
@@ -347,12 +397,13 @@ const BabysitterProfile = ({}) => {
           <div className={s.languages_dropdown}>
             <h3>Ξένες Γλώσσες:</h3>
             <MultiDropdownMenu
-              selectedOptions={babysitter.languages}
+              selectedOptions={languageOptions.filter(languageOption => (babysitter?.languages ?? []).find(language => language === languageOption.value))}
               setSelectedOptions={(selectedOptions) => setBabysitter({
                 ...babysitter,
-                languages: selectedOptions,
+                languages: selectedOptions.map(selectedOption => selectedOption.value),
               })}
               isDisabled={!editableSections['education']}
+              options={languageOptions}
             />
           </div>
           { getSectionOptions('education') }
@@ -368,7 +419,7 @@ const BabysitterProfile = ({}) => {
             <div className={s.years_of_experience}>
               <h3>Προϋπηρεσία*:</h3>
               <Select
-                value={experienceOptions.find((option) => option.value === babysitter.experience)}
+                value={experienceOptions.find((option) => option.value === babysitter?.experience)}
                 onChange={(selectedOption) => setBabysitter({
                   ...babysitter,
                   experience: selectedOption.value,
@@ -382,34 +433,41 @@ const BabysitterProfile = ({}) => {
             <div className={s.checkbox_category}>
               <h3>Εμπειρία με παιδιά ηλικίας:</h3>
               <div className={s.checkbox_options}>
-                {ageExperienceOptions.map((option) => (
-                  <Checkbox
-                    key={option}
-                    name={"ageExperience"}
-                    onChange={() => {}}
-                    label={option}
-                    width="20px"
-                    height="20px"
-                    isEnabled={editableSections['experience']}
-                  />
-                ))}
+                {ageExperienceOptions.map((option) => {
+
+                  return (
+                    <Checkbox
+                      key={option}
+                      isChecked={(babysitter?.ageExperience ?? []).find((exp) => exp === option)}
+                      name={"ageExperience"}
+                      onChange={() => {}}
+                      label={option}
+                      width="20px"
+                      height="20px"
+                      isEnabled={editableSections['experience']}
+                    />
+                  )
+                })}
               </div>
             </div>
 
             <div className={s.checkbox_category}>
               <h3>Ειδίκευση σε:</h3>
               <div className={s.checkbox_options}>
-                {specializationOptions.map((option) => (
-                  <Checkbox
-                    key={option}
-                    name={"specialization"}
-                    onChange={() => {}}
-                    label={option}
-                    width="20px"
-                    height="20px"
-                    isEnabled={editableSections['experience']}
-                  />
-                ))}
+                {specializationOptions.map((option) => {
+                  return (
+                    <Checkbox
+                      key={option}
+                      isChecked={(babysitter?.specialization ?? {})[option.name]}
+                      name={"specialization"}
+                      onChange={() => {}}
+                      label={option.label}
+                      width="20px"
+                      height="20px"
+                      isEnabled={editableSections['experience']}
+                    />
+                  );
+                })}
               </div>
             </div>
 
@@ -432,23 +490,17 @@ const BabysitterProfile = ({}) => {
                   accept=".pdf, .doc, .docx"
                   className={s.reference_input}
                   name="Upload Reference"
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files);
-                    setBabysitter({
-                      ...babysitter,
-                      references: [...babysitter.references, ...files],
-                    });
-                    e.target.value = '';
-                  }}
+                  onChange={(e) => handleFileUpload(e, 'references')}
                   multiple
                 />
               </>
             }
 
             {
-              babysitter.references.length > 0 && babysitter.references.map(reference => {
+              (babysitter?.references ?? []).length > 0 && babysitter?.references.map(reference => {
                 return <Reference
                   key={`${reference}`}
+                  babysitterId={babysitterId}
                   reference={reference}
                 />
               })
@@ -462,10 +514,10 @@ const BabysitterProfile = ({}) => {
           <h3>Διαθεσιμότητα για Ραντεβού</h3>
           <hr />
           <AvailabilityCalendar
-            availability={babysitter.availability}
+            availability={babysitter?.dateAvailability ?? []}
             onAvailabilityChange={(newAvailability) => setBabysitter({
               ...babysitter,
-              availability: newAvailability,
+              dateAvailability: newAvailability,
             })}
             editableAvailability={true}
             showWeeks={false}
