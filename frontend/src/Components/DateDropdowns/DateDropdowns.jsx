@@ -10,10 +10,6 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row
     return Array.from({ length: date.getDate() }, (_, i) => i + 1);
   };
 
-  const months = [
-    "Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου", 
-    "Ιουλίου", "Αυγούστου", "Σεπτεμβρίου", "Οκτωβρίου", "Νοεμβρίου", "Δεκεμβρίου"
-  ];
   const monthOptions = Array.from(new Array(12), (val, index) => index+1);
   const currentYear = (new Date()).getFullYear();
   const yearOptions = Array.from(new Array(20), (val, index) => index + currentYear);

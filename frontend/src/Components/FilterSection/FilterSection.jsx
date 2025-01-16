@@ -16,11 +16,11 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
     const newMonth = newDate.getMonth() + 1;
     const newYear = newDate.getFullYear();
 
-    field.onChange({
+    field.onChange(newDay && newMonth && newYear ? {
       day: newDay,
       month: newMonth,
       year: newYear,
-    });
+    } : null);
   };
 
   return (
@@ -47,6 +47,8 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
                   width={field.width}
                   height={field.height}
                   isEnabled={true}
+                  onChange={field.onChange}
+                  checkedSlots={field.checkedSlots}
                 />
               );
             } else if (field.type === 'dropdown') {
@@ -54,12 +56,7 @@ const FilterSection = ({ sectionLabel, fields=[] }) => {
                 <Select
                   key={field.name}
                   placeholder={field.placeholder}
-                  options={field.options.map(option => {
-                    return {
-                      value: option,
-                      label: option,
-                    };
-                  })}
+                  options={field.options}
                   onChange={field.onChange}
                 />
               );

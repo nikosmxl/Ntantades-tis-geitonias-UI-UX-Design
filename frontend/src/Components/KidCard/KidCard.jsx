@@ -5,8 +5,8 @@ import StyledSelect from '../StyledSelect/StyledSelect';
 
 const KidCard = ({ kid, onChange, isEditable=false, MandatoryFields=false }) => {
   const labelValueMapper = {
-    "boy": "Αγόρι",
-    "girl": "Κορίτσι",
+    "male": "Αγόρι",
+    "female": "Κορίτσι",
   };
 
   const ageLabelDictionary = {
@@ -98,8 +98,8 @@ const KidCard = ({ kid, onChange, isEditable=false, MandatoryFields=false }) => 
           placeholder="Φύλο..."
           value={kid.gender !== null ? {label: labelValueMapper[kid.gender], value: kid.gender} : null}
           options={[
-            {label: 'Αγόρι', value: 'boy'},
-            {label: 'Κορίτσι', value: 'girl'},
+            {label: 'Αγόρι', value: 'male'},
+            {label: 'Κορίτσι', value: 'female'},
           ]}
           isDisabled={!isEditable}
           onChange={(selectedOption) => handleGenderChange(selectedOption)}          

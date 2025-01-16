@@ -1,10 +1,10 @@
 
 
 const ageExperienceOptions = ['2-6 μηνών', '6-12 μηνών', '1-2 ετών', '> 2 ετών'];
-const specializationOptions = ['ΑμεΑ', 'Νοηματική'];
+const specializationOptions = [{label: 'ΑμεΑ', name: 'specialNeeds'}, {label: 'Νοηματική', name: 'asl'}];
 
 const educationSpecialties = {
-  "Τίτλοι δευτεροβάθμιας Επαγγελματικής Εκπαίδευσης": [
+  "Δευτεροβάθμια Εκπαίδευση": [
     "Πτυχίο ΕΠΑΛ της ειδικότητας «Βοηθός Βρεφονηπιοκόμων» επίπεδο 4 ΕΠΠ ή ισότιμος τίτλος",
     "Πτυχίο Τεχνικού Επαγγελματικού Λυκείου (ΤΕΛ) του τομέα Κοινωνικών Υπηρεσιών, Τμήματος Βοηθών Βρεφονηπιοκόμων Παιδοκόμων ή ισότιμος τίτλος",
     "Πτυχίο του Τμήματος Ειδίκευσης συναφούς ειδικότητας του Κλάδου Κοινωνικής Πρόνοιας Ενιαίου Πολυκλαδικού Λυκείου (ΕΠΛ) ή ισότιμος τίτλος",
@@ -14,11 +14,11 @@ const educationSpecialties = {
     "Βοηθός Βρεφονηπιοκόμων ή ισότιμος τίτλος",
     "Διαδικτυακή εκπαίδευση",
   ],
-  "Τίτλοι επαγγελματικής Εκπαίδευσης/Κατάρτισης": [
+  "Επαγγελματικής Εκπαίδευση/Κατάρτιση": [
     "Πτυχίο ΕΠΑΣ μαθητείας ΟΑΕΔ ειδικότητας «Βοηθός Γενικής Βρεφονηπιοκομίας» επίπεδο 3 ή ισότιμος τίτλος",
     "Διαδικτυακή εκπαίδευση",
   ],
-  "Τίτλοι ανώτατης Εκπαίδευσης": [
+  "Ανώτατη Εκπαίδευση": [
     "Πτυχίο ΑΕΙ Αγωγής και Φροντίδας στην Πρώιμη Παιδική Ηλικία/ Τμήμα Αγωγής και Φροντίδας στην Πρώιμη Παιδική Ηλικία/ Σχολή Διοικητικών, Οικονομικών και Κοινωνικών Επιστημών/ Πανεπιστήμιο Δυτικής Αττικής ή ισότιμος τίτλος",
     "Πτυχίο ΑΕΙ Αγωγής και Φροντίδας στην Πρώιμη Παιδική Ηλικία/ Τμήμα Αγωγής και Φροντίδας στην Πρώιμη Παιδική Ηλικία/ Σχολή Κοινωνικών Επιστημών/ Διεθνές Πανεπιστήμιο της Ελλάδας ή ισότιμος τίτλος",
     "Πτυχίο ΑΕΙ Αγωγής και Φροντίδας στην Πρώιμη Παιδική Ηλικία/ Τμήμα Αγωγής και Φροντίδας στην Πρώιμη Παιδική Ηλικία/ Σχολή Κοινωνικών Επιστημών/ Πανεπιστήμιο Ιωαννίνων ή ισότιμος τίτλος",
@@ -39,6 +39,44 @@ const educationLevels = Object.keys(educationSpecialties).map((level) => ({
   label: level,
 }));
 
+const genderOptions = [
+  { value: 'male', label: 'Άντρας' },
+  { value: 'female', label: 'Γυναίκα' },
+];
+
+const ageOptions = Array.from({ length: 52 }, (_, idx) => ({ value: idx+18, label: idx+18 }));
+
+const nationalityOptions = [
+  { value: 'Ελληνική', label: 'Ελληνική' },
+  { value: 'Αμερικανική', label: 'Αμερικανική' },
+  { value: 'Γαλλική', label: 'Γαλλική' },
+  { value: 'Γερμανική', label: 'Γερμανική' },
+  { value: 'Ιταλική', label: 'Ιταλική' },
+  { value: 'Ισπανική', label: 'Ισπανική' },
+  { value: 'Πορτογαλική', label: 'Πορτογαλική' },
+  { value: 'Βρετανική', label: 'Βρετανική' },
+  { value: 'Κινέζικη', label: 'Κινέζικη' },
+  { value: 'Ιαπωνική', label: 'Ιαπωνική' },
+  { value: 'Ινδική', label: 'Ινδική' },
+  { value: 'Ρωσική', label: 'Ρωσική' },
+  { value: 'Αυστραλιανή', label: 'Αυστραλιανή' },
+  { value: 'Καναδική', label: 'Καναδική' },
+  { value: 'Νορβηγική', label: 'Νορβηγική' },
+  { value: 'Σουηδική', label: 'Σουηδική' },
+  { value: 'Δανική', label: 'Δανική' },
+  { value: 'Φινλανδική', label: 'Φινλανδική' },
+  { value: 'Αλβανική', label: 'Αλβανική' },
+  { value: 'Βουλγαρική', label: 'Βουλγαρική' },
+  { value: 'Τουρκική', label: 'Τουρκική' },
+  { value: 'Σκοπιανή', label: 'Σκοπιανή' },
+  { value: 'Σερβική', label: 'Σερβική' },
+  { value: 'Μαυροβουνιακή', label: 'Μαυροβουνιακή' },
+  { value: 'Κροατική', label: 'Κροατική' },
+  { value: 'Βοσνιακή', label: 'Βοσνιακή' },
+  { value: 'Ρουμανική', label: 'Ρουμανική' },
+  { value: 'Κυπριακή', label: 'Κυπριακή' },
+];
+
 const languageOptions = [
   { value: 'english', label: 'Αγγλικά' },
   { value: 'french', label: 'Γαλλικά' },
@@ -48,7 +86,6 @@ const languageOptions = [
   { value: 'russian', label: 'Ρώσικα' },
   { value: 'arabic', label: 'Αραβικά' },
 ];
-
 
 const experienceOptions = [
   { value: "Καμία προϋπηρεσία", label: "Καμία προϋπηρεσία" },
@@ -61,11 +98,36 @@ const experienceOptions = [
   { value: "10+ έτη", label: "10+ έτη" },
 ];
 
+const transportationOptions = [
+  {value: "babysitterCar", label: "Με Ι.Χ. Νταντάς"},
+  {value: "familyCar", label: "Με Ι.Χ. Οικογένειας"},
+];
+
+const servicesMapper = {
+  'cooking': "Μαγείρεμα",
+  'cleaning': "Καθαρισμός σπιτιού",
+  'ironing': "Σιδέρωμα",
+  "firstAid": "Α` βοήθειες",
+  'babysitterCertificate': "Πιστοποίηση νταντάς",
+  'homeworkHelp': "Βοήθεια με μαθήματα",
+  'visits': "Εκδρομές / Επισκέψεις",
+  'accompanyToActivities': "Συνοδεία σε Δραστηριότητες",
+  'outsideActivities': "Δραστηριότητες Εξωτερικού Χώρου",
+  'emergencyAvailability': "Έκτακτη Διαθεσιμότητα",
+  'englishNativeSpeaker': "English native speaker",
+  'hosting': "Φιλοξενία στην οικία μου"
+};
+
 export {
   ageExperienceOptions,
   specializationOptions,
   educationSpecialties,
   educationLevels,
   experienceOptions,
-  languageOptions
+  languageOptions,
+  transportationOptions,
+  servicesMapper,
+  genderOptions,
+  ageOptions,
+  nationalityOptions,
 };

@@ -1,25 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import s from './BabysitterSearchStyle.module.css';
 import BabysitterListingCard from '../../../Components/BabysitterListingCard/BabysitterListingCard';
 import Pagination from '../../../Components/Pagination/Pagination';
 import Filters from './Filters/Filters';
 import ListHeader from '../../../Components/ListHeader/ListHeader';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db } from '../../../firebase';
+import { getDocs, where, query, collection } from 'firebase/firestore';
+import { filterData } from './filterData';
+import { useLocation } from 'react-router-dom';
 
 const BabysitterSearch = () => {
+  const location = useLocation();
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [sorting, setSorting] = useState('Αξιολόγηση (Φθίνουσα)');
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState(location?.state?.filters ?? {});
   const [availabilityFilter, setAvailabilityFilter] = useState([]);
+  const [listings, setListings] = useState([]);
 
-  const fetchBabysitterListings = () => {
-    console.log('api call here');
+  const fetchData = async () => {
+    const q = query(
+      collection(db, 'Listings'),
+      where('status', '==', 'publish')
+    );
+    const listingSnaps = await getDocs(q);
+    const fetchedListings = listingSnaps.docs.map(listingDoc => ({ ...listingDoc.data(), id: listingDoc.id}));
+    filterData(fetchedListings, {...filters, availability: availabilityFilter}, setListings, sorting);
   };
 
   useEffect(() => {
-    fetchBabysitterListings();
-  }, [page, pageSize, sorting, filters]);
+    fetchData();
+  }, [sorting, filters]);
+
+  const listingsByPage = useMemo(() => {
+    return listings.slice(
+      (page-1)*pageSize,
+      page*pageSize
+    );
+  }, [page, pageSize, listings]);
+
+  const listingsPages = useMemo(() => {
+    return Math.ceil(listings.length / pageSize)
+  }, [pageSize, listings]);
 
   return (
     <div>
@@ -34,7 +58,7 @@ const BabysitterSearch = () => {
       <div className={s.babysitter_search_main_content}>
         <h2>Βρείτε νταντά</h2>
         <ListHeader
-          listSize={147}
+          listSize={listings.length}
           listElementName='Αγγελίες'
           pageSize={pageSize}
           sorting={sorting}
@@ -50,22 +74,22 @@ const BabysitterSearch = () => {
             availabilityFilter={availabilityFilter}
             onFilterChange={setFilters}
             onAvailabilityFilterChange={setAvailabilityFilter}
-            triggerFetch={fetchBabysitterListings}
+            triggerFetch={() => fetchData(listings)}
           />
 
           <div className={s.babysitter_search_table}>
-            <BabysitterListingCard />
-            <BabysitterListingCard />
-            <BabysitterListingCard />
-            <BabysitterListingCard />
-            <BabysitterListingCard />
-            <BabysitterListingCard />
-            <BabysitterListingCard />
-            <BabysitterListingCard />
-            <BabysitterListingCard />
-            <BabysitterListingCard />
+            {
+              listingsByPage.map(listing => {
+                return (
+                  <BabysitterListingCard
+                    key={listing.id}
+                    listing={listing}
+                  />
+                );
+              })
+            }
             <Pagination
-              pages={3}
+              pages={listingsPages}
               currentPage={page}
               onChange={(pageNum) => setPage(pageNum)}
             />

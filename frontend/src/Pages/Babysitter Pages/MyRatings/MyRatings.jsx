@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import s from './MyRatingsStyle.module.css';
 import ListHeader from '../../../Components/ListHeader/ListHeader';
 import Rating from '../../../Components/Rating/Rating';
@@ -7,22 +7,35 @@ import Filters from './Filters/Filters';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import Stars from '../../../Components/Stars/Stars';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db } from '../../../firebase';
+import { getDoc, doc } from 'firebase/firestore';
+import { getAverageRating } from '../../../utils/calc';
 
 const MyRatings = ({}) => {
-  const [ratings, setRatings] = useState([
-    { rating: 4 },
-    { rating: 4 },
-    { rating: 3, text: 'Πολύ καλή γυναίκα και εξυπηρετική! Συνεργαστήκαμε για ενα 6μηνο, έμεινα ικανοποιημένη και θα ξανασυνεργαζόμουν!' },
-  ]);
+  const [babysitter, setBabysitter] = useState({});
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [sorting, setSorting] = useState('Πιο πρόσφατη');
   const [filters, setFilters] = useState({});
 
-  const averageRating = useMemo(
-    () => parseInt(ratings.reduce((accumulator, rating) => (rating.rating + accumulator), 0)) / parseInt(ratings.length),
-    [],
-  );
+  const babysitterId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
+
+  const fetchData = async () => {
+    const babysitterDocRef = doc(db, 'Users', babysitterId);
+    const babysitterSnap = await getDoc(babysitterDocRef);
+
+    const fetchedData = babysitterSnap.data();
+    setBabysitter(fetchedData);
+  };
+  
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const averageRating = useMemo(() => {
+    const avg = getAverageRating(babysitter);
+    return avg;
+  }, [babysitter]);
 
   return (
     <div className={s.my_ratings_page}>
@@ -51,7 +64,7 @@ const MyRatings = ({}) => {
         <div className={s.ratings_list_with_header}>
           <ListHeader
             listElementName='Αξιολογήσεις'
-            listSize={ratings.length}
+            listSize={(babysitter?.ratings ?? []).length}
             pageSize={pageSize}
             sorting={sorting}
             sortingOptions={['Πιο πρόσφατη', 'Παλαιότερη', 'Αύξουσα βαθμολογία', 'Φθίνουσα βαθμολογία']}
@@ -62,7 +75,7 @@ const MyRatings = ({}) => {
 
           <div className={s.ratings_list}>
           {
-            ratings.map(rating => {
+            (babysitter?.ratings ?? []).map(rating => {
               return (
                 <Rating
                   key={rating}
@@ -74,7 +87,7 @@ const MyRatings = ({}) => {
           </div>
 
           <Pagination
-            pages={Math.ceil(parseInt(ratings.length) / parseInt(pageSize))}
+            pages={Math.ceil(parseInt((babysitter?.ratings ?? []).length) / parseInt(pageSize))}
             currentPage={page}
             onChange={setPage}
             width='501px'

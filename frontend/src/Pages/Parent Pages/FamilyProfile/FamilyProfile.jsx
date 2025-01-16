@@ -1,19 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import s from './FamilyProfileStyle.module.css';
-import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
 import FamilyInfo from '../../../Components/FamilyInfo/FamilyInfo';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db, storage } from '../../../firebase';
+import { getDoc, setDoc, doc } from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 const FamilyProfile = () => {
   const [isEditOpen, setEditOpen] = useState(false);
-  const [description, setDescription] = useState('');
-  const [kids, setKids] = useState([]);
-  const [hasPets, setHasPets] = useState(false);
+  const [parent, setParentInfo] = useState({});
+
+  const parentId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
+
+  const fetchData = async () => {
+    const parentDocRef = doc(db, 'Users', parentId);
+    const parentSnap = await getDoc(parentDocRef);
+
+    const fetchedData = parentSnap.data();
+    const profilePictureRef = ref(storage, `profilePictures/${parentId}.${fetchedData.profilePictureType}`);
+    const profilePictureUrl = await getDownloadURL(profilePictureRef);
+    setParentInfo({ ...fetchedData, profilePicture: profilePictureUrl});
+  };
+
+  const saveData = async (newParentInfo) => {
+    const parentDocRef = doc(db, 'Users', parentId);
+    await setDoc(parentDocRef, newParentInfo);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleKidsNumChange = (newNumKids) => {
-    const newKids = Array.from(kids);
+    const newKids = Array.from(parent.kids);
     
     while (newKids.length < newNumKids.value) {
       newKids.push({id: newKids.length+1, age: null, gender: null, hasDisabilities: false, hasAllergies: false, description: ''});
@@ -22,21 +43,56 @@ const FamilyProfile = () => {
     while (newKids.length > newNumKids.value) {
       newKids.pop();
     }
-    setKids(newKids);
+    setParentInfo({
+      ...parent,
+      kids: newKids
+    });
   };
 
   const handleKidChange = (updatedKid) => {
-    const updatedKids = kids.map(kid => {
+    const updatedKids = parent.kids.map(kid => {
       if (kid.id !== updatedKid.id) return kid;
 
       return updatedKid
     });
-    setKids(updatedKids);
+    setParentInfo({
+      ...parent,
+      kids: updatedKids
+    });
   };
 
   const handleDescriptionChange = (e) => {
     e.preventDefault();
-    setDescription(e.target.value.trim());
+    setParentInfo({
+      ...parent,
+      familyDescription: e.target.value.trim(),
+    });
+  };
+
+  const handleHasPetsChange = (newValue) => {
+    setParentInfo({
+      ...parent,
+      hasPets: newValue,
+    });
+  };
+
+  const handleImageUpload = async (event) => {
+      const file = event.target.files[0];
+      const fileType = file.name.split('.')[1];
+      if (file){
+        const filesFolderRef = ref(storage, `profilePictures/${parentId}.${fileType}`);
+        try {
+          const result = await uploadBytes(filesFolderRef, file);
+          await saveData({
+            ...parent,
+            profilePictureType: result.metadata.contentType.split('/')[1],
+          });
+          await fetchData();
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      event.target.value = '';
   };
 
   const handleEdit = () => {
@@ -44,13 +100,12 @@ const FamilyProfile = () => {
   };
 
   const handleCancel = () => {
-    // refetch data from api
+    fetchData();
     setEditOpen(false);
   };
 
-  const handleSave = () => {
-    // check for fields
-    // post request to api
+  const handleSave = async () => {
+    await saveData(parent);
     setEditOpen(false);
   };
 
@@ -67,8 +122,16 @@ const FamilyProfile = () => {
       <div className={s.family_profile_main_content}>
         <div className={s.family_profile_top_container}>
           <div className={s.family_profile_left_sidebar}>
-            <img src={trollProf} className={s.profile_pic} alt='Profile'/>
-            <p>+ Προσθέστε Φωτογραφία</p>
+            <img src={parent?.profilePicture} className={s.profile_pic} alt='Profile'/>
+            <label className={s.add_image} htmlFor="imageInput">Προσθέστε φωτογραφία +</label>
+            <input
+                type="file"
+                id="imageInput"
+                accept="image/png, image/jpg, image/jpeg"
+                className={s.image_input}
+                name="Upload Photo"
+                onChange={handleImageUpload}
+            />
           </div>
           
           <div className={s.family_profile_top_container_main}>
@@ -77,33 +140,34 @@ const FamilyProfile = () => {
             <hr />
             <div className={s.family_profile_personal_info}>
               <p>Όνομα :</p>
-              <p>Μπάμπης</p>
+              <p>{parent?.name}</p>
               <p>Επώνυμο :</p>
-              <p>Μπαμπάκης</p>
+              <p>{parent?.surname}</p>
               <p>Email :</p>
-              <p>bcotton@gmail.com</p>
+              <p>{parent?.email}</p>
               <p>Τηλέφωνο :</p>
-              <p>2102419800</p>
+              <p>{parent?.phoneNumber}</p>
               <p>Κινητό :</p>
-              <p>6988676321</p>
+              <p>{parent?.cellNumber}</p>
               <p>Εθνικότητα :</p>
-              <p>Ελληνική</p>
+              <p>{parent?.nationality}</p>
               <p>Περιοχή Διαμονής :</p>
-              <p>Αχαρνές, Αττική</p>
+              <p>{parent?.area}</p>
               <p>Μητρική Γλώσσα :</p>
-              <p>Ελληνικά</p>
+              <p>{parent?.language}</p>
             </div>
           </div>
         </div>
 
         <FamilyInfo 
           isEditable={isEditOpen} 
-          description={description}
+          description={parent?.familyDescription}
           onDescriptionChange={handleDescriptionChange} 
-          kids={kids}
+          kids={parent?.kids ?? []}
           onKidsNumChange={handleKidsNumChange}
           onKidChange={handleKidChange}
-          onHasPetsChange={setHasPets}
+          hasPets={parent?.hasPets}
+          onHasPetsChange={handleHasPetsChange}
         />
 
         <div className={s.family_profile_action_buttons_container}>

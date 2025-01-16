@@ -1,36 +1,30 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import s from './ParentDetailsStyle.module.css';
-import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import KidCard from '../../../Components/KidCard/KidCard';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db, storage } from '../../../firebase';
+import { getDoc, doc } from 'firebase/firestore';
+import { useParams } from 'react-router-dom';
+import { getDownloadURL, ref } from 'firebase/storage';
 
 const ParentDetails = ({}) => {
-    const kids = [
-        {
-            id: 1, 
-            age: 2, 
-            gender: 'girl',
-            hasDisabilities: false,
-            hasAllergies: false,
-            description: 'Την λένε Γιώτα, της αρέσει το μπαλέτο ,αγαπάει τη φύση',
-        }, 
+    const [parentInfo, setParentInfo] = useState({});
 
-        {
-            id: 2, 
-            age: 1, 
-            gender: 'boy',
-            hasDisabilities: false,
-            hasAllergies: false,
-            description: '',
-        }
-    ];
-    const parent = {
-      name: 'Μάριος',
-      surname: 'Οικονόμου',
+    const { parentId } = useParams();
+    
+    const fetchData = async () => {
+      const parentDocRef = doc(db, 'Users', parentId);
+      const parentSnap = await getDoc(parentDocRef);
+  
+      const fetchedData = parentSnap.data();
+      const profilePictureRef = ref(storage, `profilePictures/${parentId}.${fetchedData.profilePictureType}`);
+      const profilePictureUrl = await getDownloadURL(profilePictureRef);
+      setParentInfo({ ...fetchedData, profilePicture: profilePictureUrl});
     };
 
-    const [description] = useState('Λίγα λόγια για την Οικογένεια...');
-    const [hasPets, setHasPets] = useState(false);
+    useEffect(() => {
+      fetchData();
+    }, []);
 
     return (
         <div>
@@ -39,7 +33,7 @@ const ParentDetails = ({}) => {
                 breadcrumbItems={[
                   { label: 'Αρχική Σελίδα', route: ''},
                   { label: 'Αιτήσεις', route: 'applications'},
-                  { label: `${parent?.name} ${parent?.surname}`, route: '.'},
+                  { label: `${parentInfo?.name} ${parentInfo?.surname}`, route: '.'},
                 ]}
               />
             </div>
@@ -47,24 +41,24 @@ const ParentDetails = ({}) => {
             <div className= {s.parent_details_main_content}>
                 <div className={s.parent_details_top_container}>
                     <div className={s.parent_details_left_sidebar}>
-                        <img src={trollProf} className={s.profile_pic} />
+                        <img src={parentInfo?.profilePicture} className={s.profile_pic} />
                     </div>
                     
                     <div className={s.parent_details_top_container_main}>
-                        <h2>Μπάκης Μπαμπάκης</h2>
+                        <h2>{parentInfo?.name} {parentInfo?.surname}</h2>
                         <hr className={s.line_under_name}/>
                         
                         <h3>Προσωπικά Στοιχεία</h3>
                         <hr className={s.line_under_personal_info}/>
                         <div className={s.parent_details_personal_info}>
                             <p>Φύλο :</p>
-                            <p>Άνδρας</p>
+                            <p>{parentInfo?.gender === 'male' ? 'Άντρας' : 'Γυναίκα'}</p>
                             <p>Ηλικία</p>
-                            <p>43</p>
+                            <p>{parentInfo?.age}</p>
                             <p>Εθνικότητα :</p>
-                            <p>Ελληνική</p>
+                            <p>{parentInfo?.nationality}</p>
                             <p>Μητρική Γλώσσα :</p>
-                            <p>Ελληνικά</p>
+                            <p>{parentInfo?.language}</p>
                         </div>         
                     </div>                
                 </div>
@@ -76,19 +70,19 @@ const ParentDetails = ({}) => {
                     <div className={s.parent_details_family_info}>
                         <textarea 
                             className={s.family_description}
-                            value={description}
+                            value={parentInfo?.familyDescription}
                         />
 
                         <div className={s.parent_details_info_kids}>
                             <p>Αριθμός Παιδιών :</p>
-                            <p className={s.unmodified_arrays}> 2 </p>
+                            <p className={s.unmodified_arrays}>{(parentInfo?.kids ?? []).length}</p>
                         </div>
 
                         {
-                            kids.map((kid, index) => {
+                            (parentInfo?.kids ?? []).map((kid, index) => {
                                 return (
                                 <KidCard
-                                    key={`${kid.id} ${kid.age} ${kid.gender} ${index}`}
+                                    key={`${kid.age} ${kid.gender} ${index}`}
                                     kid={kid}
                                     isEditable={false}
                                 />
@@ -97,10 +91,7 @@ const ParentDetails = ({}) => {
                         }
                         <div className={s.parent_details_info_kids}>
                             <p>Κατοικίδια :</p>
-                            <p className={s.unmodified_arrays}> Ναι</p>
-
-                           
-
+                            <p className={s.unmodified_arrays}>{parentInfo?.hasPets ? 'Ναι' : 'Όχι'}</p>
                            
                         </div>
                     </div>

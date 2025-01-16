@@ -19,11 +19,12 @@
     background-color: #D9D9D9;
     border: 1px solid #2F72EF;
     border-radius: 50%;
+    overflow: hidden;
 }
 
-.user_icon{
-    font-size: 22px;
-    color: #003475;
+.user_circle img {
+  width: 40px;
+  height: 40px;
 }
 
 .dropdown_arrow{

@@ -15,7 +15,7 @@ function WelcomeNavBar(){
                     <p className={s.navbar_button} onClick={() => navigate('signup/babysitter')}>Βρείτε Εργασία</p>
                     <p className={s.navbar_button} onClick={() => navigate('/babysitter-search')}>Βρείτε Νταντά</p>
                     <button className={s.signup_button} onClick={() => navigate('signup')}>Εγγραφή με Taxis</button>
-                    <button className={s.login_button} onClick={() => navigate('signup')}>Σύνδεση με Taxis</button>
+                    <button className={s.login_button} onClick={() => navigate('login')}>Σύνδεση με Taxis</button>
                 </div>
             </div>
             <div className={s.bottom_navbar}></div>

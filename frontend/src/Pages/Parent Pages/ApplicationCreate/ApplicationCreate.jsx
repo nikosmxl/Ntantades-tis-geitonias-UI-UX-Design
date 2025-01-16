@@ -207,13 +207,13 @@ function ApplicationCreate(){
 
                 <div className={s.working_hours}>
                     <b>Χρόνος απασχόλησης*</b>
-                    {["Full-Time", "Part-Time"].map(option => (
+                    {["Πλήρης απασχόληση", "Μερική απασχόληση"].map(option => (
                         <Checkbox
                             key={option}
                             name="workinghrs"
                             isChecked={workingHours === option}
                             onChange={() => setWorkingHours(option)}
-                            label={option === "Full-Time" ? "Πλήρης απασχόληση" : "Μερική απασχόληση"}
+                            label={option === "Πλήρης απασχόληση" ? "Πλήρης απασχόληση" : "Μερική απασχόληση"}
                         />
                     ))}
                 </div>

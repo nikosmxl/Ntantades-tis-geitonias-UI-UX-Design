@@ -94,4 +94,9 @@
     font-weight: 500;
     color: #2F72EF;
     margin-left: 7px;
+    cursor: pointer;
+}
+
+.log:hover {
+  text-decoration: underline;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import s from "./ListingCreateStyle.module.css"
 import Select from 'react-select'
 import Checkbox from "../../../Components/Checkbox/Checkbox";
@@ -12,29 +12,13 @@ import ConfirmationPopUp from "../../../PopUps/ConfirmationPopUp/ConfirmationPop
 import { useNavigate, useParams } from "react-router-dom";
 import DropdownAreas from "../../../Components/DropdownAreas/DropdownAreas";
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db } from '../../../firebase';
+import { getDoc, doc, addDoc, setDoc, collection, getDocs, where, query } from "firebase/firestore";
+import { servicesMapper, transportationOptions } from "../../../utils/options";
 
 function ListingCreate(){
-    const fullname = "Μπάμπης Μπαμπάκης";
-    const age = 26;
-
-    const experience = "5 έτη"
-    const experience_with_ages = ["0-6 months", "6-12 months"];
-
-    const [workingHours, setWorkingHours] = useState(null);
-    
-    const [areas, setAreas] = useState([{ city: null, neighborhoods: [] }]);
-
-    const [availabilityList, setAvailabilityList] = useState([]);
-
-    const [startingDate, setStartingDate] = useState({});
-    const [endingDate, setEndingDate] = useState({});
-
-    const specialties = ["Disabled"];
-    const [transportation, setTransportation] = useState([]);
-    const languages = ['English', 'Spanish'];
-    const [services, setServices] = useState([]);
-
-    const [fewWords, setFewWords] = useState("");
+    const [babysitter, setBabysitter] = useState({});
+    const [listing, setListing] = useState({});
 
     const [error, setError] = useState(null);
     const [isErrorVisible, setIsErrorVisible] = useState(false);
@@ -43,7 +27,54 @@ function ListingCreate(){
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
     const params = useParams();
+    const { listingId } = params;
     const navigate = useNavigate();
+    const babysitterId = JSON.parse(localStorage.getItem('user'))['id'];
+    const babysitterDocRef = useMemo(() => doc(db, 'Users', babysitterId), [babysitterId]);
+
+    const fetchData = async () => {
+      const babysitterSnap = await getDoc(babysitterDocRef);
+  
+      const fetchedBabysitterData = babysitterSnap.data();
+      setBabysitter(fetchedBabysitterData);
+
+      if (!listingId) return;
+
+      const listingDocRef = doc(db, 'Listings', listingId);
+      const listingSnap = await getDoc(listingDocRef);
+
+      const fetchedListingData = listingSnap.data();
+      setListing(fetchedListingData);
+    };
+
+    const calculateListingStatus = async () => {
+      const q = query(
+        collection(db, 'Listings'),
+        where("status", "==", "publish"),
+        where("babysitter", "==", babysitterDocRef),
+      );
+      const listingSnaps = await getDocs(q);
+      const filteredListings = listingSnaps.docs.filter(doc => doc.id !== listingId);
+    
+      if (filteredListings.length > 0) return 'save';
+
+      return 'publish';
+    }
+
+    const saveData = async () => {
+      const status = await calculateListingStatus();
+      if (!listingId) {
+        await addDoc(collection(db, 'Listings'), { ...listing, status: status, babysitter: babysitterDocRef, date: Date.now()});
+      } else {
+        const listingDocRef = doc(db, 'Listings', listingId);
+        await setDoc(listingDocRef, { ...listing, status: status, babysitter: babysitterDocRef});
+      }
+      return status;
+    };
+
+    useEffect(() => {
+      fetchData();
+    }, [babysitterId]);
 
     const dictionaries = {
         experience_with_ages: {
@@ -53,28 +84,15 @@ function ListingCreate(){
             ">2 years": ">2 ετών",
         },
         languages: {
-            English: "Αγγλικά",
-            French: "Γαλλικά",
-            Italic: "Ιταλικά",
-            Spanish: "Ισπανικά",
-            German: "Γερμανικά",
-            Russian: "Ρώσικα",
-            Arabic: "Αραβικά"
+            'english': "Αγγλικά",
+            'french': "Γαλλικά",
+            'italian': "Ιταλικά",
+            'spanish': "Ισπανικά",
+            'german': "Γερμανικά",
+            'russian': "Ρώσικα",
+            'arabic': "Αραβικά"
         },
-        services: {
-            Cooking: "Μαγείρεμα",
-            Cleaning: "Καθαρισμός σπιτιού",
-            Ironing: "Σιδέρωμα",
-            "First-aid": "Α` βοήθειες",
-            BabysitterCertificate: "Πιστοποίηση νταντάς",
-            HomeworkHelp: "Βοήθεια με μαθήματα",
-            Trips: "Εκδρομές / Επισκέψεις",
-            EscortActivities: "Συνοδεία σε Δραστηριότητες",
-            OutsideActivities: "Δραστηριότητες Εξωτερικού Χώρου",
-            AvailableForEmergency: "Έκτακτη Διαθεσιμότητα",
-            EnglishNativeSpeaker: "English native speaker",
-            HospitalityOnTheirOwnPlace: "Φιλοξενία στην οικία μου"
-        }
+        services: servicesMapper,
     };
 
     const openConfirmPopup = () => {
@@ -85,10 +103,9 @@ function ListingCreate(){
         setIsConfirmPopupOpen(false); // Κλεινει το PopUp
     };
 
-    const onConfirm = () => {
-      // api call to save
-      // check status
-      navigate('/babysitter/listings', {state: {status: 'publish'}});
+    const onConfirm = async () => {
+      const status = await saveData();
+      navigate('/babysitter/listings', {state: {status: status}});
     }
 
     const openCancelPopup = () => {
@@ -103,8 +120,9 @@ function ListingCreate(){
       navigate('/babysitter/listings');
     };
 
-    const handleTemporarySave = () => {
-      navigate('/babysitter/listings', {state: {status: 'publish'}});
+    const handleTemporarySave = async () => {
+      await saveData();
+      navigate('/babysitter/listings', {state: {status: 'save'}});
     };
 
     const handleCheckboxChange = (state, setState, value) => {
@@ -115,9 +133,18 @@ function ListingCreate(){
         }
     };
 
+    const handleTransportationChange = (option) => {
+      if (option.value !== listing?.transportation) {
+        setListing({ ...listing, transportation: option.value });
+      } else {
+        const otherTransportationOption = transportationOptions.find(transportationOption => option.value !== transportationOption.value);
+        setListing({ ...listing, transportation: otherTransportationOption.value });
+      }
+    };
+
     const handleFewWordsChange = (e) => {
         e.preventDefault();
-        setFewWords(e.target.value.trim());
+        setListing({ ...listing, fewWords: e.target.value.trim() });
     };
 
     const handleSubmit = () => {
@@ -131,8 +158,8 @@ function ListingCreate(){
     useEffect(() => {
         const missingFields = new Set();
         
-        const hasAtLeastOneCity = areas.some(area => area.city);
-        const hasCityWithoutNeighborhoods = areas.some(area => area.city && area.neighborhoods.length === 0);
+        const hasAtLeastOneCity = (listing?.areas ?? [{ city: null, neighborhoods: [] }]).some(area => area.city);
+        const hasCityWithoutNeighborhoods = (listing?.areas ?? [{ city: null, neighborhoods: [] }]).some(area => area.city && area.neighborhoods.length === 0);
 
         if (!hasAtLeastOneCity) {
             missingFields.add("Περιοχές εξυπηρέτησης");
@@ -140,16 +167,16 @@ function ListingCreate(){
             missingFields.add("Περιοχές εξυπηρέτησης (Συμπληρώστε τις γειτονίες σας σε κάθε πόλη)");
         }
 
-        if (workingHours === null){
+        if (listing?.workingHours === null){
             missingFields.add("Χρόνος απασχόλησης");
         }
-        if (availabilityList.length === 0){
+        if ((listing?.availability ?? []).length === 0){
             missingFields.add("Διαθεσιμότητα και ώρες");
         }
-        if (Object.keys(startingDate).length === 0){
+        if (Object.keys(listing?.startingDate ?? {}).length === 0){
             missingFields.add("Από πότε θα είστε διαθέσιμος/η;");
         }
-        if (Object.keys(endingDate).length === 0){
+        if (Object.keys(listing?.endingDate ?? {}).length === 0){
             missingFields.add("Εώς πότε θα είστε διαθέσιμος/η;");
         }
     
@@ -159,8 +186,8 @@ function ListingCreate(){
             const errorMessage = `Κάποια από τα υποχρεωτικά πεδία δεν συμπληρώθηκαν: ${Array.from(missingFields).join(", ")}`;
             setError(errorMessage);
         }
-    }, [workingHours, availabilityList, startingDate, endingDate, areas]);
-    
+    }, [listing?.workingHours, listing?.availability, listing?.startingDate, listing?.endingDate, listing?.areas]);
+
     return (
         <div className={s.container}>
             <div className={s.breadcrumbs}>
@@ -181,18 +208,18 @@ function ListingCreate(){
             <div className={s.application_create_container}>
                 <div className={s.red_field}>
                     <label htmlFor="fullname">Ονοματεπώνυμο:</label>
-                    <input type="text" id="fullname" value={fullname} readOnly />
+                    <input type="text" id="fullname" value={`${babysitter?.name} ${babysitter?.surname}`} readOnly />
                 </div>
 
                 <div className={s.red_field}>
                     <label htmlFor="age">Ηλικία:</label>
-                    <input type="text" id="age" value={age} readOnly />
+                    <input type="text" id="age" value={babysitter?.age} readOnly />
                 </div>
 
                 <div className={s.years_of_experience}>
                     <b>Προϋπηρεσία*:</b>
                     <Select
-                        placeholder={experience}
+                        placeholder={babysitter?.experience}
                         isDisabled={true}
                         styles={{
                             container: (provided) => ({
@@ -213,7 +240,7 @@ function ListingCreate(){
                         <Checkbox
                             key={xp}
                             name="experienceWithAge"
-                            isChecked={experience_with_ages.includes(xp)}
+                            isChecked={(babysitter?.ageExperience ?? []).includes(translation)}
                             readOnly
                             isEnabled={false}
                             isRed
@@ -225,50 +252,53 @@ function ListingCreate(){
                 <div className={s.working_places}>
                     <b>Περιοχές  εξυπηρέτησης*</b>
                     <div className={s.dropdowns_area}>
-                        <DropdownAreas areas={areas} setAreas={setAreas} />
+                        <DropdownAreas areas={listing?.areas ?? [{ city: null, neighborhoods: [] }]} setAreas={(newAreas) => setListing({ ...listing, areas: newAreas, })} />
                     </div>
                 </div>
 
                 <div className={s.working_hours}>
                     <b>Χρόνος απασχόλησης*</b>
-                    {["Full-Time", "Part-Time"].map(option => (
+                    {["Πλήρης απασχόληση", "Μερική απασχόληση"].map(option => (
                         <Checkbox
                             key={option}
                             name="workinghrs"
-                            isChecked={workingHours === option}
-                            onChange={() => setWorkingHours(option)}
-                            label={option === "Full-Time" ? "Πλήρης απασχόληση" : "Μερική απασχόληση"}
+                            isChecked={listing?.workingHours === option}
+                            onChange={() => setListing({
+                              ...listing,
+                              workingHours: option,
+                            })}
+                            label={option}
                         />
                     ))}
                 </div>
 
                 <div className={s.calendar_area}>
                     <b>Διαθεσιμότητα και ώρες*</b>
-                    <Timetable width="400px" height="220px" onChange={setAvailabilityList} checkedSlots={availabilityList} />
+                    <Timetable width="400px" height="220px" onChange={(newAvailabilityList) => setListing({ ...listing, availability: newAvailabilityList, })} checkedSlots={listing?.availability ?? []} />
                 </div>
 
                 <div className={s.starting_date}>
                     <b>Από πότε θα είστε διαθέσιμος/η;*</b>
                     <Checkbox 
                         name={"startingDate"}
-                        isChecked={startingDate === "Anytime"}
+                        isChecked={listing?.startingDate === "Anytime"}
                         onChange={() => {
-                            if (startingDate === "Anytime") {
-                                setStartingDate({}); // Επαναφορά του startingDate για να είναι editable
+                            if (listing?.startingDate === "Anytime") {
+                                setListing({ ...listing, startingDate: {}, }); // Επαναφορά του startingDate για να είναι editable
                             } else {
-                                setStartingDate("Anytime"); // Ορισμός ως "Anytime"
+                                setListing({ ...listing, startingDate: "Anytime", }); // Ορισμός ως "Anytime"
                             }
                         }}
                         label={"Άμεσα διαθέσιμος/η"}
                     />
                     <div className={s.date_dropdowns_area}>
                         <DateDropdowns
-                            day={startingDate?.day ?? null}
-                            month={startingDate?.month ?? null}
-                            year={startingDate?.year ?? null}
-                            isEnabled={startingDate !== "Anytime"}
+                            day={listing?.startingDate?.day ?? null}
+                            month={listing?.startingDate?.month ?? null}
+                            year={listing?.startingDate?.year ?? null}
+                            isEnabled={listing?.startingDate !== "Anytime"}
                             onChange={(newStartDate) => {
-                                setStartingDate(newStartDate);
+                                setListing({ ...listing, startingDate: newStartDate });
                             }}
                         />
                     </div>
@@ -278,24 +308,24 @@ function ListingCreate(){
                     <b>Εώς πότε θα είστε διαθέσιμος/η;*</b>
                     <Checkbox 
                         name={"endingDate"}
-                        isChecked={endingDate === "Anytime"}
+                        isChecked={listing?.endingDate === "Anytime"}
                         onChange={() => {
-                            if (endingDate === "Anytime") {
-                                setEndingDate({}); // Επαναφορά του startingDate για να είναι editable
+                            if (listing?.endingDate === "Anytime") {
+                                setListing({ ...listing, endingDate: {}, }); // Επαναφορά του startingDate για να είναι editable
                             } else {
-                                setEndingDate("Anytime"); // Ορισμός ως "Anytime"
+                                setListing({ ...listing, endingDate: "Anytime", }); // Ορισμός ως "Anytime"
                             }
                         }}
                         label={"Αορίστου χρόνου"}
                     />
                     <div className={s.date_dropdowns_area}>
                         <DateDropdowns
-                            day={endingDate?.day ?? null}
-                            month={endingDate?.month ?? null}
-                            year={endingDate?.year ?? null}
-                            isEnabled={endingDate !== "Anytime"}
-                            onChange={(newStartDate) => {
-                                setEndingDate(newStartDate);
+                            day={listing?.endingDate?.day ?? null}
+                            month={listing?.endingDate?.month ?? null}
+                            year={listing?.endingDate?.year ?? null}
+                            isEnabled={listing?.endingDate !== "Anytime"}
+                            onChange={(newEndingDate) => {
+                                setListing({ ...listing, endingDate: newEndingDate });
                             }}
                         />
                     </div>
@@ -303,28 +333,28 @@ function ListingCreate(){
 
                 <div className={s.checkbox_area}>
                     <b>Ειδίκευση σε</b>
-                    {["Disabled", "Sign-Language"].map(option => (
+                    {["specialNeeds", "asl"].map(option => (
                         <Checkbox
                             key={option}
                             name={"specialties"}
-                            isChecked={specialties.includes(option)}
+                            isChecked={(babysitter?.specialization ?? {})[option]}
                             readOnly
                             isEnabled={false}
                             isRed
-                            label={option === "Disabled" ? "ΑμεΑ" : "Νοηματική"}
+                            label={option === "specialNeeds" ? "ΑμεΑ" : "Νοηματική"}
                         />
                     ))}
                 </div>
 
                 <div className={s.checkbox_area}>
                     <b>Μετακίνηση παιδιών</b>
-                    {["BabysitterCar", "FamilyCar"].map(option => (
+                    {transportationOptions.map(option => (
                         <Checkbox
                             key={option}
                             name={"transportation"}
-                            isChecked={transportation.includes(option)}
-                            onChange={() => handleCheckboxChange(transportation, setTransportation, option)}
-                            label={option === "BabysitterCar" ? "Με Ι.Χ. Νταντάς" : "Με Ι.Χ. Οικογένειας"}
+                            isChecked={(listing?.transportation ?? '') === option.value}
+                            onChange={() => handleTransportationChange(option)}
+                            label={option.label}
                         />
                     ))}
                 </div>
@@ -335,7 +365,7 @@ function ListingCreate(){
                         <Checkbox
                             key={language}
                             name="language"
-                            isChecked={languages.includes(language)}
+                            isChecked={(babysitter?.languages ?? []).includes(language)}
                             isEnabled={false}
                             isRed
                             label={translation}
@@ -349,8 +379,8 @@ function ListingCreate(){
                         <Checkbox
                             key={service}
                             name="services"
-                            isChecked={services.includes(service)}
-                            onChange={() => handleCheckboxChange(services, setServices, service)}
+                            isChecked={(listing?.services ?? []).includes(service)}
+                            onChange={() => handleCheckboxChange(listing?.services ?? [], (newServices) => setListing({ ...listing, services: newServices }), service)}
                             label={translation}
                         />
                     ))}
@@ -360,7 +390,7 @@ function ListingCreate(){
                     <b>Λίγα λόγια</b>
                     <textarea
                         className={s.few_words}
-                        value={fewWords}
+                        value={listing?.fewWords}
                         placeholder="Λίγα λόγια..."
                         onChange={handleFewWordsChange}
                     />
@@ -405,7 +435,7 @@ function ListingCreate(){
             }
             {isCancelPopupOpen && 
                 <ConfirmationPopUp
-                    context={params.listingId == null
+                    context={listingId == null
                             ? 
                             "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την δημιουργία της αγγελίας; Η αγγελία δεν θα αποθηκευτεί." 
                             : 

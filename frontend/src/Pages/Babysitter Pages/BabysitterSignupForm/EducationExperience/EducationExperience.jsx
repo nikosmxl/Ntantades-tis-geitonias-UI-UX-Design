@@ -144,7 +144,12 @@ function EducationExperience({
 
             {educationCertificates.length > 0 && (
                 <div className={s.certificates_list}>
-                    <CertificatesList certificates={educationCertificates} isEditable={!ShowOff} handleCertificateRemove={handleCertificateRemove} />
+                    <CertificatesList
+                      babysitterId={'test'}
+                      certificates={educationCertificates}
+                      isEditable={!ShowOff}
+                      handleCertificateRemove={handleCertificateRemove}
+                    />
                 </div>
             )}
 
@@ -198,7 +203,7 @@ function EducationExperience({
                         key={option}
                         name={"specialization"} 
                         onChange={() => handleCheckboxChange(option, 'specialization')}
-                        label={option}
+                        label={option.label}
                         width="20px"
                         height="20px"
                         isEnabled={!ShowOff}
