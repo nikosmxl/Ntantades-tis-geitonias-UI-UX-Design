@@ -1,4 +1,3 @@
-
 import BabysitterApplications from "./Pages/Babysitter Pages/BabysitterApplications/BabysitterApplications";
 import MyListings from "./Pages/Babysitter Pages/MyListings/MyListings";
 import BabysitterSearch from "./Pages/Common Pages/BabysitterSearch/BabysitterSearch";
@@ -13,7 +12,8 @@ import Signup from "./Pages/Common Pages/Member Signup/Signup";
 import BabysitterDates from "./Pages/Babysitter Pages/Babysitter Dates/BabysitterDates";
 import ParentDetails from "./Pages/Babysitter Pages/Parent Details/ParentDetails";
 import History from './Pages/Common Pages/History/History';
-import ApplicationsHistory from './Pages/Common Pages/ApplicationsHistory/ApplicationsHistory';
+import ParentApplicationsHistory from './Pages/Parent Pages/ApplicationsHistory/ApplicationsHistory';
+import BabysitterApplicationsHistory from './Pages/Babysitter Pages/ApplicationsHistory/ApplicationsHistory';
 import PaymentsHistory from './Pages/Common Pages/PaymentsHistory/PaymentsHistory';
 import PartnershipHistory from './Pages/Common Pages/PartnershipHistory/PartnershipHistory';
 import ListingsHistory from './Pages/Babysitter Pages/ListingsHistory/ListingsHistory';
@@ -176,7 +176,7 @@ const routes = [
   {
     context: 'parent',
     path: 'history/applications',
-    page: <ApplicationsHistory />,
+    page: <ParentApplicationsHistory />,
   },
   {
     context: 'parent',
@@ -191,7 +191,7 @@ const routes = [
   {
     context: 'babysitter',
     path: 'history/applications',
-    page: <ApplicationsHistory />,
+    page: <BabysitterApplicationsHistory />,
   },
   {
     context: 'babysitter',

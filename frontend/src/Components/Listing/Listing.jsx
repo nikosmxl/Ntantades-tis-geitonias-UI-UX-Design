@@ -1,5 +1,4 @@
 import s from "./ListingStyle.module.css"
-import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
 import { useEffect, useState } from "react";
 import ExpandButtons from "../ExpandButtons/ExpandButtons";
@@ -122,7 +121,7 @@ function Listing({ isHistory = false, isEditable = false, onDelete, listing }){
                     <p><span>Λίγα λόγια:</span></p>
                     <p className={s.few_words}>{listing?.few_words ?? '-'}</p>
                 </div>
-                <p className={`${s.listing_date} ${!isExpanded ? s.collapsed : ''}`}>{getFormattedDate(getDateFromMs(listing.date))}</p>
+                <p className={`${s.listing_date} ${!isExpanded ? s.collapsed : ''}`}>{getFormattedDate(getDateFromMs(listing.dateCreated))}</p>
             </div>
             <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={isExpanded ? setVariables : setVariables2}
                 showOptionsButtons={!isHistory} showDeleteButton={true}

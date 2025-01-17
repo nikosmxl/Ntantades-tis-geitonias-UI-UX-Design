@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import s from './BabysitterDetailsStyle.module.css';
 import Stars from '../../../Components/Stars/Stars';
 import Reference from '../../../Components/Reference/Reference';
@@ -8,7 +8,7 @@ import Checkbox from '../../../Components/Checkbox/Checkbox';
 import DateDropdowns from '../../../Components/DateDropdowns/DateDropdowns';
 import Timetable from '../../../Components/Timetable/Timetable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis, faPencil } from '@fortawesome/free-solid-svg-icons';
 import Rating from '../../../Components/Rating/Rating';
 import CertificatesList from '../../../Components/CertificatesList/CertificatesList';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
@@ -21,15 +21,14 @@ import { getAverageRating } from '../../../utils/calc';
 const BabysitterDetails = () => {
   const [isOptionsOpen, setOptionsOpen] = useState(true);
   const [ratingsPage, setRatingsPage] = useState(1);
-  const [date, setDate] = useState({
-    day: null,
-    month: null,
-    year: null,
-  });
 
   const { babysitterId } = useParams();
   const [babysitter, setBabysitter] = useState({});
   const [listing, setListing] = useState(null);
+  const [options, setOptions] = useState([]);
+
+  const parentId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const babysitterDocRef = doc(db, 'Users', babysitterId);
@@ -48,6 +47,43 @@ const BabysitterDetails = () => {
     const listingSnaps = await getDocs(q);
 
     if (listingSnaps.docs.length > 0) setListing(listingSnaps.docs[0].data());
+
+    const tempOptions = [];
+
+    const parentDocRef = doc(db, 'Users', parentId);
+
+    const aq = query(
+      collection(db, 'Applications'),
+      where("babysitter", "==", babysitterDocRef),
+      where("parent", "==", parentDocRef),
+      where("status", "==", "saved"),
+    );
+    const applicationSnaps = await getDocs(aq);
+
+    const saq = query(
+      collection(db, 'Applications'),
+      where("babysitter", "==", babysitterDocRef),
+      where("parent", "==", parentDocRef),
+      where("status", "in", ["sent", "accepted"]),
+    );
+    const submittedApplicationSnaps = await getDocs(saq);
+
+    if (applicationSnaps.docs.length == 0 && submittedApplicationSnaps.docs.length == 0) {
+      tempOptions.push({
+        label: 'Αίτημα Συνεργασίας',
+        icon: faPencil,
+        onClick: () => navigate('../applications/application-create', { state: { babysitterId: babysitterId } }),
+      });
+    } else {
+      const applicationDoc = applicationSnaps.docs[0];
+      tempOptions.push({
+        label: 'Αίτημα Συνεργασίας',
+        icon: faPencil,
+        onClick: () => navigate(`../applications/application-create/${applicationDoc.id}`),
+      });
+    }
+
+    setOptions(tempOptions);
   };
 
   useEffect(() => {
@@ -123,6 +159,27 @@ const BabysitterDetails = () => {
                 onClick={() => setOptionsOpen(!isOptionsOpen)}
               >
                 <FontAwesomeIcon icon={faEllipsis} />
+                <div className={`${s.dropdown_menu} ${isOptionsOpen && options.length != 0 ? s.open : ""}`}>
+                    <div className={s.dropdown_triangle}>
+                        <div className={s.inner_dropdown_triangle}></div>
+                    </div>
+                    <div className={s.options_menu}>
+                      {options.map((option, index) => (
+                        <div
+                          key={index}
+                          className={`${s.menu_item} ${
+                            index === 0 ? s.first : index === options.length - 1 ? s.last : ""
+                          }`}
+                          onClick={option.onClick}
+                        >
+                          {option?.icon && 
+                            <FontAwesomeIcon icon={option.icon} className={s.options_icon} />
+                          }
+                          <p className={s.label}>{option.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                </div>
               </div>
             </div>
             <hr />

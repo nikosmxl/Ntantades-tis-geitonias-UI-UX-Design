@@ -4,31 +4,124 @@ import Application from "../../../Components/Application/Application";
 import { faClockRotateLeft } from "@fortawesome/free-solid-svg-icons";
 import ListHeader from "../../../Components/ListHeader/ListHeader";
 import Pagination from "../../../Components/Pagination/Pagination";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import NotificationPopUp from '../../../PopUps/NotificationPopUp/NotificationPopUp';
+import { db } from '../../../firebase';
+import { collection, getDocs, where, query, doc, setDoc, orderBy } from "firebase/firestore";
 
 function ParentApplications(){
-    const [submittedApplicationsPageSize, setSubmittedApplicationsPageSize] = useState(3);
-    const [submittedApplicationsSorting, setSubmittedApplicationsSorting] = useState("most recent");
-    const submittedApplicationsSortingOptions = ["most recent", "least recent", "alphabetically"];
-    const submittedApplicationsPages = 5;
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [applications, setApplications] = useState({});
+    const [submittedApplicationsPageSize, setSubmittedApplicationsPageSize] = useState(5);
+    const [submittedApplicationsSorting, setSubmittedApplicationsSorting] = useState("Πιο πρόσφατη");
+    const submittedApplicationsSortingOptions = ["Πιο πρόσφατη", "Λιγότερο πρόσφατη"];
     const [submittedApplicationsCurrentPage, setSubmittedApplicationsCurrentPage] = useState(1);
     
-    const [editableApplicationsPageSize, setEditableApplicationsPageSize] = useState(3);
-    const [editableApplicationsSorting, setEditableApplicationsSorting] = useState("most recent");
-    const editableApplicationsSortingOptions = ["most recent", "least recent", "alphabetically"];
-    const editableApplicationsPages = 5;
+    const [editableApplicationsPageSize, setEditableApplicationsPageSize] = useState(5);
+    const [editableApplicationsSorting, setEditableApplicationsSorting] = useState("Πιο πρόσφατη");
+    const editableApplicationsSortingOptions = ["Πιο πρόσφατη", "Λιγότερο πρόσφατη"];
     const [editableApplicationsCurrentPage, setEditableApplicationsCurrentPage] = useState(1);
-    
-    const navigate = useNavigate();
+    const [status, setStatus] = useState(location?.state?.status ?? null);
 
-    const handleApplicationDelete = (applicationId) => {
+    const parentId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
+
+    const fetchData = async () => {
+      const parentDocRef = doc(db, 'Users', parentId);
+      const saq = query(
+        collection(db, 'Applications'),
+        where("status", "in", ["sent", "decline", "accept"]),
+        where("parent", "==", parentDocRef),
+        orderBy("dateCreated", submittedApplicationsSorting === "Πιο πρόσφατη" ? 'desc' : 'asc')
+      );
+      const submittedApplicationSnaps = await getDocs(saq);
+      const fetchedSubmittedApplications = submittedApplicationSnaps.docs.map(submittedApplicationDoc => ({ ...submittedApplicationDoc.data(), id: submittedApplicationDoc.id}));
+
+      const eaq = query(
+        collection(db, 'Applications'),
+        where("status", "==", "saved"),
+        where("parent", "==", parentDocRef),
+        orderBy("dateCreated", editableApplicationsSorting === "Πιο πρόσφατη" ? 'desc' : 'asc')
+      );
+      const editableApplicationSnaps = await getDocs(eaq);
+      const fetchedEditableApplications = editableApplicationSnaps.docs.map(editableApplicationDoc => ({ ...editableApplicationDoc.data(), id: editableApplicationDoc.id}));
+
+      setApplications({
+        submittedApplications: fetchedSubmittedApplications.filter(app => !app.isHistory),
+        editableApplications: fetchedEditableApplications.filter(app => !app.isHistory),
+      });
+    };
+
+    const submittedApplicationsByPage = useMemo(() => {
+      return (applications?.submittedApplications ?? []).slice(
+        (submittedApplicationsCurrentPage-1)*submittedApplicationsPageSize,
+        submittedApplicationsCurrentPage*submittedApplicationsPageSize
+      );
+    }, [submittedApplicationsCurrentPage, submittedApplicationsPageSize, applications.submittedApplications]);
+
+    const submittedApplicationsPages = useMemo(() => {
+      return Math.ceil((applications?.submittedApplications ?? []).length / submittedApplicationsPageSize)
+    }, [submittedApplicationsPageSize, applications.submittedApplications]);
+
+    const editableApplicationsByPage = useMemo(() => {
+      return (applications?.editableApplications ?? []).slice(
+        (editableApplicationsCurrentPage-1)*editableApplicationsPageSize,
+        editableApplicationsCurrentPage*editableApplicationsPageSize
+      );
+    }, [editableApplicationsCurrentPage, editableApplicationsPageSize, applications.editableApplications]);
+
+    const editableApplicationsPages = useMemo(() => {
+      return Math.ceil((applications?.editableApplications ?? []).length / editableApplicationsPageSize)
+    }, [editableApplicationsPageSize, applications.editableApplications]);
+
+    useEffect(() => {
+      fetchData();
+    }, [submittedApplicationsSorting, editableApplicationsSorting]);
+
+    const handleApplicationDelete = async (application) => {
       // api call to delete
+      const applicationDocRef = doc(db, 'Applications', application.id);
+      await setDoc(
+        applicationDocRef,
+        {
+          ...application,
+          status: 'delete',
+        }
+      );
+      await fetchData();
+    };
+
+    const setHistory = async () => {
+      const historyApplications = applications?.submittedApplications.filter(application => {
+        return application.status == 'decline' || application.status == 'accept';
+      });
+
+      await Promise.all(historyApplications.map(async (historyApplication) => {
+        const historyApplicationDocRef = doc(db, 'Applications', historyApplication.id);
+        await setDoc(
+          historyApplicationDocRef,
+          {
+            ...historyApplication,
+            isHistory: true,
+          }
+        );
+      }));
     };
 
     return (
         <div className={s.applications_page}>
+            {
+              status != null && (
+                <NotificationPopUp
+                  status={status === 'sent' ? 'success' : status}
+                  message={status === 'sent' ? 'Η Αίτηση σας στάλθηκε επιτυχώς.' : 'Η Αίτηση σας έχει αποθηκευτεί προσωρινά. Βρείτε την στις Υπό Επεξεργασία αιτήσεις.'}
+                  onClose={() => setStatus(null)}
+                />
+              )
+            }
             <div className={s.breadcrumbs}>
                 <Breadcrumbs
                   breadcrumbItems={[
@@ -47,15 +140,28 @@ function ParentApplications(){
 
             <div className={s.list_header}>
                 <ListHeader title={"Σε κατάσταση οριστικής υποβολής"} listElementName={"Αιτήσεις"} 
-                    listSize={100} pageSize={submittedApplicationsPageSize}
+                    listSize={(applications?.submittedApplications ?? []).length} pageSize={submittedApplicationsPageSize}
                     sorting={submittedApplicationsSorting} sortingOptions={submittedApplicationsSortingOptions}
                     onPageSizeChange={setSubmittedApplicationsPageSize} onSortingChange={setSubmittedApplicationsSorting}
                 />
             </div>
             <div className={s.column}>
-                <Application isParent={true} application_state={1} isHistory={false} isEditable={false} onDelete={handleApplicationDelete}/>
-                <Application isParent={true} application_state={0} isHistory={false} isEditable={false} onDelete={handleApplicationDelete}/>
-                <Application isParent={true} application_state={2} isHistory={false} isEditable={false} onDelete={handleApplicationDelete}/>
+                {
+                  submittedApplicationsByPage.map(submittedApplication => {
+                    return (
+                      <Application
+                        key={submittedApplication.id}
+                        application={submittedApplication}
+                        isParent={true}
+                        application_state={0}
+                        isHistory={false}
+                        isEditable={false}
+                        onDelete={() => handleApplicationDelete(submittedApplication)}
+                        onNavigate={() => setHistory()}
+                      />
+                    );
+                  })
+                }
             </div>
             <Pagination pages={submittedApplicationsPages} currentPage={submittedApplicationsCurrentPage}
                 onChange={setSubmittedApplicationsCurrentPage} width="620px"
@@ -63,15 +169,28 @@ function ParentApplications(){
 
             <div className={s.list_header}>
                 <ListHeader title={"Υπό επεξεργασία"} listElementName={"Αιτήσεις"} 
-                    listSize={100} pageSize={editableApplicationsPageSize}
+                    listSize={(applications?.editableApplications ?? []).length} pageSize={editableApplicationsPageSize}
                     sorting={editableApplicationsSorting} sortingOptions={editableApplicationsSortingOptions}
                     onPageSizeChange={setEditableApplicationsPageSize} onSortingChange={setEditableApplicationsSorting}
                 />
             </div>
             <div className={s.column}>
-                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} onDelete={handleApplicationDelete}/>
-                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} onDelete={handleApplicationDelete}/>
-                <Application isParent={true} application_state={0} isHistory={false} isEditable={true} onDelete={handleApplicationDelete}/>
+                {
+                  editableApplicationsByPage.map(editableApplication => {
+                    return (
+                      <Application
+                        key={editableApplication.id}
+                        application={editableApplication}
+                        isParent={true}
+                        application_state={0}
+                        isHistory={false}
+                        isEditable={true}
+                        onDelete={() => handleApplicationDelete(editableApplication)}
+                        onNavigate={() => setHistory()}
+                      />
+                    );
+                  })
+                }
             </div>
             <Pagination pages={editableApplicationsPages} currentPage={editableApplicationsCurrentPage}
                 onChange={setEditableApplicationsCurrentPage} width="620px"
