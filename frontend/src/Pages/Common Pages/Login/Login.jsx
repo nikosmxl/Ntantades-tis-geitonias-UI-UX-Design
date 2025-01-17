@@ -69,6 +69,7 @@ const Login = ({}) => {
               value={email}
               type='email'
               onChange={(e) => setEmail(e.target.value.trim())}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
             />
           </div>
 
@@ -79,6 +80,7 @@ const Login = ({}) => {
               type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value.trim())}
+              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
             />
           </div>
 
