@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import s from "./ApplicationCreateStyle.module.css"
 import FamilyInfo from "../../../Components/FamilyInfo/FamilyInfo";
 import Checkbox from "../../../Components/Checkbox/Checkbox";
@@ -9,31 +9,59 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGavel, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faFloppyDisk } from "@fortawesome/free-regular-svg-icons";
 import ConfirmationPopUp from "../../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db } from '../../../firebase';
+import { getDoc, doc, collection, addDoc, setDoc } from 'firebase/firestore';
+import { servicesMapper, specializationOptions, transportationOptions } from "../../../utils/options";
 
 function ApplicationCreate(){
-    const fullname = "Μπάμπης Μπαμπάκης";
-    const stateOfResidence = "ΔΗΜΟΣ ΑΧΑΡΝΕΣ";
-    const [address, setAddress] = useState("");
-    
-    const description = "";
-    const kids = [{id: 1, age: 1, gender: "boy", hasDisabilities: false, hasAllergies: false, description: ''}];
-    const hasPets = false;
+    const { appId } = useParams();
+    const location = useLocation();
+    const babysitterId = location?.state?.babysitterId ?? null;
+    const userId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
 
-    const [workingHours, setWorkingHours] = useState(null);
+    const [babysitter, setBabysitter] = useState({});
+    const [parent, setParent] = useState({});
+    const [application, setApplication] = useState({});
 
-    const [availabilityList, setAvailabilityList] = useState([]);
+    const parentDocRef = useMemo(() => doc(db, 'Users', userId), [userId]);
 
-    const [startingDate, setStartingDate] = useState({});
-    const [endingDate, setEndingDate] = useState({});
+    const fetchData = async () => {
+      if (appId) {
+        const applicationDocRef = doc(db, 'Applications', appId);
+        const applicationSnap = await getDoc(applicationDocRef);
+        const applicationData = applicationSnap.data();
+        setApplication({ ...applicationData, id: appId });
 
-    const specialties = ["Disabled"];
-    const [transportation, setTransportation] = useState([]);
-    const [languages, setLanguages] = useState([]);
-    const [services, setServices] = useState([]);
+        const babysitterSnap = await getDoc(applicationData.babysitter);
+        const babysitterData = babysitterSnap.data();
+        setBabysitter({ ...babysitterData, id: applicationData.babysitter.id })
+      } else if (babysitterId) {
+        const babysitterDocRef = doc(db, 'Users', babysitterId);
+        const babysitterSnap = await getDoc(babysitterDocRef);
+        const babysitterData = babysitterSnap.data();
+        setBabysitter({ ...babysitterData, id: babysitterId })
+      }
 
-    const [fewWords, setFewWords] = useState("");
+      const parentSnap = await getDoc(parentDocRef);
+      const parentData = parentSnap.data();
+      setParent({ ...parentData, id: userId })
+    };
+
+    const saveData = async (status) => {
+      const babysitterDocRef = doc(db, 'Users', babysitter?.id);
+      if (!appId) {
+        await addDoc(collection(db, 'Applications'), { ...application, status: status, babysitter: babysitterDocRef, parent: parentDocRef, dateCreated: Date.now(), isHistory: false});
+      } else {
+        const applicationDocRef = doc(db, 'Applications', appId);
+        await setDoc(applicationDocRef, { ...application, status: status, babysitter: babysitterDocRef, parent: parentDocRef, isHistory: false});
+      }
+    };
+
+    useEffect(() => {
+      fetchData();
+    }, [appId, babysitterId]);
 
     const [error, setError] = useState(null);
     const [isErrorVisible, setIsErrorVisible] = useState(false);
@@ -41,32 +69,17 @@ function ApplicationCreate(){
     const [isCancelPopupOpen, setIsCancelPopupOpen] = useState(false);
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
-    const params = useParams();
-
     const dictionaries = {
         languages: {
-            English: "Αγγλικά",
-            French: "Γαλλικά",
-            Italic: "Ιταλικά",
-            Spanish: "Ισπανικά",
-            German: "Γερμανικά",
-            Russian: "Ρώσικα",
-            Arabic: "Αραβικά"
+            'english': "Αγγλικά",
+            'french': "Γαλλικά",
+            'italian': "Ιταλικά",
+            'spanish': "Ισπανικά",
+            'german': "Γερμανικά",
+            'russian': "Ρώσικα",
+            'arabic': "Αραβικά"
         },
-        services: {
-            Cooking: "Μαγείρεμα",
-            Cleaning: "Καθαρισμός σπιτιού",
-            Ironing: "Σιδέρωμα",
-            "First-aid": "Α` βοήθειες",
-            BabysitterCertificate: "Πιστοποίηση νταντάς",
-            HomeworkHelp: "Βοήθεια με μαθήματα",
-            Trips: "Εκδρομές / Επισκέψεις",
-            EscortActivities: "Συνοδεία σε Δραστηριότητες",
-            OutsideActivities: "Δραστηριότητες Εξωτερικού Χώρου",
-            AvailableForEmergency: "Έκτακτη Διαθεσιμότητα",
-            EnglishNativeSpeaker: "English native speaker",
-            HospitalityOnTheirOwnPlace: "Φιλοξενία στην οικία μου"
-        }
+        services: servicesMapper,
     };
 
     const navigate = useNavigate();
@@ -79,8 +92,9 @@ function ApplicationCreate(){
         setIsConfirmPopupOpen(false); // Κλεινει το PopUp
     };
 
-    const onConfirm = () => {
-      navigate('/applications', { state: { status: 'sent' }});
+    const onConfirm = async () => {
+      await saveData('sent');
+      navigate('/parent/applications', { state: { status: 'sent' }});
     }
 
     const openCancelPopup = () => {
@@ -92,15 +106,16 @@ function ApplicationCreate(){
     };
 
     const onCancel = () => {
-      navigate('/babysitter-details/1');
+      navigate(-1);
     };
 
-    const handleSave = () => {
-      navigate('/applications', { state: { status: 'saved' }});
+    const handleSave = async () => {
+      await saveData('saved');
+      navigate('/parent/applications', { state: { status: 'saved' }});
     };
 
     const handleAddressChange = (event) => {
-        setAddress(event.target.value);
+        setApplication({ ...application, address: event.target.value});
     };
 
     const handleCheckboxChange = (state, setState, value) => {
@@ -111,9 +126,18 @@ function ApplicationCreate(){
         }
     };
 
+    const handleTransportationChange = (option) => {
+      if (option.value !== application?.transportation) {
+        setApplication({ ...application, transportation: option.value });
+      } else {
+        const otherTransportationOption = transportationOptions.find(transportationOption => option.value !== transportationOption.value);
+        setApplication({ ...application, transportation: otherTransportationOption.value });
+      }
+    };
+
     const handleFewWordsChange = (e) => {
         e.preventDefault();
-        setFewWords(e.target.value.trim());
+        setApplication({ ...application, fewWords: e.target.value });
     };
 
     const handleSubmit = () => {
@@ -127,19 +151,19 @@ function ApplicationCreate(){
     useEffect(() => {
         const missingFields = new Set();
 
-        if (address === null){
+        if (application?.address === null || (application?.address ?? '').trim() === ''){
             missingFields.add("Οδός και Αριθμός κατοικίας");
         }
-        if (workingHours === null){
+        if (application?.workingHours === null){
             missingFields.add("Χρόνος απασχόλησης");
         }
-        if (availabilityList.length === 0){
+        if ((application?.availability ?? []).length === 0){
             missingFields.add("Ημερολόγιο απασχόλησης");
         }
-        if (Object.keys(startingDate).length === 0){
+        if (Object.keys(application?.startingDate ?? {}).length === 0){
             missingFields.add("Ημερομηνία έναρξης συνεργασίας");
         }
-        if (Object.keys(endingDate).length === 0){
+        if (Object.keys(application?.endingDate ?? {}).length === 0){
             missingFields.add("Ημερομηνία λήξης συνεργασίας");
         }
     
@@ -149,8 +173,8 @@ function ApplicationCreate(){
             const errorMessage = `Κάποια από τα υποχρεωτικά πεδία δεν συμπληρώθηκαν: ${Array.from(missingFields).join(", ")}`;
             setError(errorMessage);
         }
-    }, [address, workingHours, availabilityList, startingDate, endingDate]);
-    
+    }, [application?.address, application?.workingHours, application?.availabilityList, application?.startingDate, application?.endingDate]);
+
     return (
         <div className={s.container}>
             <div className={s.breadcrumbs}>
@@ -161,11 +185,6 @@ function ApplicationCreate(){
                   { label: 'Δημιουργία νέας Αίτησης', route: '.'},
                 ]}
               />
-                <p>Αρχική</p>
-                <p>{">"}</p>
-                <p>Βρείτε Νταντά</p>
-                <p>{">"}</p>
-                <p>Δημιουργία νέας Αίτησης</p>
             </div>
 
             <h3 className={s.title}>Δημιουργία νέας Αίτησης</h3>
@@ -176,12 +195,12 @@ function ApplicationCreate(){
             <div className={s.application_create_container}>
                 <div className={s.parent_fullname}>
                     <label htmlFor="fullname">Ονοματεπώνυμο Κηδεμόνα:</label>
-                    <input type="text" id="fullname" value={fullname} readOnly />
+                    <input type="text" id="fullname" value={`${parent?.name} ${parent?.surname}`} readOnly />
                 </div>
 
                 <div className={s.place_of_residence}>
-                    <label htmlFor="state">Νομός κατοικίας:</label>
-                    <input type="text" id="state" value={stateOfResidence} readOnly />
+                    <label htmlFor="state">Δήμος κατοικίας:</label>
+                    <input type="text" id="state" value={parent?.area} readOnly />
                 </div>
 
                 <div className={s.address}>
@@ -189,7 +208,7 @@ function ApplicationCreate(){
                     <input
                         type="text"
                         id="address"
-                        value={address}
+                        value={application?.address}
                         onChange={handleAddressChange}
                         placeholder="Η διεύθυνσή σας..."
                     />
@@ -198,9 +217,9 @@ function ApplicationCreate(){
                 <div className={s.family_info}>
                     <FamilyInfo
                         isEditable={false}
-                        description={description}
-                        kids={kids}
-                        hasPets={hasPets}
+                        description={parent?.familyDescription}
+                        kids={parent?.kids ?? []}
+                        hasPets={parent?.hasPets}
                         isForApplication
                     />
                 </div>
@@ -210,41 +229,41 @@ function ApplicationCreate(){
                     {["Πλήρης απασχόληση", "Μερική απασχόληση"].map(option => (
                         <Checkbox
                             key={option}
-                            name="workinghrs"
-                            isChecked={workingHours === option}
-                            onChange={() => setWorkingHours(option)}
-                            label={option === "Πλήρης απασχόληση" ? "Πλήρης απασχόληση" : "Μερική απασχόληση"}
+                            name="workingHours"
+                            isChecked={application?.workingHours === option}
+                            onChange={() => setApplication({ ...application, workingHours: option })}
+                            label={option}
                         />
                     ))}
                 </div>
 
                 <div className={s.calendar_area}>
                     <b>Ημερολόγιο απασχόλησης*</b>
-                    <Timetable width="400px" height="220px" onChange={setAvailabilityList} checkedSlots={availabilityList} />
+                    <Timetable width="400px" height="220px" onChange={(newAvailabilityList) => setApplication({ ...application, availability: newAvailabilityList })} checkedSlots={application?.availability ?? []} />
                 </div>
 
                 <div className={s.starting_date}>
                     <b>Ημερομηνία Έναρξης Συνεργασίας*</b>
                     <Checkbox 
                         name={"startingDate"}
-                        isChecked={startingDate === "Anytime"}
+                        isChecked={application?.startingDate === "Anytime"}
                         onChange={() => {
-                            if (startingDate === "Anytime") {
-                                setStartingDate({}); // Επαναφορά του startingDate για να είναι editable
+                            if (application?.startingDate === "Anytime") {
+                                setApplication({ ...application, startingDate: {}, }); // Επαναφορά του startingDate για να είναι editable
                             } else {
-                                setStartingDate("Anytime"); // Ορισμός ως "Anytime"
+                                setApplication({ ...application, startingDate: "Anytime", }); // Ορισμός ως "Anytime"
                             }
                         }}
                         label={"Άμεσα διαθέσιμος/η"}
                     />
                     <div className={s.date_dropdowns_area}>
                         <DateDropdowns
-                            day={startingDate?.day ?? null}
-                            month={startingDate?.month ?? null}
-                            year={startingDate?.year ?? null}
-                            isEnabled={startingDate !== "Anytime"}
+                            day={application?.startingDate?.day ?? null}
+                            month={application?.startingDate?.month ?? null}
+                            year={application?.startingDate?.year ?? null}
+                            isEnabled={application?.startingDate !== "Anytime"}
                             onChange={(newStartDate) => {
-                                setStartingDate(newStartDate);
+                                setApplication({ ...application, startingDate: newStartDate });
                             }}
                         />
                     </div>
@@ -254,24 +273,24 @@ function ApplicationCreate(){
                     <b>Ημερομηνία Λήξης Συνεργασίας*</b>
                     <Checkbox 
                         name={"endingDate"}
-                        isChecked={endingDate === "Anytime"}
+                        isChecked={application?.endingDate === "Anytime"}
                         onChange={() => {
-                            if (endingDate === "Anytime") {
-                                setEndingDate({}); // Επαναφορά του startingDate για να είναι editable
+                            if (application?.endingDate === "Anytime") {
+                                setApplication({ ...application, endingDate: {}, }); // Επαναφορά του startingDate για να είναι editable
                             } else {
-                                setEndingDate("Anytime"); // Ορισμός ως "Anytime"
+                                setApplication({ ...application, endingDate: "Anytime", }); // Ορισμός ως "Anytime"
                             }
                         }}
                         label={"Αορίστου χρόνου"}
                     />
                     <div className={s.date_dropdowns_area}>
                         <DateDropdowns
-                            day={endingDate?.day ?? null}
-                            month={endingDate?.month ?? null}
-                            year={endingDate?.year ?? null}
-                            isEnabled={endingDate !== "Anytime"}
+                            day={application?.endingDate?.day ?? null}
+                            month={application?.endingDate?.month ?? null}
+                            year={application?.endingDate?.year ?? null}
+                            isEnabled={application?.endingDate !== "Anytime"}
                             onChange={(newStartDate) => {
-                                setEndingDate(newStartDate);
+                                setApplication({ ...application, endingDate: newStartDate });
                             }}
                         />
                     </div>
@@ -279,28 +298,35 @@ function ApplicationCreate(){
 
                 <div className={s.checkbox_area}>
                     <b>Ειδίκευση σε</b>
-                    {["Disabled", "Sign-Language"].map(option => (
+                    {["specialNeeds", "asl"].map(option => (
                         <Checkbox
                             key={option}
                             name={"specialties"}
-                            isChecked={specialties.includes(option)}
-                            readOnly
-                            isEnabled={false}
-                            isRed
-                            label={option === "Disabled" ? "ΑμεΑ" : "Νοηματική"}
+                            isChecked={application?.specialization?.[option] ?? false}
+                            isEnabled={true}
+                            label={option === "specialNeeds" ? "ΑμεΑ" : "Νοηματική"}
+                            onChange={() => {
+                              setApplication({
+                                ...application,
+                                specialization: {
+                                  ...application.specialization,
+                                  [option]: !application?.specialization?.[option]
+                                }
+                              })
+                            }}
                         />
                     ))}
                 </div>
 
                 <div className={s.checkbox_area}>
                     <b>Μετακίνηση παιδιών</b>
-                    {["BabysitterCar", "FamilyCar"].map(option => (
+                    {transportationOptions.map(option => (
                         <Checkbox
                             key={option}
                             name={"transportation"}
-                            isChecked={transportation.includes(option)}
-                            onChange={() => handleCheckboxChange(transportation, setTransportation, option)}
-                            label={option === "BabysitterCar" ? "Με Ι.Χ. Νταντάς" : "Με Ι.Χ. Οικογένειας"}
+                            isChecked={(application?.transportation ?? '') === option.value}
+                            onChange={() => handleTransportationChange(option)}
+                            label={option.label}
                         />
                     ))}
                 </div>
@@ -311,8 +337,8 @@ function ApplicationCreate(){
                         <Checkbox
                             key={language}
                             name={"language"}
-                            isChecked={languages.includes(language)}
-                            onChange={() => handleCheckboxChange(languages, setLanguages, language)}
+                            isChecked={(application?.languages ?? []).includes(language)}
+                            onChange={() => handleCheckboxChange(application?.languages ?? [], (newLanguages) => setApplication({ ...application, languages: newLanguages }), language)}
                             label={translation}
                         />
                     ))}
@@ -324,8 +350,8 @@ function ApplicationCreate(){
                         <Checkbox
                             key={service}
                             name={"services"}
-                            isChecked={services.includes(service)}
-                            onChange={() => handleCheckboxChange(services, setServices, service)}
+                            isChecked={(application?.services ?? []).includes(service)}
+                            onChange={() => handleCheckboxChange(application?.services ?? [], (newServices) => setApplication({ ...application, services: newServices }), service)}
                             label={translation}
                         />
                     ))}
@@ -334,7 +360,7 @@ function ApplicationCreate(){
                     <b>Λίγα λόγια</b>
                     <textarea
                         className={s.few_words}
-                        value={fewWords}
+                        value={application?.fewWords}
                         placeholder="Λίγα λόγια..."
                         onChange={handleFewWordsChange}
                     />
@@ -379,13 +405,13 @@ function ApplicationCreate(){
             }
             {isCancelPopupOpen && 
                 <ConfirmationPopUp
-                    context={params.appId == null
+                    context={appId == null
                             ? 
                             "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την δημιουργία της αίτησης; Η αίτηση δεν θα αποθηκευτεί." 
                             : 
                             "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την επεξεργασία της αίτησης;"
                         } 
-                    onCancel={onCancel} 
+                    onConfirm={onCancel} 
                     onClose={handleCancelPopupClose} 
                 />
             }

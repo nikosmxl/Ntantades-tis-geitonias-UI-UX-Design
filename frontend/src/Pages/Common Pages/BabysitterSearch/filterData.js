@@ -17,7 +17,7 @@ export const filterData = async (listings, filters, setFunction, sorting) => {
 
   const filteredListings = listingsWithBabysitters.filter(listing => {
     // area
-    if (filters.area && !listing.areas.find(area => area.city.label.toLowerCase().includes(filters.area.toLowerCase()))) return false;
+    if (filters?.area && !listing.areas.find(area => area.city.label.toLowerCase().includes(filters.area.toLowerCase()))) return false;
 
     // babysitter gender
     if (filters?.babysitterGender && listing.babysitter.gender != filters.babysitterGender) return false;
@@ -30,14 +30,13 @@ export const filterData = async (listings, filters, setFunction, sorting) => {
     if (filters?.babysitterNationality && listing.babysitter.nationality != filters.babysitterNationality) return false;
 
     // occupation
-    if (filters.partTime && filters.fullTime) return true;
-    if (filters.partTime && listing.workingHours != 'Μερική απασχόληση') return false;
-    if (filters.fullTime && listing.workingHours != 'Πλήρης απασχόληση') return false;
+    if (filters?.partTime && filters.fullTime) return true;
+    if (filters?.partTime && listing.workingHours != 'Μερική απασχόληση') return false;
+    if (filters?.fullTime && listing.workingHours != 'Πλήρης απασχόληση') return false;
 
     // availability
-    if (filters.currentlyAvailable && listing.startingDate != 'Anytime') return false;
-    if (filters.availability.length > 0) {
-      console.log(filters.availability, listing.availability)
+    if (filters?.currentlyAvailable && listing.startingDate != 'Anytime') return false;
+    if (filters?.availability.length > 0) {
       const anyTimeslotFound = filters.availability.reduce((accumulator, timeslot) => {
         return accumulator || listing.availability.find((slot) => slot.dayIndex === timeslot.dayIndex && slot.timeIndex === timeslot.timeIndex);
       }, false);
@@ -68,23 +67,23 @@ export const filterData = async (listings, filters, setFunction, sorting) => {
     if (filters?.asl && !listing.babysitter.specialization?.asl) return false;
 
     // transportation
-    if (filters.babysitterCar && filters.familyCar) return true;
-    if (filters.babysitterCar && listing.transportation != 'babysitterCar') return false;
-    if (filters.familyCar && listing.workingHours != 'parentCar') return false;
+    if (filters?.babysitterCar && filters.familyCar) return true;
+    if (filters?.babysitterCar && listing.transportation != 'babysitterCar') return false;
+    if (filters?.familyCar && listing.transportation != 'parentCar') return false;
 
     // services
-    if (filters.cooking && !listing.services.includes('cooking')) return false;
-    if (filters.cleaning && !listing.services.includes('cleaning')) return false;
-    if (filters.ironing && !listing.services.includes('ironing')) return false;
-    if (filters.firstAid && !listing.services.includes('firstAid')) return false;
-    if (filters.babysitterCertificate && !listing.services.includes('babysitterCertificate')) return false;
-    if (filters.homeworkHelp && !listing.services.includes('homeworkHelp')) return false;
-    if (filters.visits && !listing.services.includes('visits')) return false;
-    if (filters.accompanyToActivities && !listing.services.includes('accompanyToActivities')) return false;
-    if (filters.outdoorActivities && !listing.services.includes('outdoorActivities')) return false;
-    if (filters.emergencyAvailability && !listing.services.includes('emergencyAvailability')) return false;
-    if (filters.englishNativeSpeaker && !listing.services.includes('englishNativeSpeaker')) return false;
-    if (filters.hosting && !listing.services.includes('hosting')) return false;
+    if (filters?.cooking && !(listing?.services ?? []).includes('cooking')) return false;
+    if (filters?.cleaning && !(listing?.services ?? []).includes('cleaning')) return false;
+    if (filters?.ironing && !(listing?.services ?? []).includes('ironing')) return false;
+    if (filters?.firstAid && !(listing?.services ?? []).includes('firstAid')) return false;
+    if (filters?.babysitterCertificate && !(listing?.services ?? []).includes('babysitterCertificate')) return false;
+    if (filters?.homeworkHelp && !(listing?.services ?? []).includes('homeworkHelp')) return false;
+    if (filters?.visits && !(listing?.services ?? []).includes('visits')) return false;
+    if (filters?.accompanyToActivities && !(listing?.services ?? []).includes('accompanyToActivities')) return false;
+    if (filters?.outdoorActivities && !(listing?.services ?? []).includes('outdoorActivities')) return false;
+    if (filters?.emergencyAvailability && !(listing?.services ?? []).includes('emergencyAvailability')) return false;
+    if (filters?.englishNativeSpeaker && !(listing?.services ?? []).includes('englishNativeSpeaker')) return false;
+    if (filters?.hosting && !(listing?.services ?? []).includes('hosting')) return false;
 
     return true;
   });

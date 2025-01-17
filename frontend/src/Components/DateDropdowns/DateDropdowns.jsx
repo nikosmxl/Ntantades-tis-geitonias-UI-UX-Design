@@ -31,6 +31,7 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row
           label: dayOption
         }))}
         isDisabled={!isEnabled}
+        value={{ value: day, label: day }}
         onChange={(selectedOption) => onChange({
           day: selectedOption.value,
           month: month,
@@ -45,6 +46,7 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row
           label: monthOption
         }))}
         isDisabled={!isEnabled}
+        value={{ value: month, label: month}}
         onChange={(selectedOption) => onChange({
           day: day,
           month: selectedOption.value,
@@ -59,6 +61,7 @@ const DateDropdowns = ({ day, month, year, onChange, isEnabled=true, layout='row
           label: yearOption
         }))}
         isDisabled={!isEnabled}
+        value={{ value: year, label: year}}
         onChange={(selectedOption) => onChange({
           day: day,
           month: month,

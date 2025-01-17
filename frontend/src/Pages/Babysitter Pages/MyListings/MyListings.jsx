@@ -7,19 +7,20 @@ import Pagination from "../../../Components/Pagination/Pagination";
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import NotificationPopUp from '../../../PopUps/NotificationPopUp/NotificationPopUp';
 import { db } from '../../../firebase';
 import { collection, getDocs, where, query, doc, setDoc, orderBy } from "firebase/firestore";
 
 function MyListings(){
-    const [listings, setListings] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [listings, setListings] = useState({});
     const [editableListingsPageSize, setEditableListingsPageSize] = useState(5);
     const [editableListingsSorting, setEditableListingsSorting] = useState("Πιο πρόσφατη");
     const editableListingsSortingOptions = ["Πιο πρόσφατη", "Λιγότερο πρόσφατη"];
     const [editableListingsCurrentPage, setEditableListingsCurrentPage] = useState(1);
-        
-    const navigate = useNavigate();
-    const location = useLocation();
-    const { status } = location?.state ?? {};
+    const [status, setStatus] = useState(location?.state?.status ?? null);
 
     const babysitterId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
 
@@ -70,6 +71,15 @@ function MyListings(){
 
     return (
         <div className={s.applications_page}>
+            {
+              status != null && (
+                <NotificationPopUp
+                  status={status === 'publish' ? 'success' : status}
+                  message={status === 'publish' ? 'Η Αγγελία σας δημοσιέυθηκε επιτυχώς.' : 'Μπορείτε να έχετε μόνο μία δημοσιευμένη αγγελία. Η αγγελία σας έχει αποθηκευτεί προσωρινά και θα μπορέσει να ανέβει αφού διαγράψετε την τρέχουσα δημοσιευμένη αγγελία'}
+                  onClose={() => setStatus(null)}
+                />
+              )
+            }
             <div className={s.breadcrumbs}>
                 <Breadcrumbs
                   breadcrumbItems={[

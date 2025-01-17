@@ -64,7 +64,7 @@ function ListingCreate(){
     const saveData = async () => {
       const status = await calculateListingStatus();
       if (!listingId) {
-        await addDoc(collection(db, 'Listings'), { ...listing, status: status, babysitter: babysitterDocRef, date: Date.now()});
+        await addDoc(collection(db, 'Listings'), { ...listing, status: status, babysitter: babysitterDocRef, dateCreated: Date.now()});
       } else {
         const listingDocRef = doc(db, 'Listings', listingId);
         await setDoc(listingDocRef, { ...listing, status: status, babysitter: babysitterDocRef});
@@ -144,7 +144,7 @@ function ListingCreate(){
 
     const handleFewWordsChange = (e) => {
         e.preventDefault();
-        setListing({ ...listing, fewWords: e.target.value.trim() });
+        setListing({ ...listing, fewWords: e.target.value });
     };
 
     const handleSubmit = () => {
