@@ -8,7 +8,7 @@ import Checkbox from '../../../Components/Checkbox/Checkbox';
 import DateDropdowns from '../../../Components/DateDropdowns/DateDropdowns';
 import Timetable from '../../../Components/Timetable/Timetable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis, faPencil } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faEllipsis, faGavel, faPencil, faStar } from '@fortawesome/free-solid-svg-icons';
 import Rating from '../../../Components/Rating/Rating';
 import CertificatesList from '../../../Components/CertificatesList/CertificatesList';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
@@ -25,7 +25,6 @@ const BabysitterDetails = () => {
   const { babysitterId } = useParams();
   const [babysitter, setBabysitter] = useState({});
   const [listing, setListing] = useState(null);
-  const [options, setOptions] = useState([]);
 
   const parentId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
   const navigate = useNavigate();
@@ -48,42 +47,6 @@ const BabysitterDetails = () => {
 
     if (listingSnaps.docs.length > 0) setListing(listingSnaps.docs[0].data());
 
-    const tempOptions = [];
-
-    const parentDocRef = doc(db, 'Users', parentId);
-
-    const aq = query(
-      collection(db, 'Applications'),
-      where("babysitter", "==", babysitterDocRef),
-      where("parent", "==", parentDocRef),
-      where("status", "==", "saved"),
-    );
-    const applicationSnaps = await getDocs(aq);
-
-    const saq = query(
-      collection(db, 'Applications'),
-      where("babysitter", "==", babysitterDocRef),
-      where("parent", "==", parentDocRef),
-      where("status", "in", ["sent", "accepted"]),
-    );
-    const submittedApplicationSnaps = await getDocs(saq);
-
-    if (applicationSnaps.docs.length == 0 && submittedApplicationSnaps.docs.length == 0) {
-      tempOptions.push({
-        label: 'Αίτημα Συνεργασίας',
-        icon: faPencil,
-        onClick: () => navigate('../applications/application-create', { state: { babysitterId: babysitterId } }),
-      });
-    } else {
-      const applicationDoc = applicationSnaps.docs[0];
-      tempOptions.push({
-        label: 'Αίτημα Συνεργασίας',
-        icon: faPencil,
-        onClick: () => navigate(`../applications/application-create/${applicationDoc.id}`),
-      });
-    }
-
-    setOptions(tempOptions);
   };
 
   useEffect(() => {
@@ -95,9 +58,91 @@ const BabysitterDetails = () => {
   }, [ratingsPage, babysitter.ratings]);
 
   const averageRating = useMemo(() => {
-    const avg = getAverageRating();
+    const avg = getAverageRating(babysitter);
     return avg;
-  }, [babysitter]);
+  }, [babysitter.ratings]);
+
+  const onApplicationClick = async () => {
+    const babysitterDocRef = doc(db, 'Users', babysitterId);
+    const parentDocRef = doc(db, 'Users', parentId);
+
+    const q = query(
+      collection(db, 'Applications'),
+      where("babysitter", "==", babysitterDocRef),
+      where("parent", "==", parentDocRef),
+      where("status", "==", "saved"),
+    );
+    const applicationSnaps = await getDocs(q);
+    const applications = applicationSnaps.docs;
+
+    if (applications.length != 0) {
+      const applicationDoc = applications[0];
+      navigate(`../applications/application-create/${applicationDoc.id}`);
+    } else {
+      navigate(`../applications/application-create/`, { state: { babysitterId: babysitterId }});
+    }
+  };
+
+  const onDateClick = async () => {
+    const babysitterDocRef = doc(db, 'Users', babysitterId);
+    const parentDocRef = doc(db, 'Users', parentId);
+
+    const q = query(
+      collection(db, 'Dates'),
+      where("babysitter", "==", babysitterDocRef),
+      where("parent", "==", parentDocRef),
+      where("status", "==", "pending"),
+    );
+    const dateSnaps = await getDocs(q);
+    const dates = dateSnaps.docs;
+
+    if (dates.length != 0) {
+      const dateDoc = dates[0];
+      navigate(`../edit-date/${dateDoc.id}`);
+    } else {
+      navigate(`../edit-date/`, { state: { babysitterId: babysitterId }});
+    }
+  };
+
+  const onSignPartnershipClick = async () => {
+
+  };
+
+  const onViewPartnershipClick = async () => {
+
+  };
+
+  const onRatingClick = async () => {
+
+  };
+
+  const options = [
+    {
+      label: 'Αίτημα Συνεργασίας',
+      icon: faPencil,
+      onClick: onApplicationClick,
+    },
+    {
+      label: 'Προγραμματισμός Ραντεβού',
+      icon: faCalendarDays,
+      onClick: onDateClick,
+    },
+    {
+      label: 'Υπογραφή Συμφωνητικού',
+      icon: faGavel,
+      onClick: onSignPartnershipClick,
+    },
+    {
+      label: 'Προβολή Συμφωνητικού',
+      icon: faStar,
+      onClick: onViewPartnershipClick,
+    },
+    {
+      label: 'Αξιολόγηση',
+      icon: faStar,
+      onClick: onRatingClick,
+    }
+  ];
 
   return (
     <div>

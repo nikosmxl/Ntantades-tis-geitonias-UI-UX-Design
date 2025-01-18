@@ -17,7 +17,7 @@ const ApplicationsHistory = ({}) => {
   const [applications, setApplications] = useState([]);
   
   const babysitterId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
-console.log(filters)
+
   const fetchData = async () => {
     const babysitterDocRef = doc(db, 'Users', babysitterId);
     

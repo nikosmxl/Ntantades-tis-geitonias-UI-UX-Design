@@ -1,61 +1,93 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import s from './EditDateStyle.module.css';
-import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShare, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import Select from 'react-select';
 import AvailabilityCalendar from '../../../Components/AvailabilityCalendar/AvailabilityCalendar';
 import ConfirmationPopUp from '../../../PopUps/ConfirmationPopUp/ConfirmationPopUp';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db } from '../../../firebase';
+import { addDoc, collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
 const EditDate = () => {
+  const navigate = useNavigate();
+  const params = useParams();
+  const { dateId } = params;
+  const location = useLocation();
+  const babysitterId = location?.state?.babysitterId ?? null;
+  const userId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
+  const userRole = useMemo(() => JSON.parse(localStorage.getItem('user'))['role'], []);
+
+  const [parent, setParent] = useState({});
+  const [babysitter, setBabysitter] = useState({});
+  const [date, setDate] = useState({});
+  const [isConfirmPopupOpen, setConfirmPopupOpen] = useState(false);
+  const [isCancelPopupOpen, setCancelPopupOpen] = useState(false);
+
+  const fetchData = async () => {
+    if (babysitterId) {
+      // create date from parent
+      const parentDocRef = doc(db, 'Users', userId);
+      const parentSnap = await getDoc(parentDocRef);
+      setParent({ ...parentSnap.data(), id: parentDocRef.id });
+
+      const babysitterDocRef = doc(db, 'Users', babysitterId);
+      const babysitterSnap = await getDoc(babysitterDocRef);
+      setBabysitter({ ...babysitterSnap.data(), id: babysitterDocRef.id });
+    } else {
+      // edit date, need to check who is who
+      const dateDocRef = doc(db, 'Dates', dateId);
+      const dateSnap = await getDoc(dateDocRef);
+      const fetchedDateData = { ...dateSnap.data(), id: dateDocRef.id }
+      setDate(fetchedDateData);
+
+      const parentSnap = await getDoc(fetchedDateData.parent);
+      setParent({ ...parentSnap.data(), id: fetchedDateData.parent.id });
+
+      const babysitterSnap = await getDoc(fetchedDateData.babysitter);
+      setBabysitter({ ...babysitterSnap.data(), id: fetchedDateData.babysitter.id });
+    }
+  };
+
+  const saveData = async () => {
+    const babysitterDocRef = doc(db, 'Users', babysitter.id);
+    const parentDocRef = doc(db, 'Users', parent.id);
+    if (!dateId) {
+      await addDoc(collection(db, 'Dates'), { ...date, status: 'pending', babysitter: babysitterDocRef, parent: parentDocRef, dateCreated: Date.now(), sentBy: 'parent'});
+    } else {
+      const dateDocRef = doc(db, 'Dates', dateId);
+      await setDoc(dateDocRef, { ...date, status: 'pending', babysitter: babysitterDocRef, parent: parentDocRef, sentBy: userRole});
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [userId, userRole, babysitterId])
+
   const labelHelper = {
     'online': 'Διαδικτυακά',
     'inPerson': 'Δια ζώσης',
     'zoom': 'Zoom',
-    'googleMeet': 'Google Meet',
     'skype': 'Skype',
   };
-  const [place, setPlace] = useState('online');
-  const [address, setAddress] = useState(null);
-  const [comments, setComments] = useState('');
-  const [isConfirmPopupOpen, setConfirmPopupOpen] = useState(false);
-  const [isCancelPopupOpen, setCancelPopupOpen] = useState(false);
-  const [availability, setAvailableTimeslots] = useState([
-    {day: 0, time: 0},
-    {day: 0, time: 1},
-    {day: 0, time: 2},
-    {day: 0, time: 3},
-    {day: 1, time: 0},
-    {day: 1, time: 1},
-    {day: 1, time: 2},
-    {day: 1, time: 3},
-    {day: 1, time: 4},
-    {day: 1, time: 5},
-    {day: 1, time: 6},
-  ]);
-  const [selectedTimeslot, setSelectedTimeslot] = useState({
-    day: 1,
-    time: 1,
-  });
-
-  const navigate = useNavigate();
-
-  const params = useParams();
 
   const handleChangePlace = (selectedOption) => {
-    setPlace(selectedOption.value);
-    setAddress(null);
+    setDate({
+      ...date,
+      place: selectedOption.value,
+      address: null,
+    });
   };
 
   const handleCancelChanges = () => {
-    navigate('../dates', {path: '..'});
+    navigate('../dates');
   };
 
-  const handleConfirmChanges = () => {
+  const handleConfirmChanges = async () => {
     // api call to save changes
-    navigate('../dates', {path: '..'});
+    await saveData();
+    navigate('../dates', { state: { status: 'sent' }});
   };
 
   return (
@@ -76,18 +108,18 @@ const EditDate = () => {
         <div className={s.date_info_container}>
           <div className={s.date_info_user_avatar_container}>
             <img
-              src={trollProf}
+              src={userRole === 'parent' ? babysitter?.profilePicture : parent?.profilePicture}
               className={s.date_info_user_avatar}
               alt='Profile'
             />
-            <h3>Ονοματεπώνυμο</h3>
+            <h3>{userRole === 'parent' ? `${babysitter?.name} ${babysitter?.surname}` : `${parent?.name} ${parent?.surname}`}</h3>
           </div>
           <div className={s.date_info}>
             <h3>Στοιχεία Ραντεβού</h3>
             <div className={s.date_details_flex}>
               <p>Μέσο*:</p>
               <Select
-                defaultValue={{ value: place, label: labelHelper[place] }}
+                defaultValue={{ value: date?.place, label: labelHelper[date?.place] }}
                 options={[
                   { value: 'online', label: labelHelper['online'] },
                   { value: 'inPerson', label: labelHelper['inPerson'] },
@@ -96,27 +128,26 @@ const EditDate = () => {
               />
             </div>
             <div className={s.date_details_flex}>
-              <p>{place === 'online' ? 'Εφαρμογή' : 'Διεύθυνση'}*:</p>
+              <p>{date?.place === 'online' ? 'Εφαρμογή' : 'Διεύθυνση'}*:</p>
               {
-                place === 'online' ? (
+                date?.place === 'online' ? (
                   <div className={s.date_online_address_container}>
                     <Select
                       defaultValue={null}
                       options={[
                         { value: 'zoom', label: labelHelper['zoom'] },
-                        { value: 'googleMeet', label: labelHelper['googleMeet'] },
                         { value: 'skype', label: labelHelper['skype'] },
                       ]}
                       onChange={(selectedOption) => {
-                        setAddress(selectedOption.value);
+                        setDate({ ...date, address: selectedOption.value});
                       }}
                     />
                   </div>
                 ) : (
                   <input
-                    value={place === 'inPerson' ? address : null}
+                    value={date?.place === 'inPerson' ? date?.address : null}
                     onChange={(e) => {
-                      setAddress(e.target.value.trim());
+                      setDate({...date, address: e.target.value});
                     }}
                   />
                 )
@@ -125,10 +156,10 @@ const EditDate = () => {
             <div>
               <p>Σχόλια:</p>
               <textarea
-                value={comments}
+                value={date?.fewWords}
                 placeholder='Γράψτε κάποιο σχόλιο εδώ...'
                 onChange={(e) => {
-                  setComments(e.target.value.trim())
+                  setDate({...date, fewWords: e.target.value});
                 }}
               />
             </div>
@@ -138,9 +169,9 @@ const EditDate = () => {
         <div className={s.date_scheduler_container}>
           <p>Δήλωση Ώρας*:</p>
           <AvailabilityCalendar
-            availability={availability}
-            selectedTimeslot={selectedTimeslot}
-            onTimeslotChange={setSelectedTimeslot}
+            availability={babysitter?.dateAvailability ?? []}
+            selectedTimeslot={date?.selectedTimeslot}
+            onTimeslotChange={(timeslot, formattedDate) => setDate({...date, selectedTimeslot: timeslot, scheduledDate: formattedDate})}
           />
         </div>
 
@@ -152,8 +183,9 @@ const EditDate = () => {
             <FontAwesomeIcon icon={faShare} flip="horizontal"/>Επιστροφή
           </button>
           <button
-            className={s.confirm_changes_button}
+            className={!date?.place || !date?.address || !date?.selectedTimeslot ? s.cancel_edit_button : s.confirm_changes_button}
             onClick={() => setConfirmPopupOpen(true)}
+            disabled={!date?.place || !date?.address || !date?.selectedTimeslot}
           >
             <FontAwesomeIcon icon={faPaperPlane}/>Αποστολή
           </button>
@@ -161,7 +193,7 @@ const EditDate = () => {
       </div>
       {isCancelPopupOpen && 
         <ConfirmationPopUp 
-          context={params.id == null ? 
+          context={dateId == null ? 
             "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε τον προγραμματισμό του ραντεβού; Το ραντεβού δεν θα αποθηκευτεί."
             :
             "Είστε σίγουρος/η ότι θέλετε να ακυρώσετε την επεξεργασία του ραντεβού;"
@@ -172,7 +204,7 @@ const EditDate = () => {
       }
       {isConfirmPopupOpen && 
         <ConfirmationPopUp 
-          context={params.id == null ? 
+          context={dateId == null ? 
             "Είστε σίγουρος/η ότι θέλετε να προγραμματίσετε το ραντεβού;"
             :
             "Είστε σίγουρος/η ότι θέλετε να αλλάξετε τα στοιχεία του ραντεβού;"

@@ -2,7 +2,7 @@ import React from 'react';
 import s from './BabysitterGridViewStyle.module.css';
 import BabysitterGridItem from './BabysitterGridItem/BabysitterGridItem';
 
-const BabysitterGridView = ({ babysitters }) => {
+const BabysitterGridView = ({ babysitters, onBabysitterDelete, onNavigate }) => {
   return (
 
     <div className={s.grid_view}>
@@ -12,6 +12,8 @@ const BabysitterGridView = ({ babysitters }) => {
             <BabysitterGridItem
               key={`${babysitter.id} ${index}`}
               babysitter={babysitter}
+              onDelete={onBabysitterDelete}
+              onNavigate={onNavigate}
             />
           )
         })

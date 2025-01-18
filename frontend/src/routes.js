@@ -103,7 +103,7 @@ const routes = [
   },
   {
     context: 'parent',
-    path: 'edit-date/:id',
+    path: 'edit-date/:dateId',
     page: <EditDate />,
   },
   {
@@ -133,7 +133,7 @@ const routes = [
   },
   {
     context: 'babysitter',
-    path: 'edit-date/:id',
+    path: 'edit-date/:dateId',
     page: <EditDate />,
   },
   {
