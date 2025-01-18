@@ -2,34 +2,11 @@ import React, { useState } from 'react';
 import s from './AvailabilityCalendarStyle.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { getFormattedDate } from '../../utils/date';
+import { days, months, times } from '../../utils/options';
 
 const AvailabilityCalendar = ({availability, selectedTimeslot, onAvailabilityChange, onTimeslotChange, editableAvailability=false, showWeeks=true, isEditable=true, width='100%'}) => {
   const [weekIndex, setWeekIndex] = useState(0);
-
-  const days = ["Δευτέρα", "Tρίτη", "Tετάρτη", "Πέμπτη", "Παρασκευή", "Σάββατο", "Κυριακή"];
-  const months = [
-    "Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου", 
-    "Ιουλίου", "Αυγούστου", "Σεπτεμβρίου", "Οκτωβρίου", "Νοεμβρίου", "Δεκεμβρίου"
-  ];
-  const times = [
-    "07:00 πμ",
-    "08:00 πμ",
-    "09:00 πμ",
-    "10:00 πμ",
-    "11:00 πμ",
-    "12:00 μμ",
-    "01:00 μμ",
-    "02:00 μμ",
-    "03:00 μμ",
-    "04:00 μμ",
-    "05:00 μμ",
-    "06:00 μμ",
-    "07:00 μμ",
-    "08:00 μμ",
-    "09:00 μμ",
-    "10:00 μμ",
-    "11:00 μμ",
-  ];
 
   const currDate = new Date();
   currDate.setUTCDate(currDate.getUTCDate() + (weekIndex * 7));
@@ -43,7 +20,7 @@ const AvailabilityCalendar = ({availability, selectedTimeslot, onAvailabilityCha
     const dayNumber = date.getDate();
     const dayName = days[i];
     const monthName = months[date.getMonth()];
-    week.push({tableLabel: `${dayNumber} ${dayName}`, headerLabel: `${dayNumber} ${monthName}`});
+    week.push({tableLabel: `${dayNumber} ${dayName}`, headerLabel: `${dayNumber} ${monthName}`, dateLabel: getFormattedDate(date)});
   }
 
   const getStyleForCell = (dayIndex, timeIndex) => {
@@ -94,7 +71,7 @@ const AvailabilityCalendar = ({availability, selectedTimeslot, onAvailabilityCha
       return;
     }
 
-    onTimeslotChange({ day: dayIndex, time: timeIndex });
+    onTimeslotChange({ day: dayIndex, time: timeIndex, }, week[dayIndex].dateLabel);
   };
 
   return (

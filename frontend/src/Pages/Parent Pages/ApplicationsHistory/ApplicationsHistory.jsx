@@ -34,7 +34,6 @@ const ApplicationsHistory = ({}) => {
     );
     const applicationSnaps = await getDocs(q);
     const fetchedApplications = applicationSnaps.docs.map(applicationDoc => ({ ...applicationDoc.data(), id: applicationDoc.id}));
-    console.log(fetchedApplications)
     filterData(fetchedApplications.filter(app => app.isHistory), filters, setApplications);
   };
 

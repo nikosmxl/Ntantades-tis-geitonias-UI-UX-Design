@@ -4,15 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import xIcon from '../../../Assets/Icons/X-icon.png';
 
-const BabysitterGridItem = ({ babysitter }) => {
+const BabysitterGridItem = ({ babysitter, onDelete, onNavigate }) => {
 
   const navigate = useNavigate();
   
   const handleDelete = () => {
-    console.log(babysitter);
+    onDelete(babysitter?.id);
   };
   
   const handleNavigate = () => {
+    onNavigate();
     navigate(`../babysitter-details/${babysitter.id}`, {path: '..'});
   };
 
