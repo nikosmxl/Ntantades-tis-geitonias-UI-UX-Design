@@ -1,56 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import s from './PartnershipAgreementStyle.module.css';
-import trollProf from '../../Assets/Pictures/troll_prof.jpg';
 import StyledSelect from '../StyledSelect/StyledSelect';
 import Checkbox from '../Checkbox/Checkbox';
 import DateDropdowns from '../DateDropdowns/DateDropdowns';
 import Timetable from '../Timetable/Timetable';
 import { useNavigate } from 'react-router-dom';
+import { cityNeighborhoods, cityOptions, servicesMapper, transportationOptions } from '../../utils/options';
 
-const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin='320px', alignLeft=false, showBabysitter=true }) => {
-  const {
-    address,
-    dimos,
-    perioxh,
-    partTime,
-    fullTime,
-    startDate,
-    endDate,
-    availability,
-    specialNeeds,
-    asl,
-    babysitterCar,
-    familyCar,
-    languages,
-    services,
-  } = data;
-
-  const {
-    cooking,
-    cleaning,
-    ironing,
-    firstAid,
-    babysitterCertificate,
-    homeworkHelp,
-    visits,
-    accompanyToActivities,
-    outdoorActivities,
-    emergencyAvailability,
-    englishNativeSpeaker,
-    hosting,
-  } = services;
-
-  const {
-    english,
-    french,
-    italian,
-    spanish,
-    russian,
-    arabic,
-    german,
-  } = languages;
+const PartnershipAgreement = ({ data, babysitter, onChange, showOff=false, horizontalMargin='320px', alignLeft=false, showBabysitter=true }) => {
+  const dictionaries = {
+    languages: {
+        'english': "Αγγλικά",
+        'french': "Γαλλικά",
+        'italian': "Ιταλικά",
+        'spanish': "Ισπανικά",
+        'german': "Γερμανικά",
+        'russian': "Ρώσικα",
+        'arabic': "Αραβικά"
+    },
+    services: servicesMapper,
+};
   
   const navigate = useNavigate();
+
+  const handleCheckboxChange = (state, setState, value) => {
+      if (state.includes(value)) {
+          setState(state.filter(item => item !== value));
+      } else {
+          setState([...state, value]);
+      }
+  };
+
+  // useEffect(() => {
+  //   onChange({ ...data, neighbourhood: null });
+  // }, [data.area]);
 
   return (
     <div
@@ -67,15 +50,15 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
             <div
               className={s.partnered_babysitter}
               onClick={() => {
-                navigate('../babysitter-details/1', {path: '..'});
+                navigate(`../babysitter-details/${babysitter.id}`, {path: '..'});
               }}
               style={{
                 alignSelf: alignLeft ? 'left' : 'center',
                 marginLeft: alignLeft ? '213px' : '0',
               }}
             >
-              <img src={trollProf} alt='Profile' />
-              <p>Ονοματεπώνυμο Νταντάς</p>
+              <img src={babysitter?.profilePicture} alt='Profile' />
+              <p>{babysitter?.name} {babysitter?.surname}</p>
             </div>
           </div>
         )
@@ -98,25 +81,27 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
             </div>
             <div className={s.section_content}>
               <StyledSelect
-                value={{value: dimos, label: dimos}}
+                value={cityOptions.find(option => option.value === data?.area)}
                 onChange={(selectedOption) => {
                   onChange({
                     ...data,
-                    dimos: selectedOption.dimos,
+                    area: selectedOption.value,
                   });
                 }}
+                options={cityOptions}
                 isDisabled={showOff}
                 isSearchable={false}
               />
               <div className={s.inner_dropdown}>
                   <StyledSelect
-                    value={{value: perioxh, label: perioxh}}
+                    value={cityNeighborhoods[data?.area]?.find(option => option.value === data?.neighbourhood)}
                     onChange={(selectedOption) => {
                       onChange({
                         ...data,
-                        perioxh: selectedOption.value,
+                        neighbourhood: selectedOption.value,
                       });
                     }}
+                    options={cityNeighborhoods[data?.area]}
                     isDisabled={showOff}
                     isSearchable={false}
                 />
@@ -133,11 +118,11 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
               <input className={s.form_group_input}
                 type="text"
                 id="address"
-                value={address}
+                value={data?.address}
                 onChange={(e) => {
                   onChange({
                     ...data,
-                    address: e.target.value.trim(),
+                    address: e.target.value,
                   });
                 }}
                 disabled={showOff}
@@ -151,32 +136,16 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
               <hr />
             </div>
             <div className={s.section_content}>
-              <Checkbox
-                name='partTime'
-                label='Μερική απασχόληση'
-                isChecked={partTime}
-                onChange={() => {
-                  onChange({
-                    ...data,
-                    partTime: !partTime,
-                    fullTime: !fullTime,
-                  });
-                }}
-                isEnabled={!showOff}
-              />
-              <Checkbox
-                name='fullTime'
-                label='Πλήρης απασχόληση'
-                isChecked={fullTime}
-                onChange={() => {
-                  onChange({
-                    ...data,
-                    partTime: !partTime,
-                    fullTime: !fullTime,
-                  });
-                }}
-                isEnabled={!showOff}
-              />
+              {["Πλήρης απασχόληση", "Μερική απασχόληση"].map(option => (
+                  <Checkbox
+                      key={option}
+                      name="workingHours"
+                      isChecked={data?.workingHours === option}
+                      onChange={() => onChange({ ...data, workingHours: option })}
+                      label={option}
+                      isEnabled={!showOff}
+                  />
+              ))}
             </div>
           </div>
 
@@ -187,14 +156,14 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
             </div>
             <div className={s.section_content}>
               <DateDropdowns
-                day={startDate?.day ?? null}
-                month={startDate?.month ?? null}
-                year={startDate?.year ?? null}
+                day={data?.startingDate?.day ?? null}
+                month={data?.startingDate?.month ?? null}
+                year={data?.startingDate?.year ?? null}
                 isEnabled={!showOff}
                 onChange={(newStartDate) => {
                   onChange({
                     ...data,
-                    startDate: newStartDate,
+                    startingDate: newStartDate,
                   });
                 }}
               />
@@ -208,14 +177,14 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
             </div>
             <div className={s.section_content}>
               <DateDropdowns
-                day={endDate?.day ?? null}
-                month={endDate?.month ?? null}
-                year={endDate?.year ?? null}
+                day={data?.endingDate?.day ?? null}
+                month={data?.endingDate?.month ?? null}
+                year={data?.endingDate?.year ?? null}
                 isEnabled={!showOff}
                 onChange={(newEndDate) => {
                   onChange({
                     ...data,
-                    endDate: newEndDate,
+                    endingDate: newEndDate,
                   });
                 }}
               />
@@ -231,7 +200,7 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
               <Timetable
                 width='359px'
                 height='263px'
-                checkedSlots={availability}
+                checkedSlots={data?.availability ?? []}
                 isEnabled={!showOff}
                 onChange={(newTimetable) => {
                   console.log(newTimetable)
@@ -250,30 +219,24 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
               <hr />
             </div>
             <div className={s.section_content}>
-              <Checkbox
-                name='specialNeeds'
-                label='ΑμεΑ'
-                isChecked={specialNeeds}
-                isEnabled={!showOff}
-                onChange={() => {
-                  onChange({
-                    ...data,
-                    specialNeeds: !specialNeeds,
-                  });
-                }}
-              />
-              <Checkbox
-                name='asl'
-                label='Νοηματική'
-                isChecked={asl}
-                isEnabled={!showOff}
-                onChange={() => {
-                  onChange({
-                    ...data,
-                    asl: !asl,
-                  });
-                }}
-              />
+              {["specialNeeds", "asl"].map(option => (
+                  <Checkbox
+                      key={option}
+                      name={"specialties"}
+                      isChecked={data?.specialization?.[option] ?? false}
+                      isEnabled={!showOff}
+                      label={option === "specialNeeds" ? "ΑμεΑ" : "Νοηματική"}
+                      onChange={() => {
+                        onChange({
+                          ...data,
+                          specialization: {
+                            ...data.specialization,
+                            [option]: !data?.specialization?.[option]
+                          }
+                        })
+                      }}
+                  />
+              ))}
             </div>
           </div>
 
@@ -283,30 +246,42 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
               <hr />
             </div>
             <div className={s.section_content}>
-              <Checkbox
-                name='babysitterCar'
-                label='Με Ι.Χ. Νταντάς'
-                isChecked={babysitterCar}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    babysitterCar: !babysitterCar,
-                  });
-                }}
-              />
-              <Checkbox
-                name='familyCar'
-                label='Με Ι.Χ. Οικογένειας'
-                isChecked={familyCar}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    familyCar: !familyCar,
-                  });
-                }}
-              />
+              {transportationOptions.map(option => (
+                  <Checkbox
+                      key={option}
+                      name={"transportation"}
+                      isChecked={(data?.transportation) === option.value}
+                      isEnabled={!showOff}
+                      onChange={() => {
+                        if (option.value !== data?.transportation) {
+                          onChange({ ...data, transportation: option.value });
+                        } else {
+                          const otherTransportationOption = transportationOptions.find(transportationOption => option.value !== transportationOption.value);
+                          onChange({ ...data, transportation: otherTransportationOption.value });
+                        }
+                      }}
+                      label={option.label}
+                  />
+              ))}
+            </div>
+          </div>
+
+          <div className={s.partnership_section}>
+            <div>
+              <h4>Γνώσεις ξένων γλωσσών</h4>
+              <hr />
+            </div>
+            <div className={s.section_content}>
+              {Object.entries(dictionaries.languages).map(([language, translation]) => (
+                  <Checkbox
+                      key={language}
+                      name={"language"}
+                      isChecked={Array.isArray(data?.languages) && data.languages.includes(language)}
+                      onChange={() => handleCheckboxChange(data?.languages ?? [], (newLanguages) => onChange({ ...data, languages: newLanguages }), language)}
+                      label={translation}
+                      isEnabled={!showOff}
+                  />
+              ))}
             </div>
           </div>
 
@@ -316,243 +291,16 @@ const PartnershipAgreement = ({ data, onChange, showOff=false, horizontalMargin=
               <hr />
             </div>
             <div className={s.section_content}>
-              <Checkbox
-                name='english'
-                label='Αγγλικά'
-                isChecked={english}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    languages: { ...languages, english: !english },
-                  });
-                }}
-              />
-              <Checkbox
-                name='french'
-                label='Γαλλικά'
-                isChecked={french}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    languages: { ...languages, french: !french },
-                  });
-                }}
-              />
-              <Checkbox
-                name='italian'
-                label='Ιταλικά'
-                isChecked={italian}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    languages: { ...languages, italian: !italian },
-                  });
-                }}
-              />
-              <Checkbox
-                name='spanish'
-                label='Ισπανικά'
-                isChecked={spanish}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    languages: { ...languages, spanish: !spanish },
-                  });
-                }}
-              />
-              <Checkbox
-                name='russian'
-                label='Ρωσικά'
-                isChecked={russian}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    languages: { ...languages, russian: !russian },
-                  });
-                }}
-              />
-              <Checkbox
-                name='arabic'
-                label='Αραβικά'
-                isChecked={arabic}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    languages: { ...languages, arabic: !arabic },
-                  });
-                }}
-              />
-              <Checkbox
-                name='german'
-                label='Γερμανικά'
-                isChecked={german}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    languages: { ...languages, german: !german }
-                  });
-                }}
-              />
-            </div>
-          </div>
-
-          <div className={s.partnership_section}>
-            <div>
-              <h4>Μετακίνηση παιδιών </h4>
-              <hr />
-            </div>
-            <div className={s.section_content}>
-              <Checkbox
-                name='cooking'
-                label='Μαγείρεμα'
-                isChecked={cooking}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, cooking: !cooking }
-                  });
-                }}
-              />
-              <Checkbox
-                name='cleaning'
-                label='Καθάρισμα Σπιτιού'
-                isChecked={cleaning}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, cleaning: !cleaning }
-                  });
-                }}
-              />
-              <Checkbox
-                name='ironing'
-                label='Σιδέρωμα'
-                isChecked={ironing}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, ironing: !ironing }
-                  });
-                }}
-              />
-              <Checkbox
-                name='firstAid'
-                label='Α` βοήθειες'
-                isChecked={firstAid}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, firstAid: !firstAid }
-                  });
-                }}
-              />
-              <Checkbox
-                name='babysitterCertificate'
-                label='Πιστοποίηση Νταντάς'
-                isChecked={babysitterCertificate}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, babysitterCertificate: !babysitterCertificate }
-                  });
-                }}
-              />
-              <Checkbox
-                name='homeworkHelp'
-                label='Βοήθεια με Μαθήματα'
-                isChecked={homeworkHelp}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, homeworkHelp: !homeworkHelp }
-                  });
-                }}
-              />
-              <Checkbox
-                name='visits'
-                label='Εκδρομές / Επισκέψεις'
-                isChecked={visits}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, visits: !visits }
-                  });
-                }}
-              />
-              <Checkbox
-                name='accompanyToActivities'
-                label='Συνοδεία σε Δραστηριότητες'
-                isChecked={accompanyToActivities}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, accompanyToActivities: !accompanyToActivities }
-                  });
-                }}
-              />
-              <Checkbox
-                name='outdoorActivities'
-                label='Δραστηριότητες Εξωτερικού Χώρου'
-                isChecked={outdoorActivities}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, outdoorActivities: !outdoorActivities }
-                  });
-                }}
-              />
-              <Checkbox
-                name='emergencyAvailability'
-                label='Έκτακτη Διαθεσιμότητα'
-                isChecked={emergencyAvailability}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, emergencyAvailability: !emergencyAvailability }
-                  });
-                }}
-              />
-              <Checkbox
-                name='englishNativeSpeaker'
-                label='English native speaker'
-                isChecked={englishNativeSpeaker}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, englishNativeSpeaker: !englishNativeSpeaker }
-                  });
-                }}
-              />
-              <Checkbox
-                name='hosting'
-                label='Φιλοξενία στην οικία μου'
-                isChecked={hosting}
-                isEnabled={!showOff}
-                onChange={()=>{
-                  onChange({
-                    ...data,
-                    services: { ...services, hosting: !hosting }
-                  });
-                }}
-              />
+              {Object.entries(dictionaries.services).map(([service, translation]) => (
+                  <Checkbox
+                      key={service}
+                      name={"services"}
+                      isChecked={Array.isArray(data?.services) && data.services.includes(service)}
+                      onChange={() => handleCheckboxChange(data?.services ?? [], (newServices) => onChange({ ...data, services: newServices }), service)}
+                      label={translation}
+                      isEnabled={!showOff}
+                  />
+              ))}
             </div>
           </div>
 

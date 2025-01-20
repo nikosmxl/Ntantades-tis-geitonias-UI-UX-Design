@@ -41,6 +41,7 @@ const BabysitterDates = ({}) => {
       const nonHistoryDates = dateSnaps.docs.map(dateSnap => ({ ...dateSnap.data(), id: dateSnap.id })).filter(date => !date?.isHistory);
 
       sortData(nonHistoryDates);
+      await setHistory(nonHistoryDates);
     };
     
     const sortData = async (dates) => {
@@ -70,8 +71,8 @@ const BabysitterDates = ({}) => {
       return Math.ceil(dates.length / datesPageSize)
     }, [datesPageSize, dates]);
     
-    const setHistory = async () => {
-      const historyDates = dates.filter(date => {
+    const setHistory = async (allDates) => {
+      const historyDates = allDates.filter(date => {
         return date.status == 'rejected';
       });
   
@@ -138,11 +139,9 @@ const BabysitterDates = ({}) => {
                 <DatePopUp
                     date={dateToDisplay}
                     onClose={() => {
-                      setHistory();
                       setDatePopupOpen(false);
                       setDateToDisplay(null);
                     }}
-                    onEdit={setHistory}
                 />
             )}
         </div>

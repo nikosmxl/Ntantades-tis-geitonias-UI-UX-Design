@@ -50,7 +50,7 @@ const Date = ({ date, onClick }) => {
     let className = null;
 
     switch (dateStatus) {
-      case 'scheduled':
+      case 'accepted':
         className = s.date_container_scheduled;
         break;
       case 'pending':
@@ -76,7 +76,7 @@ const Date = ({ date, onClick }) => {
     let label = null;
 
     switch (dateStatus) {
-      case 'scheduled':
+      case 'accepted':
         label = 'Περισσότερα';
         className = s.date_action_button_scheduled;
         break;

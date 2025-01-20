@@ -46,6 +46,44 @@ const genderOptions = [
 
 const ageOptions = Array.from({ length: 52 }, (_, idx) => ({ value: idx+18, label: idx+18 }));
 
+const cityOptions = [
+  { value: "ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ", label: "ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ" },
+  { value: "ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ", label: "ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ" },
+  { value: "ΔΗΜΟΣ ΑΧΑΡΝΕΣ", label: "ΔΗΜΟΣ ΑΧΑΡΝΕΣ" },
+];
+
+const cityNeighborhoods = {
+  "ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ": [
+    { value: "Καμίνια", label: "Καμίνια" },
+    { value: "Καλλίπολη", label: "Καλλίπολη" },
+    { value: "Αγία Σοφία", label: "Αγία Σοφία" },
+    { value: "Πειραϊκή", label: "Πειραϊκή" },
+    { value: "Καστέλλα", label: "Καστέλλα" },
+    { value: "Μανιάτικα", label: "Μανιάτικα" },
+    { value: "Νέο Φάληρο", label: "Νέο Φάληρο" },
+    { value: "Τερψιθέα", label: "Τερψιθέα" },
+    { value: "Ταμπούρια", label: "Ταμπούρια" },
+    { value: "Προφήτης Ηλίας", label: "Προφήτης Ηλίας" },
+  ],
+  "ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ": [
+    { value: "Τζιτζιφιές", label: "Τζιτζιφιές" },
+    { value: "Αγία Ελεούσα", label: "Αγία Ελεούσα" },
+    { value: "Ιππόδρομος", label: "Ιππόδρομος" },
+    { value: "Χαροκόπου", label: "Χαροκόπου" },
+    { value: "Μεταμόρφωση", label: "Μεταμόρφωση" },
+    { value: "Λόφος Φιλαρέτου", label: "Λόφος Φιλαρέτου" },
+  ],
+  "ΔΗΜΟΣ ΑΧΑΡΝΕΣ": [
+    { value: "Ολυμπιακό Χωριό", label: "Ολυμπιακό Χωριό" },
+    { value: "Χαραυγή", label: "Χαραυγή" },
+    { value: "Βαρυμπόμπη", label: "Βαρυμπόμπη" },
+    { value: "Λαθέα", label: "Λαθέα" },
+    { value: "Παλαιό Μενίδι", label: "Παλαιό Μενίδι" },
+    { value: "Άγιος Πέτρος", label: "Άγιος Πέτρος" },
+    { value: "Τατόι", label: "Τατόι" },
+  ],
+};
+
 const nationalityOptions = [
   { value: 'Ελληνική', label: 'Ελληνική' },
   { value: 'Αμερικανική', label: 'Αμερικανική' },
@@ -154,6 +192,8 @@ export {
   servicesMapper,
   genderOptions,
   ageOptions,
+  cityOptions,
+  cityNeighborhoods,
   nationalityOptions,
   days,
   months,

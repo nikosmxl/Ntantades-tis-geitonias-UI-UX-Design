@@ -6,7 +6,7 @@ import Checkbox from '../../../../Components/Checkbox/Checkbox';
 import FamilyInfo from '../../../../Components/FamilyInfo/FamilyInfo';
 
 
-const ConfirmAndSign = ({ data, onChange, showOff=false }) => {
+const ConfirmAndSign = ({ data, parent, babysitter, onChange, showOff=false }) => {
   return (
     <div className={s.confirm_and_sign_container}>
       <div classNam={s.confirm_container}>
@@ -14,17 +14,18 @@ const ConfirmAndSign = ({ data, onChange, showOff=false }) => {
         <hr />
         <div className={s.confirm}>
           <PersonalDetails
-            userData={data.parentDetails}
+            userData={parent}
             ShowOff={true}
           />
           <FamilyInfo
             isEditable={false}
-            description={data.familyDetails.description}
-            kids={data.familyDetails.kids}
-            hasPets={data.familyDetails.hasPets}
+            description={parent.description}
+            kids={parent.kids}
+            hasPets={parent.hasPets}
           />
           <PartnershipAgreement
-            data={data.partnershipDetails}
+            data={data}
+            babysitter={babysitter}
             showOff={true}
             horizontalMargin='0'
             alignLeft={true}
@@ -40,11 +41,11 @@ const ConfirmAndSign = ({ data, onChange, showOff=false }) => {
             <h3>Υπογραφή Κηδεμόνα</h3>
             <Checkbox
               name='parentSigned'
-              isChecked={data.parentSigned}
+              isChecked={data?.parentSigned ?? false}
               onChange={() => {
                 onChange({
                   ...data,
-                  parentSigned: !data.parentSigned,
+                  parentSigned: !data?.parentSigned,
                 });
               }}
               isEnabled={!showOff}
@@ -54,8 +55,8 @@ const ConfirmAndSign = ({ data, onChange, showOff=false }) => {
           </div>
           <div className={s.babysitter_signature}>
             <Checkbox
-              name='parentSigned'
-              isChecked={data.babysitterSigned}
+              name='babysitterSigned'
+              isChecked={data?.babysitterSigned ?? false}
               isEnabled={false}
               width='90px'
               height='90px'

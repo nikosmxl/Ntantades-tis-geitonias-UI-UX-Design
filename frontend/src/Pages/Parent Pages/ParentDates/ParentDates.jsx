@@ -70,7 +70,7 @@ const ParentDates = ({}) => {
         where('babysitter', '==', babysitter),
       ));
 
-      const shouldBeAvailableForDate = applicationsWithBabysitterSnaps.docs.length > datesWithBabysitterSnaps.docs;
+      const shouldBeAvailableForDate = applicationsWithBabysitterSnaps.docs.length > datesWithBabysitterSnaps.docs.length;
       if (shouldBeAvailableForDate && !babysittersForDate.find(babysitterForDate => babysitterForDate.id === babysitter.id)) {
         const babysitterSnap = await getDoc(babysitter);
         babysittersForDate.push({ ...babysitterSnap.data(), id: babysitter.id });
@@ -78,6 +78,7 @@ const ParentDates = ({}) => {
     }));
 
     sortData(nonHistoryDates, babysittersForDate);
+    await setHistory(dates);
   };
 
   const sortData = async (dates, babysitters) => {
@@ -154,8 +155,8 @@ const ParentDates = ({}) => {
     return Math.ceil(babysitters.length / babysittersPageSize)
   }, [babysittersPageSize, babysitters]);
 
-  const setHistory = async () => {
-    const historyDates = dates.filter(date => {
+  const setHistory = async (allDates) => {
+    const historyDates = allDates.filter(date => {
       return date.status == 'rejected';
     });
 
@@ -236,7 +237,6 @@ const ParentDates = ({}) => {
         <BabysitterGridView
           babysitters={babsittersByPage}
           onBabysitterDelete={handleBabysitterDelete}
-          onNavigate={setHistory}
         />
 
         <Pagination
@@ -251,11 +251,9 @@ const ParentDates = ({}) => {
           <DatePopUp
             date={dateToDisplay}
             onClose={() => {
-              setHistory();
               setDatePopupOpen(false);
               setDateToDisplay(null);
             }}
-            onEdit={setHistory}
           />
         )
       }

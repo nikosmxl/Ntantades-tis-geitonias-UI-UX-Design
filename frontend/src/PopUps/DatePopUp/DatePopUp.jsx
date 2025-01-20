@@ -9,7 +9,7 @@ import { db } from '../../firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { times } from '../../utils/options';
 
-const DatePopUp = ({ date, onClose, onEdit }) => {
+const DatePopUp = ({ date, onClose }) => {
   const [isLoading, setIsLoading] = useState(false); // Όταν θα επιβεβαιώνει θα κάνει asyncronous tasks λογικά (θα θέλει λιγο χρονο για ενεργειες στο backend)
   const [isClosing, setIsClosing] = useState(false); // Για το animation
   const userRole = useMemo(() => JSON.parse(localStorage.getItem('user'))['role']);
@@ -70,7 +70,6 @@ const DatePopUp = ({ date, onClose, onEdit }) => {
 
   const handleEditDate = () => {
     // navigate to edit date page
-    onEdit();
     navigate(`../edit-date/${date.id}`);
   };
 

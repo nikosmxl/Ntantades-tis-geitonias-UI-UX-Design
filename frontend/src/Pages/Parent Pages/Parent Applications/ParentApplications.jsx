@@ -53,6 +53,8 @@ function ParentApplications(){
         submittedApplications: fetchedSubmittedApplications.filter(app => !app.isHistory),
         editableApplications: fetchedEditableApplications.filter(app => !app.isHistory),
       });
+
+      await setHistory(fetchedSubmittedApplications.filter(app => !app.isHistory));
     };
 
     const submittedApplicationsByPage = useMemo(() => {
@@ -94,8 +96,8 @@ function ParentApplications(){
       await fetchData();
     };
 
-    const setHistory = async () => {
-      const historyApplications = applications?.submittedApplications.filter(application => {
+    const setHistory = async (submittedApplications) => {
+      const historyApplications = submittedApplications.filter(application => {
         return application.status == 'decline' || application.status == 'accept';
       });
 
@@ -157,7 +159,6 @@ function ParentApplications(){
                         isHistory={false}
                         isEditable={false}
                         onDelete={() => handleApplicationDelete(submittedApplication)}
-                        onNavigate={() => setHistory()}
                       />
                     );
                   })
@@ -186,7 +187,6 @@ function ParentApplications(){
                         isHistory={false}
                         isEditable={true}
                         onDelete={() => handleApplicationDelete(editableApplication)}
-                        onNavigate={() => setHistory()}
                       />
                     );
                   })

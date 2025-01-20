@@ -4,16 +4,8 @@ import PartnershipAgreement from '../../../../Components/PartnershipAgreement/Pa
 import PersonalDetails from '../../../../Components/PersonalDetails/PersonalDetails';
 import Checkbox from '../../../../Components/Checkbox/Checkbox';
 import FamilyInfo from '../../../../Components/FamilyInfo/FamilyInfo';
-import { useNavigate } from 'react-router-dom';
 
-
-const ConfirmAndSign = ({ data, onChange }) => {
-  const navigate = useNavigate();
-  
-  const handleReject = () => {
-    // api call to reject partnership
-    navigate('../partnership', {path: '..'});
-  };
+const ConfirmAndSign = ({ data, parent, babysitter, onChange, onReject }) => {
   
   return (
     <div className={s.confirm_and_sign_container}>
@@ -22,19 +14,19 @@ const ConfirmAndSign = ({ data, onChange }) => {
         <hr />
         <div className={s.confirm}>
           <PersonalDetails
-            userData={data.parentDetails}
+            userData={babysitter}
             ShowOff={true}
           />
           <FamilyInfo
             isEditable={false}
-            description={data.familyDetails.description}
-            kids={data.familyDetails.kids}
-            hasPets={data.familyDetails.hasPets}
+            description={parent.familyDescription}
+            kids={parent.kids}
+            hasPets={parent.hasPets}
             showParent={true}
             alignLeft={true}
           />
           <PartnershipAgreement
-            data={data.partnershipDetails}
+            data={data}
             showOff={true}
             horizontalMargin='0'
             alignLeft={true}
@@ -51,7 +43,7 @@ const ConfirmAndSign = ({ data, onChange }) => {
             <h3>Υπογραφή Κηδεμόνα</h3>
             <Checkbox
               name='parentSigned'
-              isChecked={data.parentSigned}
+              isChecked={data?.parentSigned ?? false}
               isEnabled={false}
               width='90px'
               height='90px'
@@ -59,13 +51,13 @@ const ConfirmAndSign = ({ data, onChange }) => {
           </div>
           <div className={s.babysitter_signature}>
             <Checkbox
-              name='parentSigned'
-              isChecked={data.babysitterSigned}
+              name='babysitterSigned'
+              isChecked={data?.babysitterSigned ?? false}
               isEnabled={true}
               onChange={() => {
                 onChange({
                   ...data,
-                  babysitterSigned: !data.babysitterSigned,
+                  babysitterSigned: !data?.babysitterSigned,
                 });
               }}
               width='90px'
@@ -74,7 +66,7 @@ const ConfirmAndSign = ({ data, onChange }) => {
             <h3>Υπογραφή Νταντάς</h3>
           </div>
         </div>
-        <p onClick={handleReject}>Απόρριψη Συμφωνητικού</p>
+        <p onClick={onReject}>Απόρριψη Συμφωνητικού</p>
       </div>
     </div>
   );
