@@ -11,20 +11,22 @@ import ParentConfirmAndSignup from "./ParentConfirmAndSignup/ParentConfirmAndSig
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
 
 function ParentSignupForm() {
+  const [profilePicture, setProfilePicture] = useState("");
+
   const data_sample = {
+    "profilePic": profilePicture,
+    "role": "parent",
     "name": "Ιωάννα",
     "surname": "Χατζή",
     "age": 29,
     "email": "ioanna123@gmail.com",
-    "gender": "Γυναίκα",
-    "mobile": "6912345678",
-    "phone": "2102345678",
-    "ethnicity": "Ελληνική",
-    "residence": "Άνω Πατήσια, Αττική",
+    "gender": "male",
+    "cellNumber": "6912345678",
+    "phoneNumber": "2102345678",
+    "nationality": "Ελληνική",
+    "area": "Άνω Πατήσια, Αττική",
     "language": "Ελληνικά"
   }
-
-  const [profilePicture, setProfilePicture] = useState("");
   
   const [description, setDescription] = useState('');
   const [kids, setKids] = useState([]);

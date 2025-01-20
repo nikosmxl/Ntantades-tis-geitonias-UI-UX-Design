@@ -1,17 +1,29 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import s from './BabysitterPartnershipFormStyle.module.css';
-import trollProf from '../../../Assets/Pictures/troll_prof.jpg'; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGavel, faCircleLeft, faCircleRight, faRotateLeft, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
 import ProgressBar from "../../../Components/ProgressBar/ProgressBar";
 import ConfirmAndSign from './ConfirmAndSign/ConfirmAndSign';
 import ErrorFields from "../../../Components/ErrorFields/ErrorFields";
 import PersonalDetails from '../../../Components/PersonalDetails/PersonalDetails';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PartnershipAgreementPopUp from '../../../PopUps/PartnershipAgreementPopUp/PartnershipAgreementPopUp';
 import Breadcrumbs from '../../../Components/Breadcrumbs/Breadcrumbs';
+import { db, storage } from '../../../firebase';
+import { getDoc, doc, collection, setDoc, addDoc } from 'firebase/firestore';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { getDateFromMs, getDateFromObj } from '../../../utils/date';
 
 const BabysitterPartnershipForm = () => {
+  const { id } = useParams();
+  const userId = useMemo(() => JSON.parse(localStorage.getItem('user'))['id'], []);
+
+  const [babysitter, setBabysitter] = useState({});
+  const [parent, setParent] = useState({});
+  const [partnership, setPartnership] = useState({});
+
+  const babysitterDocRef = useMemo(() => doc(db, 'Users', userId), [userId]);
+  
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -20,84 +32,74 @@ const BabysitterPartnershipForm = () => {
       setIsConfirmPopupOpen(true);
   };
 
+  const handleSubmit = () => {
+    if (errorStep2Exists){
+        setIsErrorVisible(true);
+        return;
+    }
+    openConfirmPopup();
+  }
+
+  const confirmAndSend = async () => {
+    if (errorStep2Exists || !partnership?.babysitterSigned) {
+      setErrorStep2('Κάποια από τα υποχρεωτικά πεδία δεν συμπληρώθηκαν: Υπογραφή Νταντάς');
+      setIsErrorVisible(true);
+      scrollToBottom();
+      return;
+    }
+    setIsErrorVisible(false);
+    if (getDateFromMs(partnership?.dateCreated) < getDateFromObj(partnership?.startingDate)){
+      await saveData('future', true);
+      navigate('/babysitter/partnership', { state: { status: 'accept' }});
+    }
+    else if (getDateFromMs(partnership?.dateCreated) < getDateFromObj(partnership?.endingDate)){
+      await saveData('running', true);
+      navigate('/babysitter/partnership', { state: { status: 'accept' }});
+    }
+  };
+
+  const handleReject = async () => {
+    await saveData('decline');
+    navigate('/babysitter/partnership', { state: { status: 'decline' }});
+  };
+
   const handleConfirmPopupClose = () => {
       setIsConfirmPopupOpen(false); // Κλεινει το PopUp
   };
 
-  const [partnershipData, setPartnershipData] = useState({
-    "parentDetails": {
-      "profilePic": trollProf,
-      "name": "Ιωάννα",
-      "surname": "Χατζή",
-      "age": 29,
-      "email": "ioanna123@gmail.com",
-      "gender": "Γυναίκα",
-      "mobile": "6912345678",
-      "phone": "2102345678",
-      "ethnicity": "Ελληνική",
-      "residence": "Άνω Πατήσια, Αττική",
-      "language": "Ελληνικά",
-    },
-    "babysitterDetails": {
-      "profilePic": trollProf,
-      "name": "Ιωάννα",
-      "surname": "Χατζή",
-      "age": 29,
-      "email": "ioanna123@gmail.com",
-      "gender": "Γυναίκα",
-      "mobile": "6912345678",
-      "phone": "2102345678",
-      "ethnicity": "Ελληνική",
-      "residence": "Άνω Πατήσια, Αττική",
-      "language": "Ελληνικά",
-    },
-    "familyDetails": {
-      "description": "Λίγα Λόγια",
-      "kids": [
-        {id: 1, age: 2, gender: 'boy', hasDisabilities: false, hasAllergies: false, description: ''},
-      ],
-      "hasPets": false,
-    },
-    "partnershipDetails": {
-      "address": 'Βλαστού 2',
-      "dimos": 'ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ',
-      "perioxh": 'Τζιτζιφιές',
-      "partTime": true,
-      "fullTime": false,
-      "startDate": {},
-      "endDate": {},
-      "availability": [],
-      "specialNeeds": false,
-      "asl": false,
-      "babysitterCar": false,
-      "familyCar": false,
-      "languages": {
-        "english": false,
-        "french": false,
-        "italian": false,
-        "spanish": false,
-        "russian": false,
-        "arabic": false,
-        "german": false,
-      },
-      "services": {
-        "cooking": false,
-        "cleaning": false,
-        "ironing": false,
-        "firstAid": false,
-        "babysitterCertificate": false,
-        "homeworkHelp": false,
-        "visits": false,
-        "accompanyToActivities": false,
-        "outdoorActivities": false,
-        "emergencyAvailability": false,
-        "englishNativeSpeaker": false,
-        "hosting": false,
-      },
-    },
-    "parentSigned": false,
-    "babysitterSigned": false,
-  });
+  const fetchData = async () => {
+    if (id) {
+      const partnershipDocRef = doc(db, 'Partnerships', id);
+      const partnershipSnap = await getDoc(partnershipDocRef);
+      const partnershipData = partnershipSnap.data();
+      setPartnership({ ...partnershipData, id: id });
+
+      const parentSnap = await getDoc(partnershipData.parent);
+      const parentData = parentSnap.data();
+      const profilePictureRef = ref(storage, `profilePictures/${partnershipData.parent.id}.${parentData?.profilePictureType}`);
+      const profilePictureUrl = await getDownloadURL(profilePictureRef);
+      setParent({ ...parentData, id: partnershipData.parent.id, profilePicture: profilePictureUrl })
+    }
+
+    const babysitterSnap = await getDoc(babysitterDocRef);
+    const babysitterData = babysitterSnap.data();
+    setBabysitter({ ...babysitterData, id: userId })
+  };
+
+  const handleSave = async () => {
+    await saveData('sent');
+    navigate('/babysitter/partnership', { state: { status: 'saved' }});
+  };
+
+  const saveData = async (status, isHistory = false) => {
+    const babysitterDocRef = doc(db, 'Users', babysitter?.id);
+    const partnershipDocRef = doc(db, 'Partnerships', id);
+    await setDoc(partnershipDocRef, { ...partnership, status: status, babysitter: babysitterDocRef, isHistory: isHistory});
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [id]);
 
   const [errorStep2, setErrorStep2] = useState(null);
 
@@ -116,20 +118,31 @@ const BabysitterPartnershipForm = () => {
     }
   }, [step]);
 
+  const handleChange = (updatedData) => {
+    setPartnership(prev => ({
+      ...prev,
+      ...updatedData,
+    }));
+  };
+
   const steps = [
     {
       title: "Επιβεβαίωση Προσωπικών Στοιχείων",
       note: null,
       content: <PersonalDetails
-      userData={partnershipData.babysitterDetails}
+      userData={babysitter}
       ShowOff={true} />,
     },
     {
       title: "Επιβεβαίωση και Υπογραφή",
       note: null,
       content: <ConfirmAndSign
-      data={partnershipData}
-      onChange={(newPartnershipData) => setPartnershipData(newPartnershipData)}/>,
+      data={partnership}
+      parent={parent}
+      babysitter={babysitter}
+      onChange={handleChange}
+      onReject={handleReject}
+      />,
     },
   ];
   
@@ -192,11 +205,7 @@ const BabysitterPartnershipForm = () => {
   }, [step]);
 
   useEffect(() => {
-    const {
-      babysitterSigned,
-    } = partnershipData;
-
-    if (step === 1 && !babysitterSigned) {
+    if (step === 1 && !partnership?.babysitterSigned) {
       setErrorStep2('Κάποια από τα υποχρεωτικά πεδία δεν συμπληρώθηκαν: Υπογραφή Νταντάς');
       setIsErrorVisible(true);
       scrollToBottom();
@@ -204,28 +213,7 @@ const BabysitterPartnershipForm = () => {
     }
     setErrorStep2(null); // Όλα τα πεδία είναι συμπληρωμένα
 
-  }, [partnershipData, step]);
-
-  const handleTemporarySave = () => {
-    // api call to save partnershipDetails
-    navigate('../partnership', {state: {status: 'saved'}});
-  };
-
-  const confirmAndSend = () => {
-    const {
-      babysitterSigned,
-    } = partnershipData;
-
-    if (errorStep2Exists || !babysitterSigned) {
-      setErrorStep2('Κάποια από τα υποχρεωτικά πεδία δεν συμπληρώθηκαν: Υπογραφή Νταντάς');
-      setIsErrorVisible(true);
-      scrollToBottom();
-      return;
-    }
-    setIsErrorVisible(false);
-    // api call to save partnershipDetails
-    navigate('../partnership');
-  };
+  }, [partnership, step]);
 
   return (
     <div className={s.container}>
@@ -275,14 +263,14 @@ const BabysitterPartnershipForm = () => {
               <FontAwesomeIcon className={s.icon} icon={faCircleRight} fontSize={"24px"} />
             </button>
           :
-            <button onClick={openConfirmPopup} className={s.confirm_and_send_button}>
+            <button onClick={handleSubmit} className={s.confirm_and_send_button}>
               <FontAwesomeIcon className={s.icon} icon={faGavel} fontSize={"18px"} />
               Οριστική υποβολή
             </button>
           }
         </div>
         <div className={s.temporary_save_button_container}>
-          <button onClick={handleTemporarySave} className={s.temporary_save_button}>
+          <button onClick={handleSave} className={s.temporary_save_button}>
             <FontAwesomeIcon className={s.icon} icon={faFloppyDisk} fontSize={"24px"} />
             Προσωρινή Αποθήκευση
           </button>
@@ -291,9 +279,9 @@ const BabysitterPartnershipForm = () => {
           <PartnershipAgreementPopUp 
             onSubmit={confirmAndSend} 
             onClose={handleConfirmPopupClose}
-            gender={partnershipData.parentDetails.gender}
-            name={partnershipData.parentDetails.name}
-            surname={partnershipData.parentDetails.surname}
+            gender={parent.gender}
+            name={parent.name}
+            surname={parent.surname}
           />
         }
     </div>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import trollProf from '../../../Assets/Pictures/troll_prof.jpg';
 import xIcon from '../../../Assets/Icons/X-icon.png';
 
-const BabysitterGridItem = ({ babysitter, onDelete, onNavigate }) => {
+const BabysitterGridItem = ({ babysitter, onDelete }) => {
 
   const navigate = useNavigate();
   
@@ -13,7 +13,6 @@ const BabysitterGridItem = ({ babysitter, onDelete, onNavigate }) => {
   };
   
   const handleNavigate = () => {
-    onNavigate();
     navigate(`../babysitter-details/${babysitter.id}`, {path: '..'});
   };
 

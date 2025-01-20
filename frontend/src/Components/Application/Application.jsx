@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { getDoc } from "firebase/firestore";
 import { getDateFromMs, getDateFromObj, getFormattedDate } from '../../utils/date';
 
-function Application({isParent = true, application, isHistory = false, isEditable = false, onDelete, onDecline, onAccept, onNavigate = null}){
+function Application({isParent = true, application, isHistory = false, isEditable = false, onDelete, onDecline, onAccept }){
     const [user, setUser] = useState({});
 
     const fetchData = async () => {
@@ -35,8 +35,6 @@ function Application({isParent = true, application, isHistory = false, isEditabl
     const navigate = useNavigate();
 
     const handleUserClick = () => {
-      if (onNavigate != null) onNavigate();
-
       if (!isParent) return navigate(`/babysitter/parent-details/${user?.id}`);
 
       navigate(`/parent/babysitter-details/${user?.id}`);
@@ -96,7 +94,6 @@ function Application({isParent = true, application, isHistory = false, isEditabl
                         <p className={`${!isExpanded ? s.not_expanded : ''}`}>Η νταντά άλλαξε τα στοιχεία του ραντεβού</p>
                         <button
                           onClick={() => {
-                            if (onNavigate != null) onNavigate();
                             exeiKleiseiRantebou ? 
                             navigate('../dates/', {relative: 'path'}) :
                             navigate('../edit-date/', {relative: 'path'});

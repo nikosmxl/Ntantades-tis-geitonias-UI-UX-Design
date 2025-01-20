@@ -210,6 +210,11 @@ const routes = [
   },
   {
     context: 'parent',
+    path: 'sign-partnership',
+    page: <ParentPartnershipForm />,
+  },
+  {
+    context: 'parent',
     path: 'sign-partnership/:id',
     page: <ParentPartnershipForm />,
   },

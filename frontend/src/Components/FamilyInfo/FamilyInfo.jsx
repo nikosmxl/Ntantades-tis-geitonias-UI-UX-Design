@@ -55,7 +55,7 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
             <div className={s.family_profile_info_with_dropdown_container}>
               <p>{isEditable && MandatoryFields ? "Αριθμός Παιδιών*:" : "Αριθμός Παιδιών:"}</p>
               <StyledSelect
-                value={{label: kids.length, value: kids.length}}
+                value={{label: kids?.length, value: kids?.length}}
                 options={[
                   {label: 1, value: 1},
                   {label: 2, value: 2},
@@ -68,10 +68,10 @@ function FamilyInfo({isEditable, description, onDescriptionChange, kids, onKidsN
             </div>
 
             {
-              kids.map((kid, index) => {
+              kids?.map((kid, index) => {
                 return (
                   <KidCard
-                    key={`${kid.id} ${kid.age} ${kid.gender} ${index}`}
+                    key={`${kid?.id} ${kid?.age} ${kid?.gender} ${index}`}
                     kid={kid}
                     onChange={onKidChange}
                     isEditable={isEditable}

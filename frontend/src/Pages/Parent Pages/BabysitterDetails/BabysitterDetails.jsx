@@ -17,6 +17,7 @@ import { getDoc, doc, collection, getDocs, query, where } from 'firebase/firesto
 import { getDownloadURL, ref } from 'firebase/storage';
 import { languageOptions, servicesMapper } from '../../../utils/options';
 import { getAverageRating } from '../../../utils/calc';
+import { faHandshake } from '@fortawesome/free-regular-svg-icons';
 
 const BabysitterDetails = () => {
   const [isOptionsOpen, setOptionsOpen] = useState(true);
@@ -55,12 +56,12 @@ const BabysitterDetails = () => {
 
   const ratingsByPage = useMemo(() => {
     return (babysitter?.ratings ?? []).slice((ratingsPage-1)*4, ratingsPage*4);
-  }, [ratingsPage, babysitter.ratings]);
+  }, [ratingsPage, babysitter]);
 
   const averageRating = useMemo(() => {
     const avg = getAverageRating(babysitter);
     return avg;
-  }, [babysitter.ratings]);
+  }, [babysitter]);
 
   const onApplicationClick = async () => {
     const babysitterDocRef = doc(db, 'Users', babysitterId);
@@ -75,7 +76,7 @@ const BabysitterDetails = () => {
     const applicationSnaps = await getDocs(q);
     const applications = applicationSnaps.docs;
 
-    if (applications.length != 0) {
+    if (applications.length !== 0) {
       const applicationDoc = applications[0];
       navigate(`../applications/application-create/${applicationDoc.id}`);
     } else {
@@ -96,7 +97,7 @@ const BabysitterDetails = () => {
     const dateSnaps = await getDocs(q);
     const dates = dateSnaps.docs;
 
-    if (dates.length != 0) {
+    if (dates.length !== 0) {
       const dateDoc = dates[0];
       navigate(`../edit-date/${dateDoc.id}`);
     } else {
@@ -105,7 +106,24 @@ const BabysitterDetails = () => {
   };
 
   const onSignPartnershipClick = async () => {
+    const babysitterDocRef = doc(db, 'Users', babysitterId);
+    const parentDocRef = doc(db, 'Users', parentId);
 
+    const q = query(
+      collection(db, 'Partnerships'),
+      where("babysitter", "==", babysitterDocRef),
+      where("parent", "==", parentDocRef),
+      where("status", "==", "saved"),
+    );
+    const partnershipSnaps = await getDocs(q);
+    const partnerships = partnershipSnaps.docs;
+
+    if (partnerships.length !== 0) {
+      const partnershipDoc = partnerships[0];
+      navigate(`../sign-partnership/${partnershipDoc.id}`);
+    } else {
+      navigate(`../sign-partnership/`, { state: { babysitterId: babysitterId }});
+    }
   };
 
   const onViewPartnershipClick = async () => {
@@ -134,7 +152,7 @@ const BabysitterDetails = () => {
     },
     {
       label: 'Προβολή Συμφωνητικού',
-      icon: faStar,
+      icon: faHandshake,
       onClick: onViewPartnershipClick,
     },
     {
@@ -158,7 +176,7 @@ const BabysitterDetails = () => {
       <div className={s.babysitter_details_main_content}>
         <div className={s.babysitter_details_top_container}>
           <div className={s.babysitter_details_left_sidebar}>
-            <img src={babysitter?.profilePicture} className={s.profile_pic}/>
+            <img src={babysitter?.profilePicture} className={s.profile_pic} alt='Babysitter Profile'/>
             <div className={s.babysitter_details_rating}>
               <Stars
                 rating={averageRating}
@@ -204,7 +222,7 @@ const BabysitterDetails = () => {
                 onClick={() => setOptionsOpen(!isOptionsOpen)}
               >
                 <FontAwesomeIcon icon={faEllipsis} />
-                <div className={`${s.dropdown_menu} ${isOptionsOpen && options.length != 0 ? s.open : ""}`}>
+                <div className={`${s.dropdown_menu} ${isOptionsOpen && options.length !== 0 ? s.open : ""}`}>
                     <div className={s.dropdown_triangle}>
                         <div className={s.inner_dropdown_triangle}></div>
                     </div>

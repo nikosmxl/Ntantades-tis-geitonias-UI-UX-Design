@@ -1,13 +1,19 @@
 import s from "./PersonalDetailsStyle.module.css"
 import blankProfilePic from "../../Assets/Pictures/blankProfilePic.png"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMarginRight='220px', horizontalMargin='320px', }){
-    const [profilePicturePreview, setProfilePicturePreview] = useState(userData?.profilePic ?? blankProfilePic);
+    const [profilePicturePreview, setProfilePicturePreview] = useState(blankProfilePic);
     const navigate = useNavigate();
     const location = useLocation();
     const context = location.pathname.split('/')[1];
+
+    useEffect(() => {
+        if (userData?.profilePicture) {
+            setProfilePicturePreview(userData.profilePicture);
+        }
+    }, [userData?.profilePicture]);
 
     const handleParentClick = () => {
       if (context === 'parent') return;
@@ -72,7 +78,6 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <input className={s.form_group_input} 
                         type="text" 
                         id="name" 
-                        placeholder="Ιωάννα" 
                         value={userData.name} 
                         disabled={true} 
                     />
@@ -82,7 +87,6 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <input className={s.form_group_input} 
                         type="text" 
                         id="surname" 
-                        placeholder="Χατζή" 
                         value={userData.surname} 
                         disabled={true} 
                     />
@@ -92,7 +96,6 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <input className={s.form_group_input} 
                         type="number" 
                         id="age" 
-                        placeholder="29" 
                         value={userData.age} 
                         disabled={true} 
                     />
@@ -102,7 +105,6 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <input className={s.form_group_input} 
                         type="email" 
                         id="email" 
-                        placeholder="ioanna123@gmail.com" 
                         value={userData.email} 
                         disabled={true} 
                     />
@@ -111,9 +113,8 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <label className={s.form_group_label} htmlFor="gender">Φύλο:</label>
                     <input className={s.form_group_input} 
                         type="text" 
-                        id="gender" 
-                        placeholder="Γυναίκα" 
-                        value={userData.gender} 
+                        id="gender"
+                        value={userData.gender === "male" ? "Άνδρας" : "Γυναίκα"} 
                         disabled={true} 
                     />
                 </div>
@@ -122,8 +123,7 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <input className={s.form_group_input} 
                         type="tel" 
                         id="mobile" 
-                        placeholder="6912345678" 
-                        value={userData.mobile} 
+                        value={userData.cellNumber} 
                         disabled={true} 
                     />
                 </div>
@@ -132,8 +132,7 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <input className={s.form_group_input} 
                         type="tel" 
                         id="phone" 
-                        placeholder="2102345678" 
-                        value={userData.phone} 
+                        value={userData.phoneNumber} 
                         disabled={true} 
                     />
                 </div>
@@ -143,7 +142,7 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                         type="text" 
                         id="ethnicity" 
                         placeholder="Ελληνική" 
-                        value={userData.ethnicity} 
+                        value={userData.nationality} 
                         disabled={true} 
                     />
                 </div>
@@ -152,8 +151,7 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <input className={s.form_group_input} 
                         type="text" 
                         id="residence" 
-                        placeholder="Άνω Πατήσια, Αττική" 
-                        value={userData.residence} 
+                        value={userData.area} 
                         disabled={true} 
                     />
                 </div>
@@ -162,7 +160,6 @@ function PersonalDetails({ userData, onProfileChange, ShowOff = false, formMargi
                     <input className={s.form_group_input} 
                         type="text" 
                         id="language" 
-                        placeholder="Ελληνικά" 
                         value={userData.language} 
                         disabled={true} 
                     />

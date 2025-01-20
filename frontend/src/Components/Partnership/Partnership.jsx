@@ -1,73 +1,37 @@
 import s from "./PartnershipStyle.module.css"
-import troll_prof from "../../Assets/Pictures/troll_prof.jpg"
 import Timetable from "../Timetable/Timetable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConfirmationPopUp from "../../PopUps/ConfirmationPopUp/ConfirmationPopUp";
 import ExpandButtons from "../ExpandButtons/ExpandButtons";
 import DateDropdowns from '../DateDropdowns/DateDropdowns';
 import StyledSelect from "../StyledSelect/StyledSelect";
 import { useNavigate } from "react-router-dom";
+import { getDateFromMs, getDateFromObj, getFormattedDate } from "../../utils/date";
+import { getDoc } from "firebase/firestore";
 
-function Partnership({isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false, onCreateRating, onDelete}){
-    const perioxes = ['ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ', 'ΔΗΜΟΣ ΠΕΙΡΑΙΩΣ'];
-    const [perioxh, setPerioxh] = useState('ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ');
-    const [availabilityList, setAvailabilityList] = useState([ [0, 1], [2, 3], [3, 0], [3, 1], [3, 2], [3, 3], [3, 4] ]);
-    const [partnershipDate, setPartnershipDate] = useState({});
-    
-    const sample = {
-        "id": 1,
-        "signedBy": [],
-        "isSentTo": 123,
-        "answer": null,
-        "parentName": "Δήμητρα Χατζή",
-        "babysitterName": "Γεωργία Χατζηνικολάου",
-        //Στοιχεια και των δυο
-        "placeOfService": {
-            "ΔΗΜΟΣ ΚΑΛΛΙΘΕΑΣ": ["Τζιτζιφιές", "Αγία Ελεούσα"],
-        },
-        "address": "Κωνσταντινουπόλεως 213",
-        "languagesKnowledge": [
-            "Αγγλικά",
-            "Γαλλικά"
-        ],
-        "specialties": ["Νοηματική"],
-        "childrenTransportation": "Με Ι.Χ. Οικογένειας",
-        "services": [
-            "Μαγειρέμα",
-            "Καθαρισμός Σπιτιού",
-            "Βοήθεια με μαθήματα",
-            "Δραστηριότητες Εξωτερικού Χώρου"
-        ],
-        "workingHours": "Πλήρης απασχόληση",
-        "availability": availabilityList,
-        "partnershipStart": "Μια ημερομινια",
-        "partnershipEnd": "Μια ημερομινια",
-        "fewWords": "Είμαι ευγενική, υπομονετική, σεβαστική και πολύ αγαπημένη με τα παιδιά! Μου αρέσει αυτό που κάνω για αυτό το κάνω με όρεξη και μεράκι. Σπούδασα στο Πανεπιστήμιο της Πάτρας Βρεφονηπιοκομία και έχω κάνει και σεμινάρια με τίτλο 'Επιστήμη της Υγείας', μαζί με σεμινάρια φωνηού φροντίδας. Θα χαρώ πολύ να συνεργαστούμε και να μπορέσω να είμαι χρήσιμη και να προσφέρω!",
-        "familyFewWords": "Λιγα λογια εδω",
-        "childrenNumber": 2,
-        "childrenInfo": [
-            {
-                "age": 2,
-                "gender": 0,
-                "AMEA": 0,
-                "allergies": 0,
-                "fewWords": "Μπλα μπλα...",
-            },
-            {
-                "age": 2,
-                "gender": 0,
-                "AMEA": 0,
-                "allergies": 0,
-                "fewWords": "Μπλα μπλα...",
-            },
-        ],
-        "pets": 0,
-    };
-
+function Partnership({partnership, isParent = true, isRunning = true, isFuture = false, isSent = false, isPending = false, isHistory = false, isEditable = false, onCreateRating, onDelete, onTerminate}){
     const [isExpanded, setIsExpanded] = useState(false);
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
-    const isPartnershipOver = true;
+    const isPartnershipOver = getDateFromObj(partnership?.endingDate) < getDateFromMs(Date.now());
     const isPayAvailable = true;
+
+    const [shownUser, setShownUser] = useState({})
+
+    const fetchData = async () => {
+        if (isParent) {
+            const babysitterSnap = await getDoc(partnership.babysitter);
+            const fetchedBabysitterData = babysitterSnap.data();
+            setShownUser({ ...fetchedBabysitterData, id: partnership.babysitter.id });
+        } else {
+            const parentSnap = await getDoc(partnership.parent);
+            const fetchedParentData = parentSnap.data();
+            setShownUser({ ...fetchedParentData, id: partnership.parent.id });
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, [partnership]);
 
     const navigate = useNavigate();
 
@@ -80,7 +44,7 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
     }
 
     const handleConfirm = () => {
-        console.log("CONFIRMED SIR!")
+        onTerminate();
     };
 
     const handleConfirmPopupClose = () => {
@@ -88,13 +52,13 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
     };
 
     const handleViewPartnership = () => {
-      navigate('../partnership/1', {path: '..'});
+      navigate(`/partnership/${partnership.id}`);
     };
 
     const handleUserClick = () => {
-      if (!isParent) return navigate('/babysitter/parent-details/1');
+      if (!isParent) return navigate(`/babysitter/parent-details/${partnership.parent.id}`);
 
-      navigate('/parent/babysitter-details/1');
+      navigate(`/parent/babysitter-details/${partnership.babysitter.id}`);
     };
 
     const handleMonthCompletion = () => {
@@ -105,8 +69,7 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
     };
 
     const handleRenew = () => {
-
-      navigate(`../sign-partnership/${sample['id']}`, {relative: 'path'});
+      navigate(`sign-partnership/${partnership.id}`);
     }
   
     return (
@@ -116,14 +79,14 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                     <span className={`${s.partnership_dot} ${!isParent || isExpanded || !isPayAvailable ? s.disabled : ''}`}></span>
                 }
                 <div className={s.partnership_row}>
-                    <img src={troll_prof} alt="Profile" onClick={handleUserClick}/>
+                    <img src={shownUser?.profilePicture} alt="Profile" onClick={handleUserClick}/>
                     <div className={s.second_column}>
-                        <p><span>Ονοματεπώνυμο:</span>{sample.babysitterName}</p>
-                        <p><span>Χρόνος απασχόλησης:</span>{sample.workingHours}</p>
+                        <p><span>Ονοματεπώνυμο:</span>{shownUser?.name} {shownUser?.surname}</p>
+                        <p><span>Χρόνος απασχόλησης:</span>{partnership?.workingHours}</p>
                         <div className={`${s.timetable_to_hide} ${!isExpanded ? s.hidden : ''}`}>
                             <p className={s.underline}><span>Διαθεσιμότητα και ώρες</span></p>
                             <div>
-                                <Timetable width="360px" height="200px" isEnabled={false} checkedSlots={sample.availability} onChange={setAvailabilityList} />
+                                <Timetable width="360px" height="200px" isEnabled={false} checkedSlots={partnership?.availability} />
                             </div>
                         </div>
                     </div>
@@ -133,36 +96,34 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                             <div className={s.dropdown}>
                                 <StyledSelect
                                   isDisabled
-                                  value={{value: perioxh, label: perioxh}}
+                                  value={{value: partnership?.area, label: partnership?.area}}
                                 />
                                 <div className={s.inner_dropdown}>
                                     <StyledSelect
                                       isDisabled
-                                      value={{value: perioxh, label: perioxh}}
+                                      value={{value: partnership?.neighbourhood, label: partnership?.neighbourhood}}
                                     />
                                 </div>
                             </div>
-                            <p><span>Οδός εξυπηρέτησης:</span>{sample.address}</p>
+                            <p><span>Οδός εξυπηρέτησης:</span>{partnership?.address}</p>
                         </div>
                         <p className={s.underline}><span>Ημερομηνία έναρξης συνεργασίας</span></p>
                         <div className={s.dropdown_row}>
                           <DateDropdowns
-                            day={partnershipDate?.day ?? null}
-                            month={partnershipDate?.month ?? null}
-                            year={partnershipDate?.year ?? null}
+                            day={partnership?.startingDate?.day ?? null}
+                            month={partnership?.startingDate?.month ?? null}
+                            year={partnership?.startingDate?.year ?? null}
                             isEnabled={false}
-                            onChange={(newDate) => setPartnershipDate(newDate)}
                           />
                         </div>
                         <div className={`${s.dropdown_to_hide} ${!isExpanded ? s.hidden : ''}`}>
                             <p className={s.underline}><span>Ημερομηνία λήξης συνεργασίας</span></p>
                             <div className={s.dropdown_row}>
                               <DateDropdowns
-                                day={partnershipDate?.day ?? null}
-                                month={partnershipDate?.month ?? null}
-                                year={partnershipDate?.year ?? null}
+                                day={partnership?.endingDate?.day ?? null}
+                                month={partnership?.endingDate?.month ?? null}
+                                year={partnership?.endingDate?.year ?? null}
                                 isEnabled={false}
-                                onChange={(newDate) => setPartnershipDate(newDate)}
                               />
                             </div>
                         </div>
@@ -174,7 +135,7 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
                             <p className={`${s.status} ${s.red} ${!isExpanded ? s.collapsed : ''}`}>Απορρίφθηκε</p>
                         )
                     )}
-                    <p className={`${s.partnership_date} ${!isExpanded ? s.collapsed : ''}`}>25/12/2024</p>
+                    <p className={`${s.partnership_date} ${!isExpanded ? s.collapsed : ''}`}>{getFormattedDate(getDateFromMs(partnership.dateCreated))}</p>
                 </div>
                 {(isRunning || isHistory || isFuture) &&
                     <div className={`${s.partnership_buttons_row} ${!isExpanded ? s.collapsed : ''}`}>
@@ -216,7 +177,7 @@ function Partnership({isParent = true, isRunning = true, isFuture = false, isSen
             </div>
             <ExpandButtons isExpanded={isExpanded} toggleIsExpanded={toggleIsExpanded} 
                 showOptionsButtons={isEditable} showDeleteButton={isParent} 
-                showEditButton={true} onDelete={onDelete} onEdit={() => navigate('../sign-partnership/1', {relative: 'path'})}
+                showEditButton={true} onDelete={onDelete} onEdit={() => navigate(`../sign-partnership/${partnership.id}`)}
             />
             {isConfirmPopupOpen && 
                 <ConfirmationPopUp onConfirm={handleConfirm} onClose={handleConfirmPopupClose}/>
